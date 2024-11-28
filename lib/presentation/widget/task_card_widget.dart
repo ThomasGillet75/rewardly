@@ -97,7 +97,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
               SizedBox(
                 width: 50, // Adjust the width as needed
                 child: Text(
-                  "0/${widget.task}",
+                  "0/${widget.task.numberSubtask}",
                   style: const TextStyle(
                     color: Colors.grey,
                   ),
