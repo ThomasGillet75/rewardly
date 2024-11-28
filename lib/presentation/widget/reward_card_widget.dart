@@ -16,12 +16,12 @@ class RewardCardWidget extends StatefulWidget {
 }
 
 class _RewardCardWidgetState extends State<RewardCardWidget> {
+  final int _marginOffset = 96;
   double getPourcentage() {
     double completionPercentage =
         widget.taskTodo > 0 ? widget.taskDone / widget.taskTodo : 0.0;
-    // Récupère la largeur de l'écran et soustrait les marges
     double containerWidth =
-        MediaQuery.of(context).size.width - 96; // 32 + 32 de marge
+        MediaQuery.of(context).size.width - _marginOffset;
     return containerWidth * completionPercentage;
   }
 
