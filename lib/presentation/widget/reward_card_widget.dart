@@ -17,11 +17,12 @@ class RewardCardWidget extends StatefulWidget {
 
 class _RewardCardWidgetState extends State<RewardCardWidget> {
   final int _marginOffset = 96;
-  double getPourcentage() {
+
+  // calculate the percentage for the size of the bar
+  double calculatePercentage() {
     double completionPercentage =
         widget.taskTodo > 0 ? widget.taskDone / widget.taskTodo : 0.0;
-    double containerWidth =
-        MediaQuery.of(context).size.width - _marginOffset;
+    double containerWidth = MediaQuery.of(context).size.width - _marginOffset;
     return containerWidth * completionPercentage;
   }
 
@@ -54,7 +55,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                 margin: const EdgeInsets.only(
                     top: 32, left: 32, right: 32, bottom: 10),
                 height: 17,
-                width: getPourcentage(),
+                width: calculatePercentage(),
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(15),
@@ -68,10 +69,9 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                   child: Text(
                     "${widget.taskDone}/${widget.taskTodo}",
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                    ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ),
