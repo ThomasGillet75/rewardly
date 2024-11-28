@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rewardly/Data/entity/task.dart';
+import 'package:rewardly/presentation/widget/reward_card_widget.dart';
 
 import '../../core/task_priority_enum.dart';
 import '../widget/task_card_widget.dart';
@@ -50,6 +51,7 @@ class _HomePageState extends State<HomePageScreen> {
       body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           children: [
+            const RewardCardWidget(title: "chocolat",taskDone: 6, taskTodo: 8),
             TaskCardWidget(task: tasks[0]),
             TaskCardWidget(task: tasks[1]),
             TaskCardWidget(task: tasks[2]),
