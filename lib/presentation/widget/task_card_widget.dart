@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../core/Priority.dart';
-
-
+import '../../Data/entity/task.dart';
+import '../../core/task_priority_enum.dart';
 
 class TaskCardWidget extends StatefulWidget {
-  const TaskCardWidget(
-      {super.key,
-        required this.title,
-        required this.date,
-        required this.priority,
-        required this.task});
-
-  final String title;
-  final DateTime date;
-  final Priority priority;
-  final int task;
-
+  const TaskCardWidget({super.key, required this.task});
+  final Task task;
   @override
   State<TaskCardWidget> createState() => _TaskWidgetState();
 }
@@ -24,17 +13,14 @@ class TaskCardWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskCardWidget> {
   bool _isChecked = false;
 
-  MaterialColor _setColor(Priority priority) {
-    switch (priority) {
-      case Priority.low:
-        return Colors.green;
-      case Priority.medium:
-        return Colors.amber;
-      case Priority.high:
-        return Colors.red;
-    }
-  }
+  // set the color of the border task card based on the priority
+  final Map<TaskPriority, MaterialColor> _priorityColors = {
+    TaskPriority.low: Colors.green,
+    TaskPriority.medium: Colors.amber,
+    TaskPriority.high: Colors.red,
+  };
 
+  // get the date from the DateTime object
   String _getDateFromDateTime(DateTime date) {
     const List<String> months = [
       "Janvier",
@@ -64,7 +50,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: _setColor(widget.priority),
+          color: _priorityColors[widget.task.priority]!,
           width: 2,
         ),
       ),
@@ -85,11 +71,11 @@ class _TaskWidgetState extends State<TaskCardWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  widget.title,
+                  widget.task.title,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  _getDateFromDateTime(widget.date),
+                  _getDateFromDateTime(widget.task.date),
                   style: const TextStyle(fontSize: 10.0),
                 ),
               ],

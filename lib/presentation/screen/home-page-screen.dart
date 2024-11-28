@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rewardly/Data/entity/task.dart';
 
-import '../../core/Priority.dart';
+import '../../core/task_priority_enum.dart';
 import '../widget/task_card_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
-
+  //title of the screen
   final String title;
 
   @override
@@ -13,6 +14,28 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePageScreen> {
+  List<Task> tasks = [
+    Task(
+        title: "Merge",
+        priority: TaskPriority.medium,
+        date: DateTime(10, 10, 10),
+        numberSubtask: 10,
+        isDone: false),
+    Task(
+        title: "Faire android",
+        priority: TaskPriority.high,
+        date: DateTime(5, 7, 4),
+        numberSubtask: 3,
+        isDone: false),
+    Task(
+        title: "Faire ios",
+        priority: TaskPriority.low,
+        date: DateTime(2, 12, 2),
+        numberSubtask: 1,
+        isDone: false)
+  ];
+
+  //action random
   void _action() {
     print("something");
   }
@@ -27,22 +50,9 @@ class _HomePageState extends State<HomePageScreen> {
       body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           children: [
-            TaskCardWidget(
-                title: "Merge",
-                date: DateTime(10, 10, 10),
-                priority: Priority.medium,
-                task: 10),
-
-            TaskCardWidget(
-                title: "Faire android",
-                date: DateTime(5, 7, 4),
-                priority: Priority.high,
-                task: 3),
-            TaskCardWidget(
-                title: "Faire ios",
-                date: DateTime(2, 12, 2),
-                priority: Priority.low,
-                task: 1),
+            TaskCardWidget(task: tasks[0]),
+            TaskCardWidget(task: tasks[1]),
+            TaskCardWidget(task: tasks[2]),
           ]),
       floatingActionButton: FloatingActionButton(
           onPressed: _action, child: const Icon(Icons.add)),
@@ -50,5 +60,4 @@ class _HomePageState extends State<HomePageScreen> {
   }
 }
 
-class TaskWidget {
-}
+class TaskWidget {}
