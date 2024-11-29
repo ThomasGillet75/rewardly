@@ -1,4 +1,6 @@
-import '../../core/task_priority_enum.dart';
+
+
+import 'package:rewardly/core/task_priority_enum.dart';
 
 class Task {
   String title;

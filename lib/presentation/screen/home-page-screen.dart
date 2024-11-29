@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rewardly/Data/entity/task.dart';
+import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/presentation/widget/reward_card_widget.dart';
 
-import '../../core/task_priority_enum.dart';
 import '../widget/task_card_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -19,8 +19,8 @@ class _HomePageState extends State<HomePageScreen> {
     Task(
         title: "Merge",
         priority: TaskPriority.medium,
-        date: DateTime(10, 10, 10),
-        numberSubtask: 10,
+        date: DateTime(12, 11, 8),
+        numberSubtask: 9,
         isDone: false),
     Task(
         title: "Faire android",
