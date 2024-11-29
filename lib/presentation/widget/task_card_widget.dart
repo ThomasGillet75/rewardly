@@ -21,6 +21,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
   };
 
   // get the date from the DateTime object
+  // date to format
   String _getDateFromDateTime(DateTime date) {
     const List<String> months = [
       "Janvier",
