@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rewardly/Data/entity/task.dart';
+import 'package:rewardly/core/task_priority_enum.dart';
 
-import '../../core/task_priority_enum.dart';
 
 class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget({super.key, required this.task});
