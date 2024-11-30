@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rewardly/Data/entity/task.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
+import 'package:rewardly/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/presentation/widget/reward_card_widget.dart';
-
-import '../widget/task_card_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
@@ -19,19 +18,19 @@ class _HomePageState extends State<HomePageScreen> {
     Task(
         title: "Merge",
         priority: TaskPriority.medium,
-        date: DateTime(12, 11, 8),
+        date: DateTime(2024, 11, 30),
         numberSubtask: 9,
         isDone: false),
     Task(
         title: "Faire android",
         priority: TaskPriority.high,
-        date: DateTime(5, 7, 4),
+        date: DateTime(2024, 12, 01),
         numberSubtask: 3,
         isDone: false),
     Task(
         title: "Faire ios",
         priority: TaskPriority.low,
-        date: DateTime(2, 12, 2),
+        date: DateTime(2024, 12, 5),
         numberSubtask: 1,
         isDone: false)
   ];
@@ -52,9 +51,7 @@ class _HomePageState extends State<HomePageScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           children: [
             const RewardCardWidget(title: "chocolat",taskDone: 6, taskTodo: 8),
-            TaskCardWidget(task: tasks[0]),
-            TaskCardWidget(task: tasks[1]),
-            TaskCardWidget(task: tasks[2]),
+            ContainerFilteringTaskWidget(tasks: tasks),
           ]),
       floatingActionButton: FloatingActionButton(
           onPressed: _action, child: const Icon(Icons.add)),
