@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
             ),
       },
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFA8D2A8)),
         primaryColor: const Color(0xFFECF0F1),
         useMaterial3: true,
       ),

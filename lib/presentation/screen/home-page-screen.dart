@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Data/entity/task.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/presentation/widget/container_filtering_task_widget.dart';
+import 'package:rewardly/presentation/widget/toggle_button_widget.dart';
 import 'package:rewardly/presentation/widget/reward_card_widget.dart';
+
+import '../../bloc/toggle_bloc.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
+
   //title of the screen
   final String title;
 
@@ -42,20 +47,25 @@ class _HomePageState extends State<HomePageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          children: [
-            const RewardCardWidget(title: "chocolat",taskDone: 6, taskTodo: 8),
-            ContainerFilteringTaskWidget(tasks: tasks),
-          ]),
-      floatingActionButton: FloatingActionButton(
-          onPressed: _action, child: const Icon(Icons.add)),
-    );
+    return BlocProvider(
+        create: (context) => ToggleBloc(),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(widget.title),
+          ),
+          body: ListView(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              children: [
+                const RewardCardWidget(
+                    title: "chocolat", taskDone: 6, taskTodo: 8),
+                const ToggleButtonWidget(),
+                ContainerFilteringTaskWidget(tasks: tasks),
+              ]),
+          floatingActionButton: FloatingActionButton(
+              onPressed: _action, child: const Icon(Icons.add)),
+        ));
   }
 }
 
