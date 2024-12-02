@@ -5,6 +5,7 @@ import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/presentation/widget/toggle_button_widget.dart';
 import 'package:rewardly/presentation/widget/reward_card_widget.dart';
+import 'package:rewardly/presentation/widget/project_car_widget.dart';
 
 import '../../bloc/toggle_bloc.dart';
 
@@ -60,8 +61,17 @@ class _HomePageState extends State<HomePageScreen> {
               children: [
                 const RewardCardWidget(
                     title: "chocolat", taskDone: 6, taskTodo: 8),
-                const ToggleButtonWidget(),
-                ContainerFilteringTaskWidget(tasks: tasks),
+                SizedBox(
+                  child: const ToggleButtonWidget(),
+                ),
+                BlocBuilder<ToggleBloc, ToggleState>(builder: (context, state) {
+                  if ((state as ToggleInitial).isMesTachesSelected) {
+                    return ContainerFilteringTaskWidget(tasks: tasks);
+                  }
+                  else{
+                    return ProjectCarWidget(projectName: "Réussir son année");
+                  }
+                }),
               ]),
           floatingActionButton: FloatingActionButton(
               onPressed: _action, child: const Icon(Icons.add)),

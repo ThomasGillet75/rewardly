@@ -11,13 +11,14 @@ class ToggleButtonWidget extends StatefulWidget {
 
 class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
   bool isMesTachesSelected = true;
+  double screenWidth = 0;
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ToggleBloc, ToggleState>(
         builder: (context, state) {
           return Container(
-
             width: 200,
             height: 50,
             margin: const EdgeInsets.only(top: 30, bottom: 20),
@@ -34,7 +35,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                       ? Alignment.centerLeft
                       : Alignment.centerRight,
                   child: Container(
-                    width: 200,
+                    width: screenWidth * 0.5,
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
