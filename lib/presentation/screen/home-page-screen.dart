@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Data/entity/task.dart';
+import 'package:rewardly/Data/models/task.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/presentation/widget/toggle_button_widget.dart';
