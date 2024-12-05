@@ -41,11 +41,6 @@ class _HomePageState extends State<HomePageScreen> {
         isDone: false)
   ];
 
-  //action random
-  void _action() {
-    print("something");
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -67,16 +62,97 @@ class _HomePageState extends State<HomePageScreen> {
                 BlocBuilder<ToggleBloc, ToggleState>(builder: (context, state) {
                   if ((state as ToggleInitial).isMesTachesSelected) {
                     return ContainerFilteringTaskWidget(tasks: tasks);
-                  }
-                  else{
+                  } else {
                     return ProjectCarWidget(projectName: "Réussir son année");
                   }
                 }),
               ]),
           floatingActionButton: FloatingActionButton(
-              onPressed: _action, child: const Icon(Icons.add)),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                // Permet au clavier de ne pas cacher la fenêtre
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(16.0)),
+                ),
+                builder: (BuildContext context) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 16.0,
+                        right: 16.0,
+                        top: 16.0,
+                        bottom: MediaQuery.of(context)
+                            .viewInsets
+                            .bottom, // Ajuste avec le clavier
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              // Champ TextField
+                              Expanded(
+                                // S'assure que le champ occupe le maximum d'espace disponible
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEEEEEE),
+                                    border: Border.all(
+                                      color: Color(0xFFB7B7B7),
+                                    ),
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: TextField(
+                                      autofocus: true,
+                                      // Ouvre automatiquement le clavier
+                                      decoration: InputDecoration(
+                                        hintText: 'Nom du groupe',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              // Espacement entre le champ et le bouton
+                              // Bouton
+                              Container(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFFA8D2A8),
+                                    // Définir la couleur de fond ici
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    print("On ajoute un projet");
+                                  },
+                                  child:
+                                  Text('Ajouter', style: TextStyle(color: Colors.black, fontSize: 16.0)),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
         ));
   }
 }
-
-class TaskWidget {}
