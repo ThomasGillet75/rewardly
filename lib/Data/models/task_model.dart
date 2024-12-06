@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class TaskModel {
   final String id;
   final String parentId;
@@ -5,7 +7,8 @@ class TaskModel {
   final String description;
   final String deadline;
   final int priority;
-  final String projectId;
+  final bool isDone;
+  final DocumentReference projectRef;
 
   TaskModel({
     required this.id,
@@ -14,7 +17,8 @@ class TaskModel {
     this.description = "",
     this.deadline = "",
     this.priority = 0,
-    required this.projectId,
+    this.isDone = false,
+    required this.projectRef,
   });
 
   factory TaskModel.fromMap(Map<String, dynamic> data) {
@@ -25,7 +29,8 @@ class TaskModel {
       description: data['description'],
       deadline: data['deadline'],
       priority: data['priority'],
-      projectId: data['project_id'],
+      isDone: data['isDone'],
+      projectRef: data['projectRef'],
     );
   }
 
@@ -37,7 +42,8 @@ class TaskModel {
       'description': description,
       'deadline': deadline,
       'priority': priority,
-      'project_id': projectId,
+      'isDone': isDone,
+      'project_ref': projectRef,
     };
   }
 }

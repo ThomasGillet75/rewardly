@@ -1,12 +1,22 @@
 import 'package:rewardly/Data/models/project_model.dart';
-import 'package:rewardly/Data/services/firestore_service.dart';
+import 'package:rewardly/Data/services/firestore_project_service.dart';
 
 class ProjectRepository {
-  final FirestoreService _firestoreService = FirestoreService();
+  final FirestoreProjectService _projectService = FirestoreProjectService();
 
-  Future<List<ProjectModel>> getProjects(){
-    return _firestoreService.getProjects().then((projects) {
-      return projects.map((doc) => ProjectModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
-    });
+  Stream<List<ProjectModel>> getProjects() {
+    return _projectService.getAll();
+  }
+
+  Future<ProjectModel> getProject(String projectId) async {
+    return await _projectService.get(projectId);
+  }
+
+  Future<void> createProject(ProjectModel projectModel) async {
+    await _projectService.add(projectModel);
+  }
+
+  Future<void> updateProject(ProjectModel projectModel) async {
+    await _projectService.update(projectModel);
   }
 }

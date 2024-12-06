@@ -22,15 +22,6 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePageScreen> {
-  final HomepageViewModel viewModel = HomepageViewModel();
-
-  @override
-  void initState() {
-    super.initState();
-    viewModel.createTask();
-    print("\x1B[31m task created \x1B[0m");
-  }
-
 
   List<Task> tasks = [
     Task(
