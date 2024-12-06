@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "251621136219",
-    "project_id": "rewardly-flutter",
-    "storage_bucket": "rewardly-flutter.firebasestorage.app"
+    "project_number": "275954218103",
+    "project_id": "rewardly-flutter-c6458",
+    "storage_bucket": "rewardly-flutter-c6458.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:251621136219:android:74a80e22adb7164b9d6c7e",
+        "mobilesdk_app_id": "1:275954218103:android:7e77f3f4cc8afcf3c38272",
         "android_client_info": {
           "package_name": "be.helha.rewardly"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCOPdIKWzLGOpCRp23DyZrYPcwGKO8V9cw"
+          "current_key": "AIzaSyAEtqGk6N4J9U_txnIIMXa3fUHr0r3wp54"
         }
       ],
       "services": {
