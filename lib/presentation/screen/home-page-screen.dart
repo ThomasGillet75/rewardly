@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Data/models/task.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
+import 'package:rewardly/presentation/widget/add_project_widget.dart';
 import 'package:rewardly/presentation/viewmodel/home_page_view_model.dart';
 import 'package:rewardly/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/presentation/widget/toggle_button_widget.dart';
@@ -52,11 +53,6 @@ class _HomePageState extends State<HomePageScreen> {
         isDone: false)
   ];
 
-  //action random
-  void _action() {
-    print("something");
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -78,16 +74,24 @@ class _HomePageState extends State<HomePageScreen> {
                 BlocBuilder<ToggleBloc, ToggleState>(builder: (context, state) {
                   if ((state as ToggleInitial).isMesTachesSelected) {
                     return ContainerFilteringTaskWidget(tasks: tasks);
-                  }
-                  else{
+                  } else {
                     return ProjectCarWidget(projectName: "Réussir son année");
                   }
                 }),
               ]),
-          floatingActionButton: FloatingActionButton(
-              onPressed: _action, child: const Icon(Icons.add)),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true, // Permet au widget de s'adapter au clavier
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                  ),
+                  builder: (context) => AddProjectWidget(),
+                );
+              },
+              child: const Icon(Icons.add),
+            ),
         ));
   }
 }
-
-class TaskWidget {}
