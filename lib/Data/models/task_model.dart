@@ -1,35 +1,43 @@
-
 class TaskModel {
-  late final int id;
-  late final int parentId;
-  late final String name;
-  late final String description;
-  late final String deadline;
-  late final int priority;
-  late final int projectId;
+  final String id;
+  final String parentId;
+  final String name;
+  final String description;
+  final String deadline;
+  final int priority;
+  final String projectId;
 
-  TaskModel({required int id,
-    required int parentId,
-    required String name,
-    String description = "",
-    String deadline = "",
-    int priority = 0,
-    required int projectId,});
+  TaskModel({
+    required this.id,
+    required this.parentId,
+    required this.name,
+    this.description = "",
+    this.deadline = "",
+    this.priority = 0,
+    required this.projectId,
+  });
 
-  factory TaskModel.fromMap(Map<String, dynamic> data){
-    return TaskModel(id: data['id'], parentId: data['parent_id'],deadline: data['deadline'],description:data['description'],priority: data['priority'], name: data['name'], projectId: data['project_id']);
+  factory TaskModel.fromMap(Map<String, dynamic> data) {
+    return TaskModel(
+      id: data['task_id'],
+      parentId: data['parent_id'],
+      name: data['name'],
+      description: data['description'],
+      deadline: data['deadline'],
+      priority: data['priority'],
+      projectId: data['project_id'],
+    );
   }
 
-  Map<String,dynamic> toMap()
-  {
+  Map<String, dynamic> toMap() {
     return {
-      'id' : id,
+      'task_id': id,
       'parent_id': parentId,
-      'deadline': deadline,
+      'name': name,
       'description': description,
+      'deadline': deadline,
       'priority': priority,
-      'name' : name,
-      'project_id' : projectId,
+      'project_id': projectId,
     };
   }
 }

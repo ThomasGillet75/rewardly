@@ -12,4 +12,9 @@ class TaskRepository
 
     return taskDocs.map((doc) => TaskModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
   }
+
+  Future<void> createTask(Map<String,dynamic> taskModel)
+  async {
+    _firestoreService.createTask(taskModel);
+  }
 }

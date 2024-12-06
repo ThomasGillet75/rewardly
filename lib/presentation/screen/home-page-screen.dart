@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Data/models/task.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
+import 'package:rewardly/presentation/viewmodel/home_page_view_model.dart';
 import 'package:rewardly/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/presentation/widget/toggle_button_widget.dart';
 import 'package:rewardly/presentation/widget/reward_card_widget.dart';
@@ -20,6 +21,16 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePageScreen> {
+  final HomepageViewModel viewModel = HomepageViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.createTask();
+    print("\x1B[31m task created \x1B[0m");
+  }
+
+
   List<Task> tasks = [
     Task(
         title: "Merge",
