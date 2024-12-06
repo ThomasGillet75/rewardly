@@ -11,7 +11,6 @@ class TaskCardWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskCardWidget> {
-  bool _isChecked = false;
 
   // set the color of the border task card based on the priority
   final Map<TaskPriority, MaterialColor> _priorityColors = {
@@ -58,10 +57,10 @@ class _TaskWidgetState extends State<TaskCardWidget> {
       child: Row(
         children: [
           Checkbox(
-            value: _isChecked,
+            value: widget.task.isDone,
             onChanged: (bool? value) {
               setState(() {
-                _isChecked = value!;
+                widget.task.isDone = value!;
               });
             },
             shape: const CircleBorder(),
