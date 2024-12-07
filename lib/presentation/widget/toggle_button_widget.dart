@@ -35,7 +35,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                       ? Alignment.centerLeft
                       : Alignment.centerRight,
                   child: Container(
-                    width: screenWidth * 0.5,
+                    width: screenWidth * 0.46,
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
