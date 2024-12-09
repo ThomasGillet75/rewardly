@@ -45,7 +45,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            childt : TextField(
+                            child : TextField(
                               autofocus: true,
                               decoration: const InputDecoration(
                                 hintText: "Nom du projet",
