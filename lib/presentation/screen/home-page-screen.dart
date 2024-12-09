@@ -9,11 +9,11 @@ import 'package:rewardly/presentation/widget/reward_card_widget.dart';
 import 'package:rewardly/presentation/widget/project_car_widget.dart';
 
 import '../../bloc/toggle_bloc.dart';
+import '../widget/add_task_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
 
-  //title of the screen
   final String title;
 
   @override
@@ -44,43 +44,51 @@ class _HomePageState extends State<HomePageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => ToggleBloc(),
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Text(widget.title),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        children: [
+          const RewardCardWidget(
+              title: "chocolat", taskDone: 6, taskTodo: 8),
+          const ToggleButtonWidget(),
+          BlocBuilder<ToggleBloc, ToggleState>(
+            builder: (context, state) {
+              if (state is ToggleInitial && state.isMesTachesSelected) {
+                return ContainerFilteringTaskWidget(tasks: tasks);
+              } else {
+                return const ProjectCarWidget(projectName: "Réussir son année");
+              }
+            },
           ),
-          body: ListView(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              children: [
-                const RewardCardWidget(
-                    title: "chocolat", taskDone: 6, taskTodo: 8),
-                SizedBox(
-                  child: const ToggleButtonWidget(),
-                ),
-                BlocBuilder<ToggleBloc, ToggleState>(builder: (context, state) {
-                  if ((state as ToggleInitial).isMesTachesSelected) {
-                    return ContainerFilteringTaskWidget(tasks: tasks);
-                  } else {
-                    return ProjectCarWidget(projectName: "Réussir son année");
-                  }
-                }),
-              ]),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true, // Permet au widget de s'adapter au clavier
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                  ),
-                  builder: (context) => AddProjectWidget(),
-                );
-              },
-              child: const Icon(Icons.add),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
             ),
-        ));
+            builder: (context) {
+              return BlocBuilder<ToggleBloc, ToggleState>(
+                builder: (context, state) {
+                  if (state is ToggleInitial && state.isMesTachesSelected) {
+                    return const AddTaskWidget();
+                  } else {
+                    return const AddProjectWidget();
+                  }
+                },
+              );
+            },
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
