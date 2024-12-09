@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:bloc/bloc.dart';
 
 part 'toggle_event.dart';
 part 'toggle_state.dart';

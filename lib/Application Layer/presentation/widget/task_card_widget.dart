@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Data/models/task.dart';
+import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
+import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget({super.key, required this.task});
+
   final Task task;
+
   @override
   State<TaskCardWidget> createState() => _TaskWidgetState();
 }
 
 class _TaskWidgetState extends State<TaskCardWidget> {
-  bool _isChecked = false;
-
   // set the color of the border task card based on the priority
   final Map<TaskPriority, MaterialColor> _priorityColors = {
     TaskPriority.low: Colors.green,
@@ -58,11 +59,10 @@ class _TaskWidgetState extends State<TaskCardWidget> {
       child: Row(
         children: [
           Checkbox(
-            value: _isChecked,
+            value: widget.task.isDone,
             onChanged: (bool? value) {
-              setState(() {
-                _isChecked = value!;
-              });
+              BlocProvider.of<TaskBloc>(context)
+                  .add(UpdateTask(widget.task.copyWith(isDone: value!)));
             },
             shape: const CircleBorder(),
           ),
@@ -72,11 +72,14 @@ class _TaskWidgetState extends State<TaskCardWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  widget.task.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  widget.task.name,
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                    decoration: widget.task.isDone
+                        ? TextDecoration.lineThrough : TextDecoration.none,
+                  ),
                 ),
                 Text(
-                  _getDateFromDateTime(widget.task.date),
+                  _getDateFromDateTime(widget.task.deadline),
                   style: const TextStyle(fontSize: 10.0),
                 ),
               ],

@@ -1,5 +1,8 @@
 class DatesUtils {
 
+  static DateTime get firstDate => DateTime(2020, 1, 1);
+  static DateTime get lastDate => DateTime(2030, 12, 31);
+
   // Check if the two dates are the same day
   // @param date1 the first date
   // @param date2 the second date
