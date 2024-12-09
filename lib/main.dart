@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/presentation/screen/home-page-screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
+import 'package:rewardly/Application%20Layer/presentation/screen/home-page-screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,16 +16,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/': (context) => const HomePageScreen(
-              title: "Rewardly",
-            ),
-      },
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFA8D2A8)),
-        primaryColor: const Color(0xFFECF0F1),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => TaskBloc()),
+        BlocProvider(create: (context) => ToggleBloc()),
+      ],
+      child: MaterialApp(
+        routes: {
+          '/': (context) => const HomePageScreen(
+            title: "Rewardly",
+          ),
+        },
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFA8D2A8)),
+          primaryColor: const Color(0xFFECF0F1),
+          useMaterial3: true,
+        ),
       ),
     );
   }

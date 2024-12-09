@@ -30,28 +30,19 @@ class _FilteringWidgetState extends State<FilteringWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        DropdownButton<String>(
-          hint: Text(
-            widget.initialValue!,
-          ),
-          value: _selectedValue,
-          onChanged: (String? newValue) {
-            _changeValue(newValue);
-          },
-          items: widget.items
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-              ),
-            );
-          }).toList(),
-          underline: const SizedBox.shrink(),
-        ),
-      ],
+    return DropdownButton<String>(
+      hint: Text(widget.initialValue ?? 'Select'),
+      value: _selectedValue,
+      onChanged: (String? newValue) {
+        _changeValue(newValue);
+      },
+      items: widget.items.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      underline: const SizedBox.shrink(),
     );
   }
 }

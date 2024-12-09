@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rewardly/Data/models/task_model.dart';
-import 'package:rewardly/Data/repositories/project_repository.dart';
-import 'package:rewardly/Data/repositories/task_repository.dart';
+import 'package:rewardly/Domain/repositories/project_repository.dart';
+import 'package:rewardly/Domain/repositories/task_repository.dart';
 
 class HomepageViewModel {
   TaskRepository taskRepository = TaskRepository();

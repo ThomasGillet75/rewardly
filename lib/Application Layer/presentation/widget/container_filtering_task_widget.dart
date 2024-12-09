@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Data/models/task.dart';
+import 'package:rewardly/Application%20Layer/presentation/widget/filtering_widget.dart';
+import 'package:rewardly/Application%20Layer/presentation/widget/task_card_widget.dart';
+import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
-import 'package:rewardly/presentation/widget/filtering_widget.dart';
-import 'package:rewardly/presentation/widget/task_card_widget.dart';
 import 'package:rewardly/core/utils/date_utils.dart';
 
 class ContainerFilteringTaskWidget extends StatefulWidget {
-  const ContainerFilteringTaskWidget({super.key, required this.tasks});
+  const ContainerFilteringTaskWidget(
+      {super.key, required this.tasks, required this.onTaskSelected});
 
   final List<Task> tasks;
+  final Function(Task) onTaskSelected;
 
   @override
   State<ContainerFilteringTaskWidget> createState() =>
@@ -70,8 +72,12 @@ class _ContainerFilteringTaskWidgetState
     }
 
     return Column(
-      children:
-          filteredTasks.map((task) => TaskCardWidget(task: task)).toList(),
+      children: filteredTasks.map((task) {
+        return GestureDetector(
+          onTap: () => widget.onTaskSelected(task), // Appelle le callback
+          child: TaskCardWidget(task: task),
+        );
+      }).toList(),
     );
   }
 
@@ -118,18 +124,18 @@ class _ContainerFilteringTaskWidgetState
   List<Task> taskFilteredByDate(String label, List<Task> task) {
     if (label == "Aujourd'hui") {
       task = widget.tasks
-          .where((task) => DatesUtils.isSameDay(task.date, DateTime.now()))
+          .where((task) => DatesUtils.isSameDay(task.deadline, DateTime.now()))
           .toList();
     } else if (label == "Demain") {
       task = widget.tasks
-          .where((task) => DatesUtils.isTomorrow(task.date, DateTime.now()))
+          .where((task) => DatesUtils.isTomorrow(task.deadline, DateTime.now()))
           .toList();
     } else if (label == "Cette Semaine") {
       task = widget.tasks
           .where((task) =>
-              DatesUtils.isSameWeek(task.date, DateTime.now()) &&
-              !DatesUtils.isTomorrow(task.date, DateTime.now()) &&
-              !DatesUtils.isSameDay(task.date, DateTime.now()))
+      DatesUtils.isSameWeek(task.deadline, DateTime.now()) &&
+          !DatesUtils.isTomorrow(task.deadline, DateTime.now()) &&
+          !DatesUtils.isSameDay(task.deadline, DateTime.now()))
           .toList();
     }
     return task;
