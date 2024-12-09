@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/presentation/screen/home-page-screen.dart';
+import 'package:rewardly/bloc/toggle_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
@@ -13,16 +15,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/': (context) => const HomePageScreen(
-              title: "Rewardly",
-            ),
-      },
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFA8D2A8)),
-        primaryColor: const Color(0xFFECF0F1),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (_) => ToggleBloc(),
+      child: MaterialApp(
+        routes: {
+          '/': (context) => const HomePageScreen(
+            title: "Rewardly",
+          ),
+        },
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFA8D2A8)),
+          primaryColor: const Color(0xFFECF0F1),
+          useMaterial3: true,
+        ),
       ),
     );
   }

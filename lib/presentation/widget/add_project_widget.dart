@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'add_button_widget.dart';
+
 class AddProjectWidget extends StatefulWidget {
   const AddProjectWidget({super.key});
 
@@ -55,19 +57,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                       ),
                       const SizedBox(width: 10),
                       Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFA8D2A8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            print("On ajoute un projet");
-                          },
-                          child:
-                            Text('Ajouter', style: TextStyle(color: Colors.black, fontSize: 16)),
-                        ),
+                        child: AddButtonWidget(),
                       ),
                     ],
                   ),
