@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/add_project_widget.dart';
+import 'package:rewardly/Application%20Layer/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/project_car_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/reward_card_widget.dart';
@@ -48,8 +49,8 @@ class _HomePageState extends State<HomePageScreen> {
   void _showTaskDetails(Task task) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Permet au widget de s'adapter au clavier
-      shape: RoundedRectangleBorder(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
       ),
       builder: (context) => TaskDetailsWidget(task: task),
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePageScreen> {
                   },
                 );
               }else{
-                return ProjectCarWidget(projectName: "Réussir son année");
+                return const ProjectCarWidget(projectName: "Réussir son année");
               }
             },
           ),
@@ -98,10 +99,20 @@ class _HomePageState extends State<HomePageScreen> {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
             ),
-            builder: (context) => AddProjectWidget(),
+            builder: (context) {
+              return BlocBuilder<ToggleBloc, ToggleState>(
+                builder: (context, state) {
+                  if (state is ToggleInitial && state.isMesTachesSelected) {
+                    return const AddTaskWidget();
+                  } else {
+                    return const AddProjectWidget();
+                  }
+                },
+              );
+            },
           );
         },
         child: const Icon(Icons.add),

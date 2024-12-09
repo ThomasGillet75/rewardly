@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/presentation/screen/home-page-screen.dart';
-import 'package:rewardly/bloc/toggle_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
 import 'package:rewardly/Application%20Layer/presentation/screen/home-page-screen.dart';
