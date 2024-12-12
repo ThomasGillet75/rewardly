@@ -7,11 +7,11 @@ class TaskUtils{
   static String priorityToString(TaskPriority priority) {
     switch (priority) {
       case TaskPriority.low:
-        return "Low";
+        return "Basse";
       case TaskPriority.medium:
-        return "Medium";
+        return "Moyenne";
       case TaskPriority.high:
-        return "High";
+        return "Haute";
     }
   }
 }

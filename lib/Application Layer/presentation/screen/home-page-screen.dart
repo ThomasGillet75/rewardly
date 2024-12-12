@@ -5,7 +5,7 @@ import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/add_project_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/container_filtering_task_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/project_car_widget.dart';
+import 'package:rewardly/Application%20Layer/presentation/widget/project_card_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/reward_card_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/toggle_button_widget.dart';

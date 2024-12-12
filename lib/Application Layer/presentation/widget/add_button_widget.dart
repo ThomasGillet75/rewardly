@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewardly/core/color.dart';
 
 class AddButtonWidget extends StatefulWidget {
   const AddButtonWidget({super.key});
@@ -12,7 +13,7 @@ class _AddButtonWidgetState extends State<AddButtonWidget> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFA8D2A8),
+        backgroundColor: AppColors.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewardly/core/color.dart';
 
 class RewardCardWidget extends StatefulWidget {
   const RewardCardWidget(
@@ -32,7 +33,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
       margin: const EdgeInsets.only(bottom: 10),
       height: 100,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondary,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -46,7 +47,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: Colors.green,
+                    color: AppColors.reward_lowPriority,
                     width: 2,
                   ),
                 ),
@@ -57,7 +58,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                 height: 17,
                 width: calculatePercentage(),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: AppColors.reward_lowPriority,
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
@@ -71,7 +72,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                        color: AppColors.secondary),
                   ),
                 ),
               ),

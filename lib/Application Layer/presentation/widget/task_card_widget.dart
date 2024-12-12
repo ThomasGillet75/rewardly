@@ -4,6 +4,8 @@ import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/color.dart';
+
 class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget({super.key, required this.task});
 
@@ -15,10 +17,10 @@ class TaskCardWidget extends StatefulWidget {
 
 class _TaskWidgetState extends State<TaskCardWidget> {
   // set the color of the border task card based on the priority
-  final Map<TaskPriority, MaterialColor> _priorityColors = {
-    TaskPriority.low: Colors.green,
-    TaskPriority.medium: Colors.amber,
-    TaskPriority.high: Colors.red,
+  final Map<TaskPriority, Color> _priorityColors = {
+    TaskPriority.low: AppColors.reward_lowPriority,
+    TaskPriority.medium: AppColors.mediumPriority,
+    TaskPriority.high: AppColors.highPriority,
   };
 
   // get the date from the DateTime object
@@ -49,7 +51,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
       padding: const EdgeInsets.only(right: 14.0),
       height: 48,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.secondary,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: _priorityColors[widget.task.priority]!,
@@ -103,7 +105,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
                 child: Text(
                   "0/${widget.task.numberSubtask}",
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: AppColors.font,
                   ),
                 ),
               ),

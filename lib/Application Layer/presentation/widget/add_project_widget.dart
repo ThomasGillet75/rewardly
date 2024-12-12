@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:rewardly/Application%20Layer/presentation/widget/add_button_widget.dart';
+import 'package:rewardly/Application%20Layer/presentation/widget/name_input_widget.dart';
+import 'package:rewardly/core/color.dart';
 import 'add_button_widget.dart';
 
 class AddProjectWidget extends StatefulWidget {
@@ -19,7 +21,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
       child: IntrinsicHeight(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.secondary,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
@@ -31,31 +33,10 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              // Important pour limiter la taille verticale au contenu
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFEEEEEE),
-                          border: Border.all(
-                            color: const Color(0xFFB7B7B7),
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: TextField(
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                              hintText: "Nom du projet",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    NameInputWidget(placeholder: "Nom du projet"),
                     const SizedBox(width: 10),
                     Container(
                       child: AddButtonWidget(),

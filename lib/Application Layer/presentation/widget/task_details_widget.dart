@@ -7,6 +7,8 @@ import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/core/utils/date_utils.dart';
 import 'package:rewardly/core/utils/task_utils.dart';
 
+import '../../../core/color.dart';
+
 class TaskDetailsWidget extends StatefulWidget {
   const TaskDetailsWidget({super.key, required this.task});
 
@@ -74,7 +76,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
       child: IntrinsicHeight(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.secondary,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
