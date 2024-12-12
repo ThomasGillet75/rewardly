@@ -53,7 +53,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
       firstDate: DatesUtils.firstDate,
       lastDate: DatesUtils.lastDate,
     );
-    if(picked == null) return _currentTask.deadline;
+    if(picked == null) return _currentTask.deadline!;
     Task updateTask = _currentTask.copyWith(deadline: picked);
     if (picked != _currentTask.deadline) {
       _updateTask(updateTask);
@@ -106,7 +106,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                             semanticLabel: "Deadline"),
                         TextButton(
                           onPressed: () => _selectDate(context),
-                          child: Text(formatDate(_currentTask.deadline)),
+                          child: Text(formatDate(_currentTask.deadline!)),
                         ),
                       ],
                     ),

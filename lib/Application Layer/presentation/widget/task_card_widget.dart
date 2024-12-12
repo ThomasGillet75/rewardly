@@ -79,7 +79,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
                   ),
                 ),
                 Text(
-                  _getDateFromDateTime(widget.task.deadline),
+                  _getDateFromDateTime(widget.task.deadline!),
                   style: const TextStyle(fontSize: 10.0),
                 ),
               ],

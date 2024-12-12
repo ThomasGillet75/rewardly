@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
+import 'package:rewardly/Application%20Layer/presentation/viewmodel/home_page_view_model.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/add_project_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/container_filtering_task_widget.dart';
@@ -22,27 +23,28 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePageScreen> {
-  List<Task> tasks = [
-    Task(
-        name: "Merge",
-        priority: TaskPriority.medium,
-        deadline: DateTime(2024, 11, 30),
-        numberSubtask: 9,
-        isDone: false),
-    Task(
-        name: "Faire android",
-        priority: TaskPriority.high,
-        deadline: DateTime(2024, 12, 01),
-        numberSubtask: 3,
-        isDone: false),
-    Task(
-      name: "Faire ios",
-      priority: TaskPriority.low,
-      deadline: DateTime(2024, 12, 5),
-      numberSubtask: 1,
-      isDone: false,
-    )
-  ];
+  List<Task> tasks = [];
+  // List<Task> tasks = [
+  //   Task(
+  //       name: "Merge",
+  //       priority: TaskPriority.medium,
+  //       deadline: DateTime(2024, 11, 30),
+  //       numberSubtask: 9,
+  //       isDone: false),
+  //   Task(
+  //       name: "Faire android",
+  //       priority: TaskPriority.high,
+  //       deadline: DateTime(2024, 12, 01),
+  //       numberSubtask: 3,
+  //       isDone: false),
+  //   Task(
+  //     name: "Faire ios",
+  //     priority: TaskPriority.low,
+  //     deadline: DateTime(2024, 12, 5),
+  //     numberSubtask: 1,
+  //     isDone: false,
+  //   )
+  // ];
 
   // Show the task details
   // task: the task details to show
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePageScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<TaskBloc>().add(AddTasks(tasks));
+    context.read<TaskBloc>().add(GetTasks());
   }
 
   @override

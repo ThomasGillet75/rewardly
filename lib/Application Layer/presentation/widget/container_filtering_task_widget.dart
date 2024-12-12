@@ -124,18 +124,18 @@ class _ContainerFilteringTaskWidgetState
   List<Task> taskFilteredByDate(String label, List<Task> task) {
     if (label == "Aujourd'hui") {
       task = widget.tasks
-          .where((task) => DatesUtils.isSameDay(task.deadline, DateTime.now()))
+          .where((task) => DatesUtils.isSameDay(task.deadline!, DateTime.now()))
           .toList();
     } else if (label == "Demain") {
       task = widget.tasks
-          .where((task) => DatesUtils.isTomorrow(task.deadline, DateTime.now()))
+          .where((task) => DatesUtils.isTomorrow(task.deadline!, DateTime.now()))
           .toList();
     } else if (label == "Cette Semaine") {
       task = widget.tasks
           .where((task) =>
-      DatesUtils.isSameWeek(task.deadline, DateTime.now()) &&
-          !DatesUtils.isTomorrow(task.deadline, DateTime.now()) &&
-          !DatesUtils.isSameDay(task.deadline, DateTime.now()))
+      DatesUtils.isSameWeek(task.deadline!, DateTime.now()) &&
+          !DatesUtils.isTomorrow(task.deadline!, DateTime.now()) &&
+          !DatesUtils.isSameDay(task.deadline!, DateTime.now()))
           .toList();
     }
     return task;

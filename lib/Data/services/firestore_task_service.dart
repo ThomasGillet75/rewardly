@@ -40,20 +40,19 @@ class FirestoreTaskService extends IDataService<TaskModel> {
     await _firestore.collection('tasks').doc(item.id).update(item.toMap());
   }
 
-  Future<List<QueryDocumentSnapshot>> getTasksByProjectRef(
-      DocumentReference projectRef) async {
+  Future<List<TaskModel>> getTasksByProjectRef(String projectRef) async {
     final querySnapshot = await _firestore
         .collection('tasks')
         .where('project_ref', isEqualTo: projectRef)
         .get();
-    return querySnapshot.docs;
+    return querySnapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
   }
 
-  Future<List<QueryDocumentSnapshot>> getByUserRef(String userRef) {
-    final querySnapshot = _firestore
+  Future<List<TaskModel>> getByUserRef(String userRef) async {
+    final querySnapshot = await _firestore
         .collection('tasks')
         .where('user_ref', isEqualTo: userRef)
         .get();
-    return querySnapshot.then((value) => value.docs);
+    return querySnapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
   }
 }
