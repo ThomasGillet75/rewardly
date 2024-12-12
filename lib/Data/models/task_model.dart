@@ -5,17 +5,17 @@ class TaskModel {
   final String parentId;
   final String name;
   final String description;
-  final String deadline;
+  final DateTime? deadline;
   final int priority;
   final bool isDone;
-  final DocumentReference projectRef;
+  final DocumentReference<Object?>? projectRef;
 
   TaskModel({
     required this.id,
     required this.parentId,
     required this.name,
     this.description = "",
-    this.deadline = "",
+    this.deadline,
     this.priority = 0,
     this.isDone = false,
     required this.projectRef,
@@ -27,10 +27,12 @@ class TaskModel {
       parentId: data['parent_id'],
       name: data['name'],
       description: data['description'],
-      deadline: data['deadline'],
+      deadline: data['deadline'] is Timestamp
+          ? (data['deadline'] as Timestamp).toDate()
+          : DateTime.tryParse(data['deadline'] ?? ''),
       priority: data['priority'],
       isDone: data['isDone'],
-      projectRef: data['projectRef'],
+      projectRef: data['projectRef'] as DocumentReference<Object?>?,
     );
   }
 
@@ -40,7 +42,7 @@ class TaskModel {
       'parent_id': parentId,
       'name': name,
       'description': description,
-      'deadline': deadline,
+      'deadline': deadline != null ? Timestamp.fromDate(deadline!) : null,
       'priority': priority,
       'isDone': isDone,
       'project_ref': projectRef,

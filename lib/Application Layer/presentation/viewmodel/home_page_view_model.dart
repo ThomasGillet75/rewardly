@@ -17,15 +17,10 @@ class HomepageViewModel {
   }
 
   Future<void> getProjects() async {
-    try {
+
       var projects = projectRepository.getProjects();
-      if (await projects.isEmpty) {
-        print("\x1B[31mNo projects found.\x1B[0m");
-      } else {
-        print("\x1B[32mProjects found.\x1B[0m");
-      }
-    } catch (e) {
-      print("\x1B[31mError fetching projects: $e\x1B[0m");
-    }
+
+      print("\x1B[31mNo projects found.\x1B[0m");
+
   }
 }
