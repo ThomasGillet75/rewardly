@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
 import 'package:rewardly/Application%20Layer/presentation/screen/home-page-screen.dart';
+import 'package:rewardly/Application%20Layer/presentation/screen/sign_in_page_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +23,17 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ToggleBloc()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Firebase Auth',
+        initialRoute: '/',
         routes: {
-          '/': (context) => const HomePageScreen(
-            title: "Rewardly",
-          ),
+      '/': (context) => SignInPage(),
+      '/home': (context) => const HomePageScreen(
+          title: 'Rewardly'
+      ),
         },
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFA8D2A8)),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFA8D2A8)),
           primaryColor: const Color(0xFFECF0F1),
           useMaterial3: true,
         ),

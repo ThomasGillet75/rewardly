@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'add_button_widget.dart';
 
 class AddTaskWidget extends StatefulWidget {
-  const AddTaskWidget({Key? key}) : super(key: key);
+  const AddTaskWidget({super.key});
 
   @override
   State<AddTaskWidget> createState() => _AddTaskWidgetState();
@@ -237,7 +236,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     ),
                     const SizedBox(width: 10),
                     // Bouton "Add"
-                    AddButtonWidget(),
+                    const AddButtonWidget(),
                   ],
                 ),
                 const SizedBox(height: 16), // Marges inférieures

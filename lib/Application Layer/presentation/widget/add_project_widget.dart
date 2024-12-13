@@ -44,11 +44,11 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                           ),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: TextField(
                             autofocus: true,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               hintText: "Nom du projet",
                               border: InputBorder.none,
                             ),
@@ -58,7 +58,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      child: AddButtonWidget(),
+                      child: const AddButtonWidget(),
                     ),
                   ],
                 ),

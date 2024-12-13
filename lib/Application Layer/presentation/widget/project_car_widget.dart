@@ -32,8 +32,8 @@ class _ProjectCardWdigetState extends State<ProjectCarWidget> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        this.widget.projectName,
-                        style: TextStyle(
+                        widget.projectName,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),

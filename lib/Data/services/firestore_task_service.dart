@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 class FirestoreTaskService extends IDataService<TaskModel> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final Uuid _uuid = Uuid();
+  final Uuid _uuid = const Uuid();
 
   @override
   Future<void> add(TaskModel item) async {

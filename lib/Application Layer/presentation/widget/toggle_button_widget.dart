@@ -39,7 +39,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFA8D2A8),
+                      color: const Color(0xFFA8D2A8),
                     ),
                   ),
                 ),
@@ -51,7 +51,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                             context
                                 .read<ToggleBloc>()
                                 .add(ToggleSwitch(value: true)),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Mes taches',
                             style: TextStyle(
@@ -68,7 +68,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                             context
                                 .read<ToggleBloc>()
                                 .add(ToggleSwitch(value: true)),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Projet',
                             style: TextStyle(
