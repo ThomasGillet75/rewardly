@@ -7,6 +7,8 @@ import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/core/utils/date_utils.dart';
 import 'package:rewardly/core/utils/task_utils.dart';
 
+import '../../../core/color.dart';
+
 class TaskDetailsWidget extends StatefulWidget {
   const TaskDetailsWidget({super.key, required this.task});
 
@@ -37,8 +39,9 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   // Update the priority of the task
   // value: the new priority
   void _updateFiltering(String? value) {
+    if (value == null) return;
     final TaskPriority priority = TaskPriority.values.firstWhere(
-      (element) => TaskUtils.priorityToString(element) == value,
+          (element) => TaskUtils.priorityToString(element) == value,
     );
     Task updateTask = _currentTask.copyWith(priority: priority);
     _updateTask(updateTask);
@@ -53,7 +56,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
       firstDate: DatesUtils.firstDate,
       lastDate: DatesUtils.lastDate,
     );
-    if(picked == null) return _currentTask.deadline;
+    if (picked == null) return _currentTask.deadline!;
     Task updateTask = _currentTask.copyWith(deadline: picked);
     if (picked != _currentTask.deadline) {
       _updateTask(updateTask);
@@ -74,7 +77,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
       child: IntrinsicHeight(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.secondary,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
@@ -82,11 +85,13 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
               left: 16.0,
               right: 16.0,
               top: 16.0,
-              bottom: MediaQuery.of(context).viewInsets.bottom,
+              bottom: MediaQuery
+                  .of(context)
+                  .viewInsets
+                  .bottom,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              // Important pour limiter la taille verticale au contenu
               children: [
                 Flexible(
                   child: TaskCheckbox(
@@ -106,7 +111,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                             semanticLabel: "Deadline"),
                         TextButton(
                           onPressed: () => _selectDate(context),
-                          child: Text(formatDate(_currentTask.deadline)),
+                          child: Text(formatDate(_currentTask.deadline!)),
                         ),
                       ],
                     ),
@@ -116,8 +121,9 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                             semanticLabel: "Priority"),
                         FilteringWidget(
                           onValueChanged: _updateFiltering,
-                          initialValue: TaskUtils.priorityToString(_currentTask.priority),
-                          items: const ["Low", "Medium", "High"],
+                          initialValue: TaskUtils.priorityToString(
+                              _currentTask.priority),
+                          items: const ["Basse", "Moyenne", "Haute"],
                         ),
                       ],
                     ),
@@ -155,7 +161,9 @@ class TaskCheckbox extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
-              decoration: task.isDone ? TextDecoration.lineThrough : TextDecoration.none,
+              decoration: task.isDone
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
             ),
           ),
         ),

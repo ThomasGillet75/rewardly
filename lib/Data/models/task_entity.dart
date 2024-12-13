@@ -1,17 +1,18 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
 
 class Task {
   String id;
-  String ParentId;
+  String parentId;
   String name;
   TaskPriority priority;
-  DateTime deadline;
-  int numberSubtask; //surement devoir Changer ca
+  DateTime? deadline;
+  int numberSubtask; //surement devoir Changer en list de subtask
   String description;
   bool isDone;
-  String DocumentRef;
+  DocumentReference<Object?>? projectRef;
 
   Task(
       {required this.name,
@@ -21,8 +22,8 @@ class Task {
       required this.isDone,
       this.description = "",
       this.id = "",
-      this.ParentId = "",
-      this.DocumentRef = ""});
+      this.parentId = "",
+      required this.projectRef});
 
 
   //toggle the task done or not
@@ -36,6 +37,10 @@ class Task {
     DateTime? deadline,
     int? numberSubtask,
     bool? isDone,
+    String? description,
+    String? parentId,
+    String? id,
+    DocumentReference<Object?>? projectRef,
   }) {
     return Task(
       name: name ?? this.name,
@@ -43,6 +48,10 @@ class Task {
       deadline: deadline ?? this.deadline,
       numberSubtask: numberSubtask ?? this.numberSubtask,
       isDone: isDone ?? this.isDone,
+      description: description ?? this.description,
+      parentId: parentId ?? this.parentId,
+      id: id ?? this.id,
+      projectRef: projectRef ?? this.projectRef,
     );
   }
 }

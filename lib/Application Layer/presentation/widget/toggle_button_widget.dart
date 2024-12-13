@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
 
+import '../../../core/color.dart';
+
 class ToggleButtonWidget extends StatefulWidget {
   const ToggleButtonWidget({super.key});
 
@@ -24,7 +26,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
             margin: const EdgeInsets.only(top: 30, bottom: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
+              color: AppColors.secondary,
             ),
             child: Stack(
               children: [
@@ -39,7 +41,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: const Color(0xFFA8D2A8),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -51,7 +53,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                             context
                                 .read<ToggleBloc>()
                                 .add(ToggleSwitch(value: true)),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Mes taches',
                             style: TextStyle(
@@ -68,7 +70,7 @@ class _ToggleButtonWidgetState extends State<ToggleButtonWidget> {
                             context
                                 .read<ToggleBloc>()
                                 .add(ToggleSwitch(value: true)),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Projet',
                             style: TextStyle(

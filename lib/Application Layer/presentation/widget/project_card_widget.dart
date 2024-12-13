@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewardly/core/color.dart';
 
 class ProjectCarWidget extends StatefulWidget {
   const ProjectCarWidget({super.key, required this.projectName});
@@ -18,7 +19,7 @@ class _ProjectCardWdigetState extends State<ProjectCarWidget> {
       margin: const EdgeInsets.only(top: 30, bottom: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
+        color: AppColors.secondary,
       ),
       child: Stack(
         children: [
