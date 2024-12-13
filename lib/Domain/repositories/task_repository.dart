@@ -36,7 +36,6 @@ class TaskRepository {
   }
 
   Future<void> updateTask(Task task) async {
-
     await _taskService.update(taskToTaskModel(task));
   }
 
