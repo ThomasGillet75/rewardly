@@ -25,7 +25,9 @@ class _SignInPageState extends State<SignInPage> {
           keyboardType: TextInputType.emailAddress, decoration: InputDecoration(
     labelText: 'Adresse e-mail',
     border: OutlineInputBorder(),
+
     ),
+
     ),
     SizedBox(height: 16.0),
     TextField(
@@ -51,7 +53,7 @@ class _SignInPageState extends State<SignInPage> {
     ),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/sign-up');
+              Navigator.pushNamed(context, '/signUp');
             },
             child: Text('Créer un compte'),
           ),

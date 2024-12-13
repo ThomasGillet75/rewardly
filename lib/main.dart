@@ -8,6 +8,7 @@ import 'package:rewardly/Application%20Layer/presentation/screen/home-page-scree
 import 'package:rewardly/Application%20Layer/presentation/screen/sign_in_page_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
+import 'Application Layer/presentation/screen/sign_up_page_screen.dart';
 import 'Data/models/user.dart';
 
 Future<void> main() async {
@@ -32,8 +33,8 @@ class MyApp extends StatelessWidget {
           home: AuthWrapper(),
           routes: {
             '/home': (context) => const HomePageScreen(title: 'rewardly'),
-
             '/signIn': (context) => SignInPage(),
+            '/signUp': (context) => SignUpPage(),
           },
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFA8D2A8)),
@@ -51,7 +52,6 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firebase_auth.User? user = FirebaseAuth.instance.currentUser;
-
     // Navigate based on auth state
     if (user != null) {
      return const HomePageScreen(title: 'Rewardly');
