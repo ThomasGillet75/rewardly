@@ -1,7 +1,5 @@
 
 
-import 'package:rewardly/core/task_priority_enum.dart';
-
 class Project {
   String id;
   String name;

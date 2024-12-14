@@ -8,17 +8,17 @@ class ProjectModel{
 
   factory ProjectModel.fromMap(Map<String, dynamic> data){
     return ProjectModel(
-      id: data['project_id'],
-      name: data['name'],
-      reward: data['reward'] ?? "",
+      id: data['project_id']?? '',
+      name: data['project_name']?? '',
+      reward: data['project_reward'] ?? '',
     );
   }
 
   Map<String, dynamic> toMap(){
     return {
       'project_id': id,
-      'name': name,
-      'reward': reward
+      'project_name': name,
+      'project_reward': reward ,
     };
   }
 }

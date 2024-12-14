@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application%20Layer/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/add_project_widget.dart';
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePageScreen> {
   void initState() {
     super.initState();
     context.read<TaskBloc>().add(GetTasks());
+    context.read<ProjectBloc>().add(GetProjects());
   }
 
   @override
@@ -67,7 +69,19 @@ class _HomePageState extends State<HomePageScreen> {
                   },
                 );
               } else {
-                return const ProjectCarWidget(projectName: "Réussir son année");
+                return BlocBuilder<ProjectBloc, ProjectState>(
+                  builder: (context, state) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.projects.length,
+                      itemBuilder: (context, index) {
+                        return ProjectCarWidget(
+                          projectName: state.projects[index].name,
+                        );
+                      },
+                    );
+                  });
               }
             },
           ),

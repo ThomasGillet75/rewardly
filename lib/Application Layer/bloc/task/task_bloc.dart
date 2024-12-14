@@ -26,7 +26,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       } else {
         updatedTasks.add(event.task);
       }
-
       emit(TaskState(updatedTasks));
     });
 
