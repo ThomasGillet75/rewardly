@@ -11,6 +11,7 @@ import 'package:rewardly/Application%20Layer/presentation/widget/reward_card_wid
 import 'package:rewardly/Application%20Layer/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Application%20Layer/presentation/widget/toggle_button_widget.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
+import 'package:rewardly/main.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
@@ -21,7 +22,8 @@ class HomePageScreen extends StatefulWidget {
   State<HomePageScreen> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePageScreen> {
+class _HomePageState extends State<HomePageScreen> with RouteAware  {
+
   // Show the task details
   // task: the task details to show
   void _showTaskDetails(Task task) {
@@ -38,18 +40,44 @@ class _HomePageState extends State<HomePageScreen> {
   @override
   void initState() {
     super.initState();
+    _fetchData();
+  }
+
+
+  void _fetchData() {
     context.read<TaskBloc>().add(GetTasks());
     context.read<ProjectBloc>().add(GetProjects());
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    print('didPopNext déclenché : Rechargement des données.');
+    _fetchData();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ModalRoute? modalRoute = ModalRoute.of(context);
+    if (modalRoute is PageRoute) {
+      routeObserver.subscribe(this, modalRoute);
+    }
+  }
+
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: ListView(
@@ -70,18 +98,18 @@ class _HomePageState extends State<HomePageScreen> {
                 );
               } else {
                 return BlocBuilder<ProjectBloc, ProjectState>(
-                  builder: (context, state) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.projects.length,
-                      itemBuilder: (context, index) {
-                        return ProjectCarWidget(
-                          projectName: state.projects[index].name,
-                        );
-                      },
-                    );
-                  });
+                    builder: (context, state) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.projects.length,
+                    itemBuilder: (context, index) {
+                      return ProjectCarWidget(
+                        project: state.projects[index],
+                      );
+                    },
+                  );
+                });
               }
             },
           ),

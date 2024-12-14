@@ -15,6 +15,11 @@ class AddTasks extends TaskEvent{
 class GetTasks extends TaskEvent{
 }
 
+class GetTasksByProjectId extends TaskEvent{
+  final String projectId;
+  GetTasksByProjectId(this.projectId);
+}
+
 class UpdateTask extends TaskEvent {
   final Task task;
   UpdateTask(this.task);
@@ -23,4 +28,7 @@ class UpdateTask extends TaskEvent {
 class RemoveTask extends TaskEvent {
   final Task task;
   RemoveTask(this.task);
+}
+
+class Clear extends TaskEvent {
 }
