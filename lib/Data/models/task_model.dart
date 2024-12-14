@@ -8,7 +8,7 @@ class TaskModel {
   final DateTime? deadline;
   final int priority;
   final bool isDone;
-  final DocumentReference<Object?>? projectRef;
+  final String projectId;
 
   TaskModel({
     required this.id,
@@ -18,7 +18,7 @@ class TaskModel {
     this.deadline,
     this.priority = 0,
     this.isDone = false,
-    required this.projectRef,
+    required this.projectId,
   });
 
   factory TaskModel.fromMap(Map<String, dynamic> data) {
@@ -32,7 +32,7 @@ class TaskModel {
           : DateTime.tryParse(data['deadline'] ?? ''),
       priority: data['priority'],
       isDone: data['isDone'],
-      projectRef: data['projectRef'] as DocumentReference<Object?>?,
+      projectId: data['project_id'],
     );
   }
 
@@ -45,7 +45,7 @@ class TaskModel {
       'deadline': deadline != null ? Timestamp.fromDate(deadline!) : null,
       'priority': priority,
       'isDone': isDone,
-      'project_ref': projectRef,
+      'project_id': projectId,
     };
   }
 }

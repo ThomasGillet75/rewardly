@@ -5,11 +5,12 @@ import 'package:rewardly/Data/services/firestore_project_service.dart';
 class ProjectRepository {
   final FirestoreProjectService _projectService = FirestoreProjectService();
 
-  Future<List<Project>> getProjects() async {
-    final projectModels = await _projectService.getAll().first;
-    return projectModels.map((projectModel) {
-      return projectModelToProject(projectModel);
-    }).toList();
+  Stream<List<Project>> getProjects() {
+    return _projectService.getAll().map((projectModels) {
+      return projectModels
+          .map((projectModel) => projectModelToProject(projectModel))
+          .toList();
+    });
   }
 
   Future<Project> getProject(String projectId) async {
@@ -17,12 +18,12 @@ class ProjectRepository {
     return projectModelToProject(projectModel);
   }
 
-  Future<void> createProject(ProjectModel projectModel) async {
-    await _projectService.add(projectModel);
+  Future<void> createProject(Project project) async {
+    await _projectService.add(projectToProjectModel(project));
   }
 
-  Future<void> updateProject(ProjectModel projectModel) async {
-    await _projectService.update(projectModel);
+  Future<void> updateProject(Project project) async {
+    await _projectService.update(projectToProjectModel(project));
   }
 
   Project projectModelToProject(ProjectModel projectModel) {
@@ -30,6 +31,14 @@ class ProjectRepository {
       name: projectModel.name,
       id: projectModel.id,
       reward: projectModel.reward,
+    );
+  }
+
+  ProjectModel projectToProjectModel(Project project) {
+    return ProjectModel(
+      name: project.name,
+      id: project.id,
+      reward: project.reward,
     );
   }
 }

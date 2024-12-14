@@ -6,8 +6,8 @@ import 'package:rewardly/core/task_priority_enum.dart';
 class TaskRepository {
   final FirestoreTaskService _taskService = FirestoreTaskService();
 
-  Future<List<Task>> getTasksByUserRef(String userRef) async {
-    final taskModels = await _taskService.getByUserRef(userRef);
+  Future<List<Task>> getTasksByUserId(String userRef) async {
+    final taskModels = await _taskService.getByUserId(userRef);
     return taskModels
         .map((taskModel) => taskModelToTask(taskModel))
         .toList();
@@ -22,11 +22,10 @@ class TaskRepository {
     return taskModelToTask(taskModels);
   }
 
-  Future<List<Task>> getTasksByProjectRef(String projectRef) async {
-    final taskModels = await _taskService.getTasksByProjectRef(projectRef);
-    return taskModels
-        .map((taskModel) => taskModelToTask(taskModel))
-        .toList();
+  Stream<List<Task>> getTasksByProjectId(String projectId) {
+    return _taskService.getTasksByProjectId(projectId).map((taskModels) {
+      return taskModels.map((taskModel) => taskModelToTask(taskModel)).toList();
+    });
   }
 
   Stream<List<Task>> getTasks() {
@@ -54,7 +53,7 @@ class TaskRepository {
       isDone: taskModel.isDone,
       description: taskModel.description,
       id: taskModel.id,
-      projectRef: taskModel.projectRef,
+      projectId: taskModel.projectId,
     );
   }
 
@@ -66,7 +65,7 @@ class TaskRepository {
       deadline: task.deadline,
       priority: task.priority.index,
       isDone: task.isDone,
-      projectRef: task.projectRef,
+      projectId: task.projectId,
       parentId: task.parentId,
     );
   }

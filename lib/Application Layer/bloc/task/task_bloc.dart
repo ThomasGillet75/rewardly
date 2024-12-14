@@ -26,7 +26,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       } else {
         updatedTasks.add(event.task);
       }
-
       emit(TaskState(updatedTasks));
     });
 
@@ -51,6 +50,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(TaskState(tasks));
     });
 
+    on<GetTasksByProjectId>((event,emit) async {
+      final tasks = await taskRepository.getTasksByProjectId(event.projectId).first;
+      emit(TaskState(tasks));
+    });
+
     on<UpdateTask>((event, emit) {
       taskRepository.updateTask(event.task);
       final updatedTasks = state.tasks.map((task) {
@@ -61,6 +65,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
     on<RemoveTask>((event, emit) {
       emit(TaskState(state.tasks.where((t) => t != event.task).toList()));
+    });
+
+    on<Clear>((event, emit) {
+      emit(TaskState([]));
     });
 
     @override
