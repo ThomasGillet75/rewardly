@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import '../viewmodel/sign_in_page_view_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../bloc/signin/sign_in_bloc.dart';
+import '../../bloc/signin/sign_in_state.dart';
+import '../../bloc/signin/sign_in_event.dart'; // Import the event class
 
 class SignInPage extends StatefulWidget {
   @override
@@ -7,7 +10,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final SignInViewModel _viewModel = SignInViewModel();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,50 +19,70 @@ class _SignInPageState extends State<SignInPage> {
       appBar: AppBar(
         title: Text('Connexion'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          TextField(
-          controller: _viewModel.emailController,
-          keyboardType: TextInputType.emailAddress, decoration: InputDecoration(
-    labelText: 'Adresse e-mail',
-    border: OutlineInputBorder(),
-
-    ),
-
-    ),
-    SizedBox(height: 16.0),
-    TextField(
-    controller: _viewModel.passwordController,
-    obscureText: true,
-    decoration: InputDecoration(
-    labelText: 'Mot de passe',
-    border: OutlineInputBorder(),
-    ),
-    ),
-    SizedBox(height: 24.0),
-    ValueListenableBuilder<bool>(
-    valueListenable: _viewModel.isLoading,
-    builder: (context, isLoading, _) {
-    return isLoading
-    ? CircularProgressIndicator()
-        : ElevatedButton(
-    onPressed: _viewModel.signIn(context),
-    child: Text('Se connecter'),
-
-    );
-    },
-    ),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/signUp');
-            },
-            child: Text('Créer un compte'),
-          ),
-          ],
-        ),
+      body: BlocConsumer<SignInBloc, SignInState>(
+        listener: (context, state) {
+          if (state is SignInSuccess) {
+            Navigator.pushNamed(context, '/home');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Connexion réussie, bienvenue ${emailController.text} !'),
+              ),
+            );
+          } else if (state is SignInFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Adresse e-mail',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Mot de passe',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                if (state is SignInLoading)
+                  CircularProgressIndicator()
+                else
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<SignInBloc>().add(SignInRequested(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        ),
+                      );
+                    },
+                    child: Text('Se connecter'),
+                  ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signUp');
+                  },
+                  child: Text('Créer un compte'),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

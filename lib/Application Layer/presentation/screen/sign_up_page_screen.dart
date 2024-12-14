@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application%20Layer/presentation/viewmodel/sign_up_page_view_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_bloc.dart';
+import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_event.dart';
+import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_state.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -7,7 +10,29 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final SignUpPageViewModel _viewModel = SignUpPageViewModel();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController pseudoController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    pseudoController.dispose();
+    super.dispose();
+  }
+
+  void _dismissKeyboard() {
+    FocusScope.of(context).unfocus();
+  }
+
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,50 +40,113 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         title: Text('Créer un compte'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _viewModel.emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Adresse e-mail',
-                border: OutlineInputBorder(),
+      body: BlocConsumer<SignUpBloc, SignUpState>(
+        listener: (context, state) {
+          if (state is SignUpSuccess) {
+            Navigator.pushNamed(context, '/home');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Connexion réussie, bienvenue ${pseudoController.text} !'),
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _viewModel.passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Mot de passe',
-                border: OutlineInputBorder(),
+            );
+          } else if (state is SignUpFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
               ),
-            ),
-            SizedBox(height: 24.0),
-            TextField(
-              controller: _viewModel.confirmPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Confirmer le mot de passe',
-                border: OutlineInputBorder(),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextField(
+                    controller: pseudoController,
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: 'Pseudo',
+                      border: OutlineInputBorder(),
+                      helperText: 'Entrez votre pseudo.',
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: 'Adresse e-mail',
+                      border: OutlineInputBorder(),
+                      helperText: 'Entrez une adresse e-mail valide.',
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: 'Mot de passe',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextField(
+                    controller: confirmPasswordController,
+                    obscureText: true,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      labelText: 'Confirmer le mot de passe',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 24.0),
+                  if (state is SignUpLoading)
+                    CircularProgressIndicator()
+                  else
+                    ElevatedButton(
+                      onPressed: () {
+                        _dismissKeyboard();
+
+                        if (pseudoController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Veuillez entrer un pseudo.")),
+                          );
+                          return;
+                        }
+
+                        if (!_isValidEmail(emailController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Veuillez entrer une adresse e-mail valide.")),
+                          );
+                          return;
+                        }
+
+                        if (passwordController.text != confirmPasswordController.text) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Les mots de passe ne correspondent pas.")),
+                          );
+                          return;
+                        }
+
+                        context.read<SignUpBloc>().add(
+                          SignUpRequested(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            name: pseudoController.text,
+                          ),
+                        );
+                      },
+                      child: Text('Créer un compte'),
+                    ),
+                ],
               ),
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: _viewModel.isLoading,
-              builder: (context, isLoading, _) {
-                return isLoading
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                  onPressed: _viewModel.signUp(context),
-                  child: Text('Créer un compte'),
-                );
-              },
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

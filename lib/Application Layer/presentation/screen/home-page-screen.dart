@@ -11,6 +11,8 @@ import 'package:rewardly/Application%20Layer/presentation/widget/task_details_wi
 import 'package:rewardly/Application%20Layer/presentation/widget/toggle_button_widget.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 
+import '../widget/Icon_friends_button_widget.dart';
+
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
 
@@ -49,6 +51,11 @@ class _HomePageState extends State<HomePageScreen> {
             .colorScheme
             .inversePrimary,
         title: Text(widget.title),
+        //add icon
+        actions: const [
+
+          IconFriendButtonWidget(),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

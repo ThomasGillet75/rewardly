@@ -9,8 +9,8 @@ class UserRepository {
     return await _userService.signInWithEmail(email, password);
   }
 
-  Future<UserCredential> signUpWithEmail(String email, String password) async {
-    return await _userService.signUpWithEmail(email, password);
+  Future<UserCredential> signUpWithEmail(String email, String password, String name) async {
+    return await _userService.signUpWithEmail(email, password, name);
   }
 
 }

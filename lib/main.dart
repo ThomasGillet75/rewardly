@@ -8,6 +8,8 @@ import 'package:rewardly/Application%20Layer/presentation/screen/home-page-scree
 import 'package:rewardly/Application%20Layer/presentation/screen/sign_in_page_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
+import 'Application Layer/bloc/signin/sign_in_bloc.dart';
+import 'Application Layer/bloc/signup/sign_up_bloc.dart';
 import 'Application Layer/presentation/screen/sign_up_page_screen.dart';
 import 'Data/models/user.dart';
 
@@ -26,13 +28,15 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => TaskBloc()),
           BlocProvider(create: (context) => ToggleBloc()),
+          BlocProvider(create: (context) => SignUpBloc()),
+          BlocProvider(create: (context) => SignInBloc()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Firebase Auth',
           home: AuthWrapper(),
           routes: {
-            '/home': (context) => const HomePageScreen(title: 'rewardly'),
+            '/home': (context) => const HomePageScreen(title: 'Rewardly'),
             '/signIn': (context) => SignInPage(),
             '/signUp': (context) => SignUpPage(),
           },
