@@ -17,13 +17,13 @@ cd rewardly
 Installez les dépendances du projet :
 
 ```sh
-  flutter pub get
+flutter pub get
 ```
 
 Lancez l'application sur un simulateur ou un appareil réel :
 
 ```sh
-  flutter run
+flutter run
 ```
 
 ## Utilisation
