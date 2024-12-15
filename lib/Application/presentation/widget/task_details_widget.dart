@@ -94,7 +94,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min, // Ajouté pour limiter la taille du Column
             children: [
               TaskCheckbox(
                 task: _currentTask,
@@ -148,26 +148,42 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   }
 
   Widget _buildSubTasks() {
-    return SizedBox(
-      height: 235,
-      child: SingleChildScrollView(
-        child: Column(
-          children: _currentTask.subTasks.map((subTask) {
+    if (_currentTask.subTasks.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    if (_currentTask.subTasks.length > 5) {
+      return SizedBox(
+        height: 250,
+        child: ListView.builder(
+          itemCount: _currentTask.subTasks.length,
+          itemBuilder: (context, index) {
             return SubTaskCheckbox(
-              subTask: subTask,
+              subTask: _currentTask.subTasks[index],
               onChanged: (value) =>
-                  _updateSubTask(subTask.copyingWith(isDone: value!)),
+                  _updateSubTask(_currentTask.subTasks[index].copyingWith(isDone: value!)),
             );
-          }).toList(),
+          },
         ),
-      ),
+      );
+    }
+
+    return Column(
+      children: _currentTask.subTasks.map((subTask) {
+        return SubTaskCheckbox(
+          subTask: subTask,
+          onChanged: (value) =>
+              _updateSubTask(subTask.copyingWith(isDone: value!)),
+        );
+      }).toList(),
     );
   }
 
 
   Widget _buildAddSubTaskField() {
     return Row(
+
       children: [
+        const Padding(padding: EdgeInsets.only(left: 10)),
         const Icon(Icons.add),
         const SizedBox(width: 8),
         Expanded(

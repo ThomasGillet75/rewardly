@@ -28,7 +28,7 @@ class _ProjectCardWidgetState extends State<ProjectCarWidget> {
       child: Container(
         width: 200,
         height: 50,
-        margin: const EdgeInsets.only(top: 30, bottom: 20),
+        margin: const EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: AppColors.secondary,

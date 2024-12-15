@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rewardly/Application/presentation/widget/filtering_widget.dart';
 import 'package:rewardly/Application/presentation/widget/task_card_widget.dart';
+import 'package:rewardly/Core/utils/task_utils.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
-import 'package:rewardly/Core/task_priority_enum.dart';
-import 'package:rewardly/Core/utils/date_utils.dart';
 
 class ContainerFilteringTaskWidget extends StatefulWidget {
   const ContainerFilteringTaskWidget(
-      {super.key, required this.tasks, required this.onTaskSelected});
+      {super.key, required this.tasks, required this.onTaskSelected, this.selectedFilter = "Date"});
 
+  final String selectedFilter;
   final List<Task> tasks;
   final Function(Task) onTaskSelected;
 
@@ -19,24 +19,28 @@ class ContainerFilteringTaskWidget extends StatefulWidget {
 
 class _ContainerFilteringTaskWidgetState
     extends State<ContainerFilteringTaskWidget> {
-  String _selectedFilter = "Date";
+  late String _selectedFilter;
   final Map<String, List<String>> _filterLabels = {
     "Date": ["Aujourd'hui", "Demain", "Cette Semaine"],
     "Priorité": ["Haute", "Moyenne", "Basse"],
+    "Tout": [""]
   };
-
   List<String> get _values => _filterLabels[_selectedFilter] ?? ["Inconnu"];
 
   @override
-  Widget build(BuildContext context) {
-    const textStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
+  void initState() {
+    super.initState();
+    _selectedFilter = widget.selectedFilter;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Expanded(child: Text(_values[0], style: textStyle)),
+            Expanded(child: Text( _filterLabels[_selectedFilter]?.first ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
             FilteringWidget(
               onValueChanged: _updateFiltering,
               initialValue: _selectedFilter,
@@ -44,11 +48,26 @@ class _ContainerFilteringTaskWidgetState
             ),
           ],
         ),
-        _buildTaskList(_values[0]),
-        Text(_values[1], style: textStyle),
-        _buildTaskList(_values[1]),
-        Text(_values[2], style: textStyle),
-        _buildTaskList(_values[2]),
+        TaskListSection(
+          label: "",
+          tasks: _filterTasks(_values.first),
+          onTaskSelected: widget.onTaskSelected,
+        ),
+        ..._values.skip(1).map((label) {
+          return TaskListSection(
+            label: label,
+            tasks: _filterTasks(label),
+            onTaskSelected: widget.onTaskSelected,
+          );
+        }),
+        ...[
+          if (TaskUtils.filterByDone(widget.tasks).isNotEmpty)
+            TaskListSection(
+              label: "Finit",
+              tasks: TaskUtils.filterByDone(widget.tasks),
+              onTaskSelected: widget.onTaskSelected,
+            ),
+        ]
       ],
     );
   }
@@ -61,83 +80,64 @@ class _ContainerFilteringTaskWidgetState
     });
   }
 
-  // Build the task list
-  // @param label the label of the filter
-  // @return the widget to display
-  Widget _buildTaskList(String label) {
-    final filteredTasks = _filterTasks(label);
-
-    if (filteredTasks.isEmpty) {
-      return const Text("Aucune tâche");
-    }
-
-    return Column(
-      children: filteredTasks.map((task) {
-        return GestureDetector(
-          onTap: () => widget.onTaskSelected(task), // Appelle le callback
-          child: TaskCardWidget(task: task),
-        );
-      }).toList(),
-    );
-  }
-
   // Filter the task
   // @param label the label of the filter
   // @return the list of task filtered
   List<Task> _filterTasks(String label) {
-    List<Task> task = [];
     switch (_selectedFilter) {
       case "Date":
-        return taskFilteredByDate(label, task);
+        return  TaskUtils.filterByNotDone(TaskUtils.filterByDate(label, widget.tasks));
       case "Priorité":
-        return taskFilteredByPriority(label, task);
+        return TaskUtils.filterByNotDone(TaskUtils.filterByPriority(label, widget.tasks));
+      case "Tout":
+        return TaskUtils.filterByNotDone(widget.tasks);
+      default:
+        return [];
     }
-    return [];
   }
+}
 
+class TaskListSection extends StatelessWidget {
+  const TaskListSection({
+    super.key,
+    required this.label,
+    required this.tasks,
+    required this.onTaskSelected,
+  });
 
-  // Filter the task by priority
-  // @param label the label of the filter
-  // @param task the list of task to filter
-  // @return the list of task filtered
-  List<Task> taskFilteredByPriority(String label, List<Task> task) {
-    if (label == "Haute") {
-      task = widget.tasks
-          .where((task) => task.priority == TaskPriority.high)
-          .toList();
-    } else if (label == "Moyenne") {
-      task = widget.tasks
-          .where((task) => task.priority == TaskPriority.medium)
-          .toList();
-    } else if (label == "Basse") {
-      task = widget.tasks
-          .where((task) => task.priority == TaskPriority.low)
-          .toList();
+  final String label;
+  final List<Task> tasks;
+  final Function(Task) onTaskSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    if (tasks.isEmpty && label != "") {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          const Text("Aucune tâche", style: TextStyle(fontSize: 16)),
+        ],
+      );
     }
-    return task;
-  }
-
-  // Filter the task by date
-  // @param label the label of the filter
-  // @param task the list of task to filter
-  // @return the list of task filtered
-  List<Task> taskFilteredByDate(String label, List<Task> task) {
-    if (label == "Aujourd'hui") {
-      task = widget.tasks
-          .where((task) => DatesUtils.isSameDay(task.deadline!, DateTime.now()))
-          .toList();
-    } else if (label == "Demain") {
-      task = widget.tasks
-          .where((task) => DatesUtils.isTomorrow(task.deadline!, DateTime.now()))
-          .toList();
-    } else if (label == "Cette Semaine") {
-      task = widget.tasks
-          .where((task) =>
-      DatesUtils.isSameWeek(task.deadline!, DateTime.now()) &&
-          !DatesUtils.isTomorrow(task.deadline!, DateTime.now()) &&
-          !DatesUtils.isSameDay(task.deadline!, DateTime.now()))
-          .toList();
+    else if (tasks.isEmpty) {
+      return const Text("Aucune tâche", style: TextStyle(fontSize: 16));
     }
-    return task;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if(label != "")
+          Text(label, style: const TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 20)),
+        Column(
+          children: tasks.map((task) {
+            return GestureDetector(
+              onTap: () => onTaskSelected(task),
+              child: TaskCardWidget(task: task),
+            );
+          }).toList(),
+        ),
+      ],
+    );
   }
 }

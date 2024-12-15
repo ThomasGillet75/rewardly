@@ -51,6 +51,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
               return ContainerFilteringTaskWidget(
                 tasks: state.tasks,
                 onTaskSelected: _showTaskDetails,
+                selectedFilter: "Tout",
               );
             },
           ),
