@@ -8,7 +8,7 @@ import 'package:rewardly/Core/utils/task_utils.dart';
 import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 
-import '../../../core/color.dart';
+import '../../../Core/color.dart';
 
 class TaskDetailsWidget extends StatefulWidget {
   const TaskDetailsWidget({super.key, required this.task});
@@ -147,12 +147,20 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                SubTaskCheckbox(
-                  onChanged: (bool? value) {
-                    Task updateTask = _currentTask.copyWith(isDone: value!);
-                    _updateTask(updateTask);
-                  },
-                ),
+
+                // Display sub-tasks
+                ..._currentTask.subTasks.map((subTask) {
+                  return SubTaskCheckbox(
+                    subTask: subTask,
+                    onChanged: (bool? value) {
+                      SubTask updatedSubTask = subTask.copyingWith(isDone: value!);
+                      setState(() {
+                        _currentTask.subTasks[_currentTask.subTasks.indexOf(subTask)] = updatedSubTask;
+                      });
+                      _updateTask(_currentTask);
+                    },
+                  );
+                }),
                 Row(
                   children: [
                     const Padding(padding: EdgeInsets.only(left: 10)),
@@ -214,9 +222,9 @@ class TaskCheckbox extends StatelessWidget {
 
 class SubTaskCheckbox extends StatelessWidget {
   final Function(bool?) onChanged;
-  final bool _value = false;
+  final SubTask subTask;
 
-  const SubTaskCheckbox({super.key, required this.onChanged});
+  const SubTaskCheckbox({super.key, required this.onChanged, required this.subTask});
 
   @override
   Widget build(BuildContext context) {
@@ -225,18 +233,19 @@ class SubTaskCheckbox extends StatelessWidget {
         Transform.scale(
           scale: 0.8,
           child: Checkbox(
-            value: _value,
+            value: subTask.isDone, // Utilise la valeur réelle de la sous-tâche
             onChanged: onChanged,
           ),
         ),
         Expanded(
           child: Text(
-            "task",
+            subTask.name, // Utilise le nom réel de la sous-tâche
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
-              decoration:
-                  _value ? TextDecoration.lineThrough : TextDecoration.none,
+              decoration: subTask.isDone
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
             ),
           ),
         ),
@@ -244,3 +253,4 @@ class SubTaskCheckbox extends StatelessWidget {
     );
   }
 }
+

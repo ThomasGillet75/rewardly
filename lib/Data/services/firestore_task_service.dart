@@ -57,4 +57,14 @@ class FirestoreTaskService extends IDataService<TaskModel> {
         .get();
     return querySnapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
   }
+
+  Stream<List<TaskModel>> getTasksByParentId(String id) {
+    final querySnapshot = _firestore
+        .collection('tasks')
+        .where('parent_id', isEqualTo: id)
+        .snapshots();
+    return querySnapshot.map((snapshot) {
+      return snapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
+    });
+  }
 }
