@@ -9,7 +9,9 @@ class FriendCard extends StatefulWidget {
   @override
   State<FriendCard> createState() => _FriendCardState();
 }
-
+/*
+* This is the state class for the FriendCard widget
+ */
 class _FriendCardState extends State<FriendCard> {
   @override
   Widget build(BuildContext context) {
