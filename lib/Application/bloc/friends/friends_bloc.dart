@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Domain/repositories/user_repository.dart';
 
-import '../../../Data/models/user.dart';
+import '../../../Data/models/user_entity.dart';
 import 'friends_event.dart';
 import 'friends_state.dart';
 

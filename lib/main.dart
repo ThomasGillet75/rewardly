@@ -16,7 +16,7 @@ import 'package:rewardly/Application/presentation/screen/sign_in_page_screen.dar
 import 'package:rewardly/Application/presentation/screen/sign_up_page_screen.dart';
 import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
-import 'package:rewardly/Data/models/user.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

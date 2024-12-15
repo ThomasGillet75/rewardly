@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../../Data/models/user.dart';
+import '../../../Data/models/user_entity.dart';
 
 abstract class FriendsState extends Equatable {
   const FriendsState();

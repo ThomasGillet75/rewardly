@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../Data/models/user.dart';
+import '../../../Data/models/user_entity.dart';
 import '../../../core/color.dart';
 
 class FriendCard extends StatefulWidget {
@@ -11,8 +11,9 @@ class FriendCard extends StatefulWidget {
 }
 /*
 * This is the state class for the FriendCard widget
- */
-class _FriendCardState extends State<FriendCard> {
+ */class _FriendCardState extends State<FriendCard> {
+  bool _isAdded = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,9 +41,11 @@ class _FriendCardState extends State<FriendCard> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: Icon(_isAdded ? Icons.check : Icons.add),
             onPressed: () {
-              // Add your delete logic here
+              setState(() {
+                _isAdded = !_isAdded;
+              });
             },
           ),
         ],

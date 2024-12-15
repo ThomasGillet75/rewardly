@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rewardly/Data/models/user.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,7 +29,8 @@ class AuthService {
       final credential = await _auth.createUserWithEmailAndPassword(email: user.mail, password: user.password);
       await credential.user!.updateDisplayName(user.pseudo);
 
-      await _firestore.collection('users').doc(credential.user!.uid).set(user.toMap());
+      final userWithHashedPassword = user.copyWith(password: user.hashedPassword);
+      await _firestore.collection('users').doc(credential.user!.uid).set(userWithHashedPassword.toMap());
 
       return credential;
     } catch (e) {

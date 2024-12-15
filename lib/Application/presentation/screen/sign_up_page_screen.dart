@@ -5,7 +5,7 @@ import 'package:rewardly/Application/bloc/signup/sign_up_event.dart';
 import 'package:rewardly/Application/bloc/signup/sign_up_state.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../Data/models/user.dart';
+import '../../../Data/models/user_entity.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key, required this.users});

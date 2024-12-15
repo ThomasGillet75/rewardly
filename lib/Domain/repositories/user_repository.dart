@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rewardly/Data/models/user.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 import '../../Data/services/firestore_user_service.dart';
 
