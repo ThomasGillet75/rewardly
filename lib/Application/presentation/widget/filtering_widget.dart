@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 class FilteringWidget extends StatefulWidget {
-  final ValueChanged<String?> onValueChanged;
-  final String? initialValue;
-  final List<String> items;
-
   const FilteringWidget({
     super.key,
     required this.onValueChanged,
     this.initialValue,
     required this.items,
   });
+  final ValueChanged<String?> onValueChanged;
+  final String? initialValue;
+  final List<String> items;
 
   @override
   State<FilteringWidget> createState() => _FilteringWidgetState();
@@ -26,6 +25,12 @@ class _FilteringWidgetState extends State<FilteringWidget> {
       _selectedValue = newValue;
     });
     widget.onValueChanged(newValue);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.initialValue;
   }
 
   @override

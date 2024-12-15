@@ -26,8 +26,6 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageState extends State<HomePageScreen> with RouteAware  {
 
-  // Show the task details
-  // task: the task details to show
   void _showTaskDetails(Task task) {
     showModalBottomSheet(
       context: context,
@@ -38,6 +36,8 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
       builder: (context) => TaskDetailsWidget(task: task),
     );
   }
+
+
 
   @override
   void initState() {
