@@ -3,8 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_bloc.dart';
 import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_event.dart';
 import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_state.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../Data/models/user.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key, required this.users});
+
+  final Users users;
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -14,6 +20,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController pseudoController = TextEditingController();
+
+
+   final Uuid id = const Uuid();
 
   @override
   void dispose() {
@@ -135,9 +144,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         context.read<SignUpBloc>().add(
                           SignUpRequested(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            name: pseudoController.text,
+                            users : Users(
+                              pseudo: pseudoController.text,
+                              mail: emailController.text,
+                              password: passwordController.text,
+                              id: id.v1(),
+                            ),
                           ),
                         );
                       },

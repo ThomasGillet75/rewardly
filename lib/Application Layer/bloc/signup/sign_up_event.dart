@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../Data/models/user.dart';
+
 abstract class SignUpEvent extends Equatable {
   const SignUpEvent();
 
@@ -8,14 +10,12 @@ abstract class SignUpEvent extends Equatable {
 }
 
 class SignUpRequested extends SignUpEvent {
-  final String email;
-  final String password;
-  final String name;
+ final Users users;
 
-  const SignUpRequested({required this.email, required this.password, required this.name});
+  const SignUpRequested({required this.users});
 
   @override
-  List<Object> get props => [email, password, name];
+  List<Object> get props => [users];
 }
 
 

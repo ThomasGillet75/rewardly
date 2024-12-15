@@ -12,16 +12,18 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/core/color.dart';
 
+import 'Application Layer/bloc/friends/friends_bloc.dart';
 import 'Application Layer/bloc/signin/sign_in_bloc.dart';
 import 'Application Layer/bloc/signup/sign_up_bloc.dart';
+import 'Application Layer/presentation/screen/friends_page_screen.dart';
 import 'Application Layer/presentation/screen/sign_up_page_screen.dart';
+import 'Data/models/user.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
@@ -31,39 +33,41 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => TaskBloc()),
-          BlocProvider(create: (context) => ToggleBloc()),
-          BlocProvider(create: (context) => ProjectBloc()),
-          BlocProvider(create: (context) => SignUpBloc()),
-          BlocProvider(create: (context) => SignInBloc()),
-        ],
-        child: MaterialApp(
-          navigatorObservers: [routeObserver],
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Firebase Auth',
-          home: AuthWrapper(),
-          routes: {
-            '/home': (context) => const HomePageScreen(title: 'Rewardly'),
-            '/signIn': (context) => SignInPage(),
-            '/signUp': (context) => SignUpPage(),
-          },
-          onGenerateRoute: (settings) {
-            if (settings.name == '/projectPage') {
-              final project = settings.arguments as Project;
-              return MaterialPageRoute(
-                builder: (context) => ProjectPageScreen(project: project),
-              );
-            }
-            return null;
-          },
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary ),
-            primaryColor: const Color(0xFFECF0F1),
-            useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.background,
-          ),
+      providers: [
+        BlocProvider(create: (context) => TaskBloc()),
+        BlocProvider(create: (context) => ToggleBloc()),
+        BlocProvider(create: (context) => ProjectBloc()),
+        BlocProvider(create: (context) => SignUpBloc()),
+        BlocProvider(create: (context) => SignInBloc()),
+        BlocProvider(create: (context) => FriendsBloc()),
+      ],
+      child: MaterialApp(
+        navigatorObservers: [routeObserver],
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Firebase Auth',
+        home: AuthWrapper(),
+        routes: {
+          '/home': (context) => const HomePageScreen(title: 'Rewardly'),
+          '/signIn': (context) => SignInPage(),
+          '/signUp': (context) => SignUpPage(users: Users.empty()),
+          '/friends': (context) => FriendsPageScreen(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == '/projectPage') {
+            final project = settings.arguments as Project;
+            return MaterialPageRoute(
+              builder: (context) => ProjectPageScreen(project: project),
+            );
+          }
+          return null;
+        },
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+          primaryColor: const Color(0xFFECF0F1),
+          useMaterial3: true,
+          scaffoldBackgroundColor: AppColors.background,
         ),
+      ),
     );
   }
 }
@@ -76,10 +80,9 @@ class AuthWrapper extends StatelessWidget {
     final firebase_auth.User? user = FirebaseAuth.instance.currentUser;
     // Navigate based on auth state
     if (user != null) {
-     return const HomePageScreen(title: 'Rewardly');
+      return const HomePageScreen(title: 'Rewardly');
     } else {
       return SignInPage();
     }
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rewardly/Data/models/user.dart';
 
 import '../../Data/services/firestore_user_service.dart';
 
@@ -9,8 +10,14 @@ class UserRepository {
     return await _userService.signInWithEmail(email, password);
   }
 
-  Future<UserCredential> signUpWithEmail(String email, String password, String name) async {
-    return await _userService.signUpWithEmail(email, password, name);
+  Future<UserCredential> signUpWithEmail(Users user ) async {
+    return await _userService.signUpWithEmail(user);
+  }
+
+
+  Future<List<Users>>getUser(String pseudo) async {
+    return await _userService.searchUsers(pseudo);
   }
 
 }
+
