@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_event.dart';
-import 'package:rewardly/Application%20Layer/bloc/signup/sign_up_state.dart';
+import 'package:rewardly/Application/bloc/signup/sign_up_bloc.dart';
+import 'package:rewardly/Application/bloc/signup/sign_up_event.dart';
+import 'package:rewardly/Application/bloc/signup/sign_up_state.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../Data/models/user.dart';

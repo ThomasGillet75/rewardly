@@ -16,7 +16,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     emit(SignUpLoading());
     try {
       await _userRepository.signUpWithEmail(
-     event.users,
+        event.users,
       );
       emit(SignUpSuccess());
     } catch (e) {

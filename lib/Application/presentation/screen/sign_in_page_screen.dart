@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/signin/sign_in_bloc.dart';
-import '../../bloc/signin/sign_in_state.dart';
-import '../../bloc/signin/sign_in_event.dart'; // Import the event class
+import 'package:rewardly/Application/bloc/signin/sign_in_bloc.dart';
+import 'package:rewardly/Application/bloc/signin/sign_in_event.dart';
+import 'package:rewardly/Application/bloc/signin/sign_in_state.dart';
+
 
 class SignInPage extends StatefulWidget {
   @override

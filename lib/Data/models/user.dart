@@ -1,13 +1,9 @@
-
-
-
-import 'package:flutter/foundation.dart';
-
 class Users {
-final String pseudo;
+  final String pseudo;
   final String id;
   final String mail;
   final String password;
+
   Users({
     required this.pseudo,
     required this.id,
@@ -15,14 +11,15 @@ final String pseudo;
     required this.password,
   });
 
-factory Users.fromMap(Map<String, dynamic> data) {
-  return Users(
-    mail: data['mail_address'] ?? '',
-    pseudo: data['pseudo'] ?? '',
-    id: data['user_id'] ?? '',
-    password: data['password'] ?? '',
-  );
-}
+  factory Users.fromMap(Map<String, dynamic> data) {
+    return Users(
+      mail: data['mail_address'] ?? '',
+      pseudo: data['pseudo'] ?? '',
+      id: data['user_id'] ?? '',
+      password: data['password'] ?? '',
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'mail_address': mail,
@@ -35,6 +32,4 @@ factory Users.fromMap(Map<String, dynamic> data) {
   static empty() {
     return Users(pseudo: '', id: '', mail: '', password: '');
   }
-
-
 }
