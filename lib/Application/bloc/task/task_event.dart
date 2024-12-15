@@ -30,6 +30,11 @@ class UpdateTask extends TaskEvent {
   UpdateTask(this.task);
 }
 
+class UpdateSubTask extends TaskEvent {
+  final SubTask task;
+  UpdateSubTask(this.task);
+}
+
 class RemoveTask extends TaskEvent {
   final Task task;
   RemoveTask(this.task);

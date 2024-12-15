@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Core/task_priority_enum.dart';
-import 'package:rewardly/Data/models/sub_task_entity.dart';
+import 'package:rewardly/Core/utils/date_utils.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/color.dart';
 
 class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget({super.key, required this.task});
-
   final Task task;
 
   @override
@@ -23,37 +22,6 @@ class _TaskWidgetState extends State<TaskCardWidget> {
     TaskPriority.medium: AppColors.mediumPriority,
     TaskPriority.high: AppColors.highPriority,
   };
-
-  // get the date from the DateTime object
-  // date to format
-  String _getDateFromDateTime(DateTime date) {
-    const List<String> months = [
-      "Janvier",
-      "Fevrier",
-      "Mars",
-      "Avril",
-      "Mai",
-      "Juin",
-      "Juillet",
-      "Aout",
-      "Septembre",
-      "Octobre",
-      "Novembre",
-      "Decembre"
-    ];
-
-    return "${date.day} ${months[date.month - 1]}";
-  }
-
-  String _calculateTaskToDo(List<SubTask> subTasks) {
-    int count = 0;
-    for (final SubTask subTask in subTasks) {
-      if (!subTask.isDone) {
-        count++;
-      }
-    }
-    return count.toString();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,42 +54,45 @@ class _TaskWidgetState extends State<TaskCardWidget> {
               children: [
                 Text(
                   widget.task.name,
-                  style: TextStyle(fontWeight: FontWeight.bold,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                     decoration: widget.task.isDone
-                        ? TextDecoration.lineThrough : TextDecoration.none,
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
                   ),
                 ),
                 Text(
-                  _getDateFromDateTime(widget.task.deadline!),
+                  DatesUtils.getDateFromDateTime(widget.task.deadline!),
                   style: const TextStyle(fontSize: 10.0),
                 ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Transform.translate(
-                offset: const Offset(10.0, 0.0),
-                child: Transform.scale(
-                  scale: 0.8,
-                  child: const Checkbox(
-                    value: false,
-                    onChanged: null,
+          if (widget.task.subTasks.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Transform.translate(
+                  offset: const Offset(10.0, 0.0),
+                  child: Transform.scale(
+                    scale: 0.8,
+                    child: const Checkbox(
+                      value: false,
+                      onChanged: null,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 50, // Adjust the width as needed
-                child: Text(
-                  "0/${_calculateTaskToDo(widget.task.subTasks)}",
-                  style: const TextStyle(
-                    color: AppColors.font,
+                SizedBox(
+                  width: 50, // Adjust the width as needed
+                  child: Text(
+                    "${widget.task.calculateLeftTaskToDo()}/${widget.task.calculateTotalTaskToDo()}",
+                    style: const TextStyle(
+                      color: AppColors.font,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )
+              ],
+            )
         ],
       ),
     );

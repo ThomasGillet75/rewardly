@@ -32,4 +32,26 @@ class DatesUtils {
     return date1.isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
         date1.isBefore(endOfWeek.add(const Duration(seconds: 1)));
   }
+
+
+  // get the date from the DateTime object
+  // date to format
+  static String getDateFromDateTime(DateTime date) {
+    const List<String> months = [
+      "Janvier",
+      "Fevrier",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Aout",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Decembre"
+    ];
+
+    return "${date.day} ${months[date.month - 1]}";
+  }
 }

@@ -21,6 +21,7 @@ class TaskDetailsWidget extends StatefulWidget {
 
 class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   late Task _currentTask;
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void initState() {
@@ -28,51 +29,21 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
     _currentTask = widget.task;
   }
 
-  // Update the task in the bloc
-  // task: the task to update
-  void _updateTask(Task task) {
-    BlocProvider.of<TaskBloc>(context).add(UpdateTask(task));
+  void _updateTask(Task updatedTask) {
+    BlocProvider.of<TaskBloc>(context).add(UpdateTask(updatedTask));
+    setState(() => _currentTask = updatedTask);
+  }
+
+  void _updateSubTask(SubTask updatedSubTask) {
+    BlocProvider.of<TaskBloc>(context).add(UpdateSubTask(updatedSubTask));
     setState(() {
-      _currentTask = task;
+      final index = _currentTask.subTasks.indexWhere((e) => e.id == updatedSubTask.id);
+      _currentTask.subTasks[index] = updatedSubTask;
     });
   }
 
-  // Update the priority of the task
-  // value: the new priority
-  void _updateFiltering(String? value) {
-    if (value == null) return;
-    final TaskPriority priority = TaskPriority.values.firstWhere(
-      (element) => TaskUtils.priorityToString(element) == value,
-    );
-    Task updateTask = _currentTask.copyWith(priority: priority);
-    _updateTask(updateTask);
-  }
-
-  // Select a date
-  // context: the context of the widget
-  Future<DateTime> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _currentTask.deadline,
-      firstDate: DatesUtils.firstDate,
-      lastDate: DatesUtils.lastDate,
-    );
-    if (picked == null) return _currentTask.deadline!;
-    Task updateTask = _currentTask.copyWith(deadline: picked);
-    if (picked != _currentTask.deadline) {
-      _updateTask(updateTask);
-    }
-    return picked;
-  }
-
-  // Format the date
-  // date: the date to format
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year}";
-  }
-
   void _addSubTask(String name) {
-    SubTask task = SubTask(
+    final newSubTask = SubTask(
       name: name,
       priority: _currentTask.priority,
       deadline: _currentTask.deadline!,
@@ -80,7 +51,30 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
       projectId: _currentTask.projectId,
       parentId: _currentTask.id,
     );
-    BlocProvider.of<TaskBloc>(context).add(AddSubTask(task));
+
+    BlocProvider.of<TaskBloc>(context).add(AddSubTask(newSubTask));
+    setState(() => _currentTask.subTasks.add(newSubTask));
+    _textController.clear();
+  }
+
+  Future<void> _pickDate() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _currentTask.deadline,
+      firstDate: DatesUtils.firstDate,
+      lastDate: DatesUtils.lastDate,
+    );
+    if (pickedDate != null && pickedDate != _currentTask.deadline) {
+      _updateTask(_currentTask.copyWith(deadline: pickedDate));
+    }
+  }
+
+  void _changePriority(String? value) {
+    if (value == null) return;
+    final priority = TaskPriority.values.firstWhere(
+          (enumPriority) => TaskUtils.priorityToString(enumPriority) == value,
+    );
+    _updateTask(_currentTask.copyWith(priority: priority));
   }
 
   @override
@@ -93,97 +87,100 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
             color: AppColors.secondary,
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              top: 16.0,
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  child: TaskCheckbox(
-                    task: _currentTask,
-                    onChanged: (bool? value) {
-                      Task updateTask = _currentTask.copyWith(isDone: value!);
-                      _updateTask(updateTask);
-                    },
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time,
-                            semanticLabel: "Deadline"),
-                        TextButton(
-                          onPressed: () => _selectDate(context),
-                          child: Text(_formatDate(_currentTask.deadline!)),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.flag_outlined,
-                            semanticLabel: "Priority"),
-                        FilteringWidget(
-                          onValueChanged: _updateFiltering,
-                          initialValue:
-                              TaskUtils.priorityToString(_currentTask.priority),
-                          items: const ["Basse", "Moyenne", "Haute"],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10, height: 8),
-                Container(
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: AppColors.line,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-
-                // Display sub-tasks
-                ..._currentTask.subTasks.map((subTask) {
-                  return SubTaskCheckbox(
-                    subTask: subTask,
-                    onChanged: (bool? value) {
-                      SubTask updatedSubTask = subTask.copyingWith(isDone: value!);
-                      setState(() {
-                        _currentTask.subTasks[_currentTask.subTasks.indexOf(subTask)] = updatedSubTask;
-                      });
-                      _updateTask(_currentTask);
-                    },
-                  );
-                }),
-                Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.only(left: 10)),
-                    const Icon(Icons.add),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          hintText: 'Ajouter une sous-tache',
-                          border: InputBorder.none,
-                        ),
-                        onSubmitted: (value) {
-                          _addSubTask(value);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          padding: EdgeInsets.only(
+            left: 16.0,
+            right: 16.0,
+            top: 16.0,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TaskCheckbox(
+                task: _currentTask,
+                onChanged: (value) =>
+                    _updateTask(_currentTask.copyWith(isDone: value!)),
+              ),
+              _buildDetailsRow(),
+              const Divider(thickness: 2, color: AppColors.line),
+              _buildSubTasks(),
+              _buildAddSubTaskField(),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDetailsRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildDatePicker(),
+        _buildPrioritySelector(),
+      ],
+    );
+  }
+
+  Widget _buildDatePicker() {
+    return Row(
+      children: [
+        const Icon(Icons.access_time, semanticLabel: "Deadline"),
+        TextButton(
+          onPressed: _pickDate,
+          child: Text("${_currentTask.deadline?.day}/${_currentTask.deadline?.month}/${_currentTask.deadline?.year}"),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrioritySelector() {
+    return Row(
+      children: [
+        const Icon(Icons.flag_outlined, semanticLabel: "Priority"),
+        FilteringWidget(
+          onValueChanged: _changePriority,
+          initialValue: TaskUtils.priorityToString(_currentTask.priority),
+          items: const ["Basse", "Moyenne", "Haute"],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSubTasks() {
+    return SizedBox(
+      height: 235,
+      child: SingleChildScrollView(
+        child: Column(
+          children: _currentTask.subTasks.map((subTask) {
+            return SubTaskCheckbox(
+              subTask: subTask,
+              onChanged: (value) =>
+                  _updateSubTask(subTask.copyingWith(isDone: value!)),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+
+  Widget _buildAddSubTaskField() {
+    return Row(
+      children: [
+        const Icon(Icons.add),
+        const SizedBox(width: 8),
+        Expanded(
+          child: TextField(
+            controller: _textController,
+            decoration: const InputDecoration(
+              hintText: 'Ajouter une sous-tâche',
+              border: InputBorder.none,
+            ),
+            onSubmitted: (value) => _addSubTask(value),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -233,13 +230,13 @@ class SubTaskCheckbox extends StatelessWidget {
         Transform.scale(
           scale: 0.8,
           child: Checkbox(
-            value: subTask.isDone, // Utilise la valeur réelle de la sous-tâche
+            value: subTask.isDone,
             onChanged: onChanged,
           ),
         ),
         Expanded(
           child: Text(
-            subTask.name, // Utilise le nom réel de la sous-tâche
+            subTask.name,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -253,4 +250,3 @@ class SubTaskCheckbox extends StatelessWidget {
     );
   }
 }
-

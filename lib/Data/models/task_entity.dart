@@ -29,6 +29,14 @@ class Task {
     isDone = !isDone;
   }
 
+  String calculateTotalTaskToDo() {
+    return subTasks.length.toString();
+  }
+
+  String calculateLeftTaskToDo() {
+    return subTasks.where((element) => element.isDone).length.toString();
+  }
+
   Task copyWith({
     String? name,
     TaskPriority? priority,

@@ -33,7 +33,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           updatedTasks.add(newTask);
         }
       }
-
       emit(TaskState(updatedTasks));
     });
 
@@ -60,8 +59,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(TaskState(updatedTasks));
     });
 
+    on<UpdateSubTask>((event, emit) {
+      taskRepository.updateSubTask(event.task);
+    });
+
     on<RemoveTask>((event, emit) {
-      emit(TaskState(state.tasks.where((t) => t != event.task).toList()));
+      emit(TaskState(state.tasks.where((task) => task != event.task).toList()));
     });
 
     on<Clear>((event, emit) {
