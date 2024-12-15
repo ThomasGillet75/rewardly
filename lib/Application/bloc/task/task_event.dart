@@ -7,9 +7,14 @@ class AddTask extends TaskEvent {
   AddTask(this.task);
 }
 
-class AddTasks extends TaskEvent{
+class AddTaskToLists extends TaskEvent{
   final List<Task> tasks;
-  AddTasks(this.tasks);
+  AddTaskToLists(this.tasks);
+}
+
+class AddSubTask extends TaskEvent {
+  final SubTask task;
+  AddSubTask(this.task);
 }
 
 class GetTasks extends TaskEvent{

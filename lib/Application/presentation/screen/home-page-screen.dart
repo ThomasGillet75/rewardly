@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/project/project_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/add_project_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/add_task_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/container_filtering_task_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/project_card_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/reward_card_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/task_details_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/toggle_button_widget.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application/bloc/toggle/toggle_bloc.dart';
+import 'package:rewardly/Application/presentation/widget/add_project_widget.dart';
+import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/main_page/toggle_button_widget.dart';
+import 'package:rewardly/Application/presentation/widget/project_card_widget.dart';
+import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart';
+import 'package:rewardly/Application/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/main.dart';
 

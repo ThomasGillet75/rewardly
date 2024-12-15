@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
+import 'package:rewardly/Application/bloc/toggle/toggle_bloc.dart';
 
-import '../../../core/color.dart';
+import '../../../../core/color.dart';
 
 class ToggleButtonWidget extends StatefulWidget {
   const ToggleButtonWidget({super.key});

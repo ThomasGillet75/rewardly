@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application%20Layer/presentation/viewmodel/sign_up_page_view_model.dart';
+import 'package:rewardly/Application/presentation/viewmodel/sign_up_page_view_model.dart';
 
 class SignUpPage extends StatefulWidget {
   @override

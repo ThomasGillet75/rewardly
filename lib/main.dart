@@ -2,17 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:rewardly/Application%20Layer/bloc/project/project_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/toggle/toggle_bloc.dart';
-import 'package:rewardly/Application%20Layer/presentation/screen/home-page-screen.dart';
-import 'package:rewardly/Application%20Layer/presentation/screen/project_page_screen.dart';
-import 'package:rewardly/Application%20Layer/presentation/screen/sign_in_page_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application/bloc/toggle/toggle_bloc.dart';
+import 'package:rewardly/Application/presentation/screen/home-page-screen.dart';
+import 'package:rewardly/Application/presentation/screen/project_page_screen.dart';
+import 'package:rewardly/Application/presentation/screen/sign_in_page_screen.dart';
+import 'package:rewardly/Application/presentation/screen/sign_up_page_screen.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/core/color.dart';
-
-import 'Application Layer/presentation/screen/sign_up_page_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

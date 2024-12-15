@@ -1,7 +1,8 @@
+import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/Data/models/task_model.dart';
 import 'package:rewardly/Data/services/firestore_task_service.dart';
-import 'package:rewardly/core/task_priority_enum.dart';
+import 'package:rewardly/Core/task_priority_enum.dart';
 
 class TaskRepository {
   final FirestoreTaskService _taskService = FirestoreTaskService();
@@ -49,11 +50,10 @@ class TaskRepository {
       name: taskModel.name,
       priority: TaskPriority.values[taskModel.priority],
       deadline: taskModel.deadline ?? DateTime.now(),
-      numberSubtask: 0,
       isDone: taskModel.isDone,
       description: taskModel.description,
       id: taskModel.id,
-      projectId: taskModel.projectId,
+      projectId: taskModel.projectId, subTasks: [],
     );
   }
 
@@ -68,5 +68,10 @@ class TaskRepository {
       projectId: task.projectId,
       parentId: task.parentId,
     );
+  }
+
+  void addSubTask(SubTask task) {
+    TaskModel taskModel = taskToTaskModel(task);
+    _taskService.add(taskModel);
   }
 }

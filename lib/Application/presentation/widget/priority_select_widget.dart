@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rewardly/core/task_priority_enum.dart';
-import 'package:rewardly/core/utils/task_utils.dart';
+import 'package:rewardly/Core/task_priority_enum.dart';
+import 'package:rewardly/Core/utils/task_utils.dart';
 
 import '../../../core/color.dart';
 

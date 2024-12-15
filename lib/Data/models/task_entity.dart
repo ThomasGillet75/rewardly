@@ -1,4 +1,5 @@
-import 'package:rewardly/core/task_priority_enum.dart';
+import 'package:rewardly/Core/task_priority_enum.dart';
+import 'package:rewardly/Data/models/sub_task_entity.dart';
 
 class Task {
   String id;
@@ -6,24 +7,24 @@ class Task {
   String name;
   TaskPriority priority;
   DateTime? deadline;
-  int numberSubtask; //surement devoir Changer en list de subtask
+  List<SubTask> subTasks;
   String description;
   bool isDone;
   String projectId;
 
-  Task(
-      {required this.name,
-      required this.priority,
-      required this.deadline,
-      required this.numberSubtask,
-      required this.isDone,
-      this.description = "",
-      this.id = "",
-      this.parentId = "",
-      required this.projectId});
+  Task({
+    required this.name,
+    required this.priority,
+    required this.deadline,
+    required this.subTasks,
+    required this.isDone,
+    this.description = "",
+    this.id = "",
+    this.parentId = "",
+    required this.projectId,
+  });
 
-
-  //toggle the task done or not
+  // Toggle the task done or not
   void toggleDone() {
     isDone = !isDone;
   }
@@ -32,7 +33,7 @@ class Task {
     String? name,
     TaskPriority? priority,
     DateTime? deadline,
-    int? numberSubtask,
+    List<SubTask>? subTasks,
     bool? isDone,
     String? description,
     String? parentId,
@@ -43,7 +44,7 @@ class Task {
       name: name ?? this.name,
       priority: priority ?? this.priority,
       deadline: deadline ?? this.deadline,
-      numberSubtask: numberSubtask ?? this.numberSubtask,
+      subTasks: subTasks ?? this.subTasks,
       isDone: isDone ?? this.isDone,
       description: description ?? this.description,
       parentId: parentId ?? this.parentId,

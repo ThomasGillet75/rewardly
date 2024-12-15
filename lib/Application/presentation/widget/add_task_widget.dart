@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/date_select_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/description_input_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/name_input_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/priority_select_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/project_select_widget.dart';
+import 'package:rewardly/Application/presentation/widget/date_select_widget.dart';
+import 'package:rewardly/Application/presentation/widget/description_input_widget.dart';
+import 'package:rewardly/Application/presentation/widget/name_input_widget.dart';
+import 'package:rewardly/Application/presentation/widget/priority_select_widget.dart';
+import 'package:rewardly/Application/presentation/widget/project_select_widget.dart';
 import 'package:rewardly/core/color.dart';
 
 import 'add_button_widget.dart';

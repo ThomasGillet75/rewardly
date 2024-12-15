@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/Domain/repositories/task_repository.dart';
 
@@ -14,22 +15,14 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   TaskBloc() : super(TaskState([])) {
 
     _tasksSubscription = taskRepository.getTasks().listen((tasks) {
-      add(AddTasks(tasks));
+      add(AddTaskToLists(tasks));
     });
 
     on<AddTask>((event, emit) {
-      final updatedTasks = [...state.tasks];
-      final taskExistingIndex =
-      updatedTasks.indexWhere((task) => task.id == event.task.id);
-      if (taskExistingIndex != -1) {
-        updatedTasks[taskExistingIndex] = event.task;
-      } else {
-        updatedTasks.add(event.task);
-      }
-      emit(TaskState(updatedTasks));
+      emit(TaskState([...state.tasks, event.task]));
     });
 
-    on<AddTasks>((event, emit) {
+    on<AddTaskToLists>((event, emit) {
       final updatedTasks = [...state.tasks];
 
       for (var newTask in event.tasks) {
@@ -42,6 +35,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
 
       emit(TaskState(updatedTasks));
+    });
+
+    on<AddSubTask>((event, emit) {
+      taskRepository.addSubTask(event.task);
     });
 
 

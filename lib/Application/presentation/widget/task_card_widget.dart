@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Core/task_priority_enum.dart';
+import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
-import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/color.dart';
@@ -42,6 +43,16 @@ class _TaskWidgetState extends State<TaskCardWidget> {
     ];
 
     return "${date.day} ${months[date.month - 1]}";
+  }
+
+  String _calculateTaskToDo(List<SubTask> subTasks) {
+    int count = 0;
+    for (final SubTask subTask in subTasks) {
+      if (!subTask.isDone) {
+        count++;
+      }
+    }
+    return count.toString();
   }
 
   @override
@@ -103,7 +114,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
               SizedBox(
                 width: 50, // Adjust the width as needed
                 child: Text(
-                  "0/${widget.task.numberSubtask}",
+                  "0/${_calculateTaskToDo(widget.task.subTasks)}",
                   style: const TextStyle(
                     color: AppColors.font,
                   ),

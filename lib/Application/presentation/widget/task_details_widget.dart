@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/filtering_widget.dart';
+import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application/presentation/widget/filtering_widget.dart';
+import 'package:rewardly/Core/task_priority_enum.dart';
+import 'package:rewardly/Core/utils/date_utils.dart';
+import 'package:rewardly/Core/utils/task_utils.dart';
+import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
-import 'package:rewardly/core/task_priority_enum.dart';
-import 'package:rewardly/core/utils/date_utils.dart';
-import 'package:rewardly/core/utils/task_utils.dart';
 
 import '../../../core/color.dart';
 
@@ -41,7 +42,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   void _updateFiltering(String? value) {
     if (value == null) return;
     final TaskPriority priority = TaskPriority.values.firstWhere(
-          (element) => TaskUtils.priorityToString(element) == value,
+      (element) => TaskUtils.priorityToString(element) == value,
     );
     Task updateTask = _currentTask.copyWith(priority: priority);
     _updateTask(updateTask);
@@ -66,8 +67,20 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
 
   // Format the date
   // date: the date to format
-  String formatDate(DateTime date) {
+  String _formatDate(DateTime date) {
     return "${date.day}/${date.month}/${date.year}";
+  }
+
+  void _addSubTask(String name) {
+    SubTask task = SubTask(
+      name: name,
+      priority: _currentTask.priority,
+      deadline: _currentTask.deadline!,
+      isDone: false,
+      projectId: _currentTask.projectId,
+      parentId: _currentTask.id,
+    );
+    BlocProvider.of<TaskBloc>(context).add(AddSubTask(task));
   }
 
   @override
@@ -85,10 +98,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
               left: 16.0,
               right: 16.0,
               top: 16.0,
-              bottom: MediaQuery
-                  .of(context)
-                  .viewInsets
-                  .bottom,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -111,7 +121,7 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                             semanticLabel: "Deadline"),
                         TextButton(
                           onPressed: () => _selectDate(context),
-                          child: Text(formatDate(_currentTask.deadline!)),
+                          child: Text(_formatDate(_currentTask.deadline!)),
                         ),
                       ],
                     ),
@@ -121,16 +131,46 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                             semanticLabel: "Priority"),
                         FilteringWidget(
                           onValueChanged: _updateFiltering,
-                          initialValue: TaskUtils.priorityToString(
-                              _currentTask.priority),
+                          initialValue:
+                              TaskUtils.priorityToString(_currentTask.priority),
                           items: const ["Basse", "Moyenne", "Haute"],
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(width: 10),
-                const SizedBox(height: 16),
+                const SizedBox(width: 10, height: 8),
+                Container(
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: AppColors.line,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                SubTaskCheckbox(
+                  onChanged: (bool? value) {
+                    Task updateTask = _currentTask.copyWith(isDone: value!);
+                    _updateTask(updateTask);
+                  },
+                ),
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    const Icon(Icons.add),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          hintText: 'Ajouter une sous-tache',
+                          border: InputBorder.none,
+                        ),
+                        onSubmitted: (value) {
+                          _addSubTask(value);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -164,6 +204,39 @@ class TaskCheckbox extends StatelessWidget {
               decoration: task.isDone
                   ? TextDecoration.lineThrough
                   : TextDecoration.none,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SubTaskCheckbox extends StatelessWidget {
+  final Function(bool?) onChanged;
+  final bool _value = false;
+
+  const SubTaskCheckbox({super.key, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Transform.scale(
+          scale: 0.8,
+          child: Checkbox(
+            value: _value,
+            onChanged: onChanged,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            "task",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              decoration:
+                  _value ? TextDecoration.lineThrough : TextDecoration.none,
             ),
           ),
         ),
