@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/add_button_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/name_input_widget.dart';
+import 'package:rewardly/Application/presentation/widget/add_button_widget.dart';
+import 'package:rewardly/Application/presentation/widget/name_input_widget.dart';
 import 'package:rewardly/core/color.dart';
 
 class AddProjectWidget extends StatefulWidget {

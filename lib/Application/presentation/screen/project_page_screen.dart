@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application%20Layer/bloc/task/task_bloc.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/container_filtering_task_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/reward_card_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/task_details_widget.dart';
+import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart';
+import 'package:rewardly/Application/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 
@@ -54,6 +55,19 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+            ),
+            builder: (context) => const AddTaskWidget(),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

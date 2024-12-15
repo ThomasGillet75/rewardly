@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/filtering_widget.dart';
-import 'package:rewardly/Application%20Layer/presentation/widget/task_card_widget.dart';
+import 'package:rewardly/Application/presentation/widget/filtering_widget.dart';
+import 'package:rewardly/Application/presentation/widget/task_card_widget.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/core/task_priority_enum.dart';
 import 'package:rewardly/core/utils/date_utils.dart';

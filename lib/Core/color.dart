@@ -10,4 +10,5 @@ class AppColors {
   static const Color borderTextInput = Color(0xFFB7B7B7);
   static const Color font = Color(0xFF808080);
   static const Color background = Color(0xFFF5F9F5);
+  static const Color line = Color(0xFFD9D9D9);
 }
