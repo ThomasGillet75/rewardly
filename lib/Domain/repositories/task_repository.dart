@@ -12,8 +12,8 @@ class TaskRepository {
     return taskModels.map((taskModel) => taskModelToTask(taskModel)).toList();
   }
 
-  Future<void> createTask(TaskModel taskModel) async {
-    await _taskService.add(taskModel);
+  Future<void> createTask(Task task) async {
+    await _taskService.addInDb(taskToTaskModel(task));
   }
 
   Future<Task> getTask(String taskId) async {

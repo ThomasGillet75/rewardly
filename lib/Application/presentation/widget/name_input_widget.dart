@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import '../../../core/color.dart';
 
 class NameInputWidget extends StatefulWidget {
-  const NameInputWidget({Key? key, required this.placeholder})
+  const NameInputWidget({Key? key, required this.placeholder, required this.controller})
       : super(key: key);
   final String placeholder;
+  final TextEditingController controller;
 
   @override
   State<NameInputWidget> createState() => _NameInputWidgetState();
@@ -29,7 +30,7 @@ class _NameInputWidgetState extends State<NameInputWidget> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: TextField(
-            controller: _taskController,
+            controller: widget.controller,
             autofocus: true, // Ouvre automatiquement le clavier
             decoration: InputDecoration(
               hintText: widget.placeholder,

@@ -44,34 +44,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundTextInput,
-                            border: Border.all(
-                              color: AppColors.borderTextInput,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: TextField(
-                              controller: projectController,
-                              autofocus: true,
-                              decoration: InputDecoration(
-                                hintText: "Nom du projet",
-                                border: InputBorder.none,
-                                hintStyle: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.font,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      NameInputWidget(placeholder: "Nom du projet", controller: projectController),
                       const SizedBox(width: 10),
                       BlocConsumer<AddBloc, AddState>(
                         listener: (context, state) {
@@ -108,7 +81,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                               );
                             } else {
                               context.read<AddBloc>().add(
-                                AddRequested(
+                                AddRequested.forProject(
                                   project: Project(
                                     name: projectController.text,
                                     id: id.v1(),
