@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_event.dart';
 import 'package:rewardly/Application/bloc/friends/friends_state.dart';
-
+import 'package:rewardly/Application/presentation/widget/add_friend_button_widget.dart';
+import 'package:rewardly/Application/presentation/widget/friendly_card_widget.dart';
+import '../../../Data/models/user_entity.dart';
 import '../widget/friend_card_widget.dart';
 
 class FriendsPageScreen extends StatefulWidget {
@@ -12,12 +14,15 @@ class FriendsPageScreen extends StatefulWidget {
 }
 
 class _FriendsPageScreenState extends State<FriendsPageScreen> {
-  final TextEditingController pseudoController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _getFriends(context);
+  }
 
   @override
   void dispose() {
-    pseudoController.dispose();
     searchController.dispose();
     super.dispose();
   }
@@ -26,13 +31,19 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
     FocusScope.of(context).unfocus();
   }
 
-  void _searchFriends(BuildContext context) {
+  void _getFriends(BuildContext context) {
+    context.read<FriendsBloc>().add(const GetFriends());
+  }
+
+  void _searchInFriends(BuildContext context) {
     if (searchController.text.isEmpty) {
-      _resetSearch(context);
+      _getFriends(context);
     } else {
-      context.read<FriendsBloc>().add(SearchFriends(pseudo: searchController.text));
+      context.read<FriendsBloc>().add(SearchInFriends(pseudo: searchController.text));
     }
   }
+
+
 
   void _resetSearch(BuildContext context) {
     searchController.clear();
@@ -46,45 +57,53 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Amis'),
       ),
-      body: BlocBuilder<FriendsBloc, FriendsState>(
-        builder: (context, state) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            children: [
-              TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'Rechercher un ami',
-                  prefixIcon: Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () => _resetSearch(context),
-                  ),
-                ),
-                onChanged: (_) => _searchFriends(context),
-              ),
-              const SizedBox(height: 16.0),
-              if (state is FriendsLoading)
-                const Center(child: CircularProgressIndicator())
-              else if (state is FriendsSuccess)
-                Card(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: state.friends.length,
-                    itemBuilder: (context, index) {
-                      final friend = state.friends[index];
-                      return FriendCard(user: friend);
-                    },
-                  ),
-                )
-              else if (state is FriendsFailure)
-                  Center(child: Text('Erreur: ${state.error}')),
-              const SizedBox(height: 16.0),
-            ],
-          );
-        },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: BlocBuilder<FriendsBloc, FriendsState>(
+              builder: (context, state) {
+                return ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  children: [
+                    TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Rechercher un ami',
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => _getFriends(context)
+                        ),
+                      ),
+                      onChanged: (value) => _searchInFriends(context),
+                    ),
+                    const SizedBox(height: 16),
+                    if (state is FriendsLoading)
+                      const Center(child: CircularProgressIndicator())
+                    else if (state is FriendsSuccessAdd)
+                      Card(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.friends.length,
+                          itemBuilder: (context, index) {
+                            final friend = state.friends[index];
+                            return FriendlyCardWidgetCard(friend: friend); // Ensure friend.user is a Users object
+                          },
+                        ),
+                      )
+                    else if (state is FriendsFailure)
+                        Center(child: Text('Erreur: ${state.error}')),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
+      floatingActionButton: AddFriendButtonWidget(),
     );
   }
 }

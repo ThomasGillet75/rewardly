@@ -16,6 +16,7 @@ class UserRepository {
 
 
   Future<List<Users>>getUser(String pseudo) async {
+
     return await _userService.searchUsers(pseudo);
   }
 
