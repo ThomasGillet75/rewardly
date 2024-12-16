@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rewardly/Data/models/friendly_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
 
 class AuthService {

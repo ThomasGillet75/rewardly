@@ -5,8 +5,7 @@ import 'package:rewardly/Application/bloc/friends/friends_event.dart';
 import 'package:rewardly/Application/bloc/friends/friends_state.dart';
 import 'package:rewardly/Application/presentation/widget/add_friend_button_widget.dart';
 import 'package:rewardly/Application/presentation/widget/friendly_card_widget.dart';
-import '../../../Data/models/user_entity.dart';
-import '../widget/friend_card_widget.dart';
+
 
 class FriendsPageScreen extends StatefulWidget {
   @override
