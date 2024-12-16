@@ -90,7 +90,6 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         children: [
-          const RewardCardWidget(title: "chocolat", taskDone: 6, taskTodo: 8),
           const ToggleButtonWidget(),
           BlocBuilder<ToggleBloc, ToggleState>(
             builder: (context, state) {

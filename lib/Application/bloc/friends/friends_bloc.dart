@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_event.dart';
 import 'package:rewardly/Application/bloc/friends/friends_state.dart';
@@ -10,6 +8,7 @@ import 'package:rewardly/Domain/repositories/user_repository.dart';
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   final UserRepository _userRepository = UserRepository();
   final FriendlyRepository _friendlyRepository = FriendlyRepository();
+
   FriendsBloc() : super(FriendsInitial()) {
     on<SearchFriends>(_onFriendsRequested);
     on<ResetSearch>(_onResetSearch);
@@ -30,12 +29,12 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     }
   }
 
-
   Future<void> _onSearchInFriends(
       SearchInFriends event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
     try {
-      final List<Users> friends = await _friendlyRepository.searchInFriend(event.pseudo);
+      final List<Users> friends =
+          await _friendlyRepository.searchInFriend(event.pseudo);
       emit(FriendsSuccessAdd(friends));
     } catch (e) {
       emit(FriendsFailure(error: _mapErrorToMessage(e)));
@@ -45,21 +44,19 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   Future<void> _onResetSearch(
       ResetSearch event, Emitter<FriendsState> emit) async {
     emit(FriendsInitial());
-
   }
 
-  Future<void> _onAddFriend(
-      AddFriend event, Emitter<FriendsState> emit) async {
+  Future<void> _onAddFriend(AddFriend event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
     try {
-     await _friendlyRepository.addFriend(event.friend);
+      await _friendlyRepository.addFriend(event.friend);
       emit(FriendsAdded());
     } catch (e) {
       emit(FriendsFailure(error: _mapErrorToMessage(e)));
     }
   }
 
-  Future<void>_getFriends(GetFriends event, Emitter<FriendsState> emit) async {
+  Future<void> _getFriends(GetFriends event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
     try {
       final List<Users> friends = await _friendlyRepository.getUser();
@@ -68,6 +65,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
       emit(FriendsFailure(error: _mapErrorToMessage(e)));
     }
   }
+
   Future<void> _onRemoveFriend(
       RemoveFriend event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
