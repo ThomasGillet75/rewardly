@@ -9,7 +9,8 @@ import '../../../core/color.dart';
   Widget to select the priority of a task
 */
 class PrioritySelectWidget extends StatefulWidget{
-  const PrioritySelectWidget ({Key? key}) : super(key: key);
+  PrioritySelectWidget ({Key? key, required this.priorityController}) : super(key: key);
+  String priorityController;
 
   @override
   State<PrioritySelectWidget> createState() => _PrioritySelectWidgetState();
@@ -19,7 +20,6 @@ class PrioritySelectWidget extends StatefulWidget{
   State of the PrioritySelectWidget
 */
 class _PrioritySelectWidgetState extends State<PrioritySelectWidget>{
-  String? _selectedPriority;
   // List of priorities
   final List<String> _priorities = [TaskUtils.priorityToString(TaskPriority.low), TaskUtils.priorityToString(TaskPriority.medium), TaskUtils.priorityToString(TaskPriority.high)];
 
@@ -37,7 +37,7 @@ class _PrioritySelectWidgetState extends State<PrioritySelectWidget>{
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: _selectedPriority,
+          value: widget.priorityController,
           hint: const Text(
             "Priorité",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.font),
@@ -58,7 +58,7 @@ class _PrioritySelectWidgetState extends State<PrioritySelectWidget>{
           }).toList(),
           onChanged: (value) {
             setState(() {
-              _selectedPriority = value;
+              widget.priorityController = value!;
             });
           },
         ),

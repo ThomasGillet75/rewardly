@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import '../../../core/color.dart';
 
 class DescriptionInputWidget extends StatefulWidget {
-  const DescriptionInputWidget({Key? key}) : super(key: key);
-
+  const DescriptionInputWidget({Key? key, required this.descriptionController}) : super(key: key);
+  final TextEditingController descriptionController;
   @override
   State<DescriptionInputWidget> createState() => _DescriptionInputWidgetState();
 }
 
 class _DescriptionInputWidgetState extends State<DescriptionInputWidget> {
-  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class _DescriptionInputWidgetState extends State<DescriptionInputWidget> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
           child: TextField(
-            controller: _descriptionController,
+            controller: widget.descriptionController,
             maxLines: 3,
             decoration: const InputDecoration(
               hintText: "Description de la tâche",

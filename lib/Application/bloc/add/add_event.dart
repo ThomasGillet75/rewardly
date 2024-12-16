@@ -8,7 +8,12 @@ abstract class AddEvent extends Equatable {
 }
 
 class AddRequested extends AddEvent {
-  final Project project;
+  final Project? project;
+  final Task? task;
 
-  const AddRequested({required this.project});
+  const AddRequested._({this.project, this.task});
+
+  const AddRequested.forTask({required Task task}) : this._(task: task);
+  const AddRequested.forProject({required Project project}) : this._(project: project);
 }
+

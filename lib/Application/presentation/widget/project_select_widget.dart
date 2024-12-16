@@ -7,7 +7,8 @@ import '../../../core/color.dart';
   Widget to select the project of a task
 */
 class ProjectSelectWidget extends StatefulWidget {
-  const ProjectSelectWidget({Key? key}) : super(key: key);
+  ProjectSelectWidget({Key? key, this.projectController}) : super(key: key);
+  String? projectController;
 
   @override
   State<ProjectSelectWidget> createState() => _ProjectSelectWidgetState();
@@ -17,7 +18,6 @@ class ProjectSelectWidget extends StatefulWidget {
   State of the ProjectSelectWidget
 */
 class _ProjectSelectWidgetState extends State<ProjectSelectWidget> {
-  String? _selectedProject;
   final List<String> _projects = ['Ecole', 'Maison', 'IOT'];
 
   @override
@@ -34,7 +34,7 @@ class _ProjectSelectWidgetState extends State<ProjectSelectWidget> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: _selectedProject,
+          value: widget.projectController,
           hint: const Text(
             "Projet",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.font),
@@ -55,7 +55,7 @@ class _ProjectSelectWidgetState extends State<ProjectSelectWidget> {
           }).toList(),
           onChanged: (value) {
             setState(() {
-              _selectedProject = value;
+              widget.projectController = value;
             });
           },
         ),
