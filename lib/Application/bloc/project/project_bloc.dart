@@ -35,6 +35,14 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectState(updatedProjects));
     });
 
+    on<AddReward>((event, emit) {
+      _projectRepository.updateProject(event.project);
+      final updatedProjects = state.projects.map((project) {
+        return project.id == event.project.id ? event.project : project;
+      }).toList();
+      emit(ProjectState(updatedProjects));
+    });
+
     on<GetProjects>((event, emit) async {
       final projects = await _projectRepository.getProjects().first;
       emit(ProjectState(projects));

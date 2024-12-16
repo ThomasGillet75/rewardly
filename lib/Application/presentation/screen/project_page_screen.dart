@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Application/presentation/widget/add_reward_widget.dart';
 import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart';
@@ -35,6 +37,17 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
     );
   }
 
+  void _showRewardDetails(Project project) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+      ),
+      builder: (context) => AddRewardWidget(project: project),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,13 +58,30 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         children: [
-          RewardCardWidget(title: widget.project.reward, taskDone: 6, taskTodo: 8),
           BlocBuilder<TaskBloc, TaskState>(
-            builder: (context, state) {
-              return ContainerFilteringTaskWidget(
-                tasks: state.tasks,
-                onTaskSelected: _showTaskDetails,
-                selectedFilter: "Tout",
+            builder: (context, taskState) {
+              return Column(
+                children: [
+                  BlocBuilder<ProjectBloc, ProjectState>(
+                    builder: (context, projectState) {
+                      final updatedProject = projectState.projects.firstWhere(
+                            (proj) => proj.id == widget.project.id,
+                        orElse: () => widget.project,
+                      );
+
+                      return RewardCardWidget(
+                        project: updatedProject,
+                        taskList: taskState.tasks,
+                        onRewardSelected: _showRewardDetails,
+                      );
+                    },
+                  ),
+                  ContainerFilteringTaskWidget(
+                    tasks: taskState.tasks,
+                    onTaskSelected: _showTaskDetails,
+                    selectedFilter: "Tout",
+                  ),
+                ],
               );
             },
           ),

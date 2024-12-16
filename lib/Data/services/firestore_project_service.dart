@@ -33,11 +33,15 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
   }
 
   @override
-  Future<void> update(ProjectModel item) {
-    Map<String,dynamic> project = item.toMap();
-    return _firestore
-        .collection('projects')
-        .doc(project['project_id'])
-        .update(project);
+  Future<void> update(ProjectModel item) async {
+    final docRef = _firestore.collection('projects').doc(item.id.trim());
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      await docRef.update(item.toMap());
+    } else {
+      throw Exception('Document not found');
+    }
   }
 }
