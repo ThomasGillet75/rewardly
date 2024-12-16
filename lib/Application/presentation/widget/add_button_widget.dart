@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/add/add_bloc.dart';
 import 'package:rewardly/core/color.dart';
 
 class AddButtonWidget extends StatefulWidget {
@@ -11,15 +13,17 @@ class AddButtonWidget extends StatefulWidget {
 class _AddButtonWidgetState extends State<AddButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    return BlocBuilder<AddBloc, AddState>(
+      builder: (context, state) => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
+        onPressed: () => {},
+        child: const Icon(Icons.send, color: Colors.black),
       ),
-      onPressed: () {print("On ajoute");},
-      child: const Icon(Icons.send, color: Colors.black),
     );
   }
 }
