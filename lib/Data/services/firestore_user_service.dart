@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rewardly/Data/models/friendly_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
 
 class AuthService {
@@ -40,11 +41,11 @@ class AuthService {
 
   Future<List<Users>> searchUsers(String pseudo) async {
     final querySnapshot = await _firestore.collection('users').get();
-
+    final friendlyQuerySnapshot = await _firestore.collection('friendly').get();
     // Filter results manually to find substrings
     return querySnapshot.docs
         .map((doc) => Users.fromMap(doc.data()))
-        .where((user) => user.pseudo.contains(pseudo))
+        .where((user) => user.pseudo.contains(pseudo) && user.id != _auth.currentUser!.uid && friendlyQuerySnapshot.docs.every((doc) => doc['friend_id'] != user.id))
         .toList();
   }
 

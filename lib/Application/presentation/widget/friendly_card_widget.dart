@@ -6,19 +6,19 @@ import '../../../core/color.dart';
 import '../../bloc/friends/friends_bloc.dart';
 import '../../bloc/friends/friends_event.dart';
 
-class FriendCard extends StatefulWidget {
-  const FriendCard({Key? key, required this.user}) : super(key: key);
-  final Users user;
+class FriendlyCardWidgetCard extends StatefulWidget {
+  const FriendlyCardWidgetCard({Key? key, required this.friend}) : super(key: key);
+  final Users friend;
 
   @override
-  State<FriendCard> createState() => _FriendCardState();
+  State<FriendlyCardWidgetCard> createState() => _FriendCardState();
 }
 
-class _FriendCardState extends State<FriendCard> {
+class _FriendCardState extends State<FriendlyCardWidgetCard> {
   bool _isAdded = false;
 
-  void _addFriend(BuildContext context, Friendly friend) {
-    context.read<FriendsBloc>().add(AddFriend(friend: friend));
+  void _deleteFriend(BuildContext context, Friendly friend) {
+    context.read<FriendsBloc>().add(RemoveFriend(friend: friend));
   }
 
   @override
@@ -44,7 +44,7 @@ class _FriendCardState extends State<FriendCard> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  widget.user.pseudo,
+                  widget.friend.pseudo,
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 20,
@@ -54,17 +54,17 @@ class _FriendCardState extends State<FriendCard> {
             ),
           ),
           IconButton(
-            icon: Icon(_isAdded ? Icons.check : Icons.add),
+            icon: Icon(_isAdded ? Icons.check : Icons.delete),
             onPressed: () {
               setState(() {
                 _isAdded = !_isAdded;
               });
-              if (_isAdded) {
+              if (!_isAdded) {
                 final friend = Friendly(
                   user_id: '', // This will be set in the service
-                  friend_id: widget.user.id,
+                  friend_id: widget.friend.id,
                 );
-                _addFriend(context, friend);
+                _deleteFriend(context, friend);
               }
             },
           ),
