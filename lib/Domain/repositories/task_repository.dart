@@ -111,4 +111,8 @@ class TaskRepository {
       parentId: task.parentId,
     );
   }
+
+  void removeSubTask(SubTask task) {
+    _taskService.delete(task.id);
+  }
 }

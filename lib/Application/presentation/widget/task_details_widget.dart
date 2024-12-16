@@ -37,7 +37,8 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   void _updateSubTask(SubTask updatedSubTask) {
     BlocProvider.of<TaskBloc>(context).add(UpdateSubTask(updatedSubTask));
     setState(() {
-      final index = _currentTask.subTasks.indexWhere((e) => e.id == updatedSubTask.id);
+      final index =
+          _currentTask.subTasks.indexWhere((e) => e.id == updatedSubTask.id);
       _currentTask.subTasks[index] = updatedSubTask;
     });
   }
@@ -72,9 +73,21 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   void _changePriority(String? value) {
     if (value == null) return;
     final priority = TaskPriority.values.firstWhere(
-          (enumPriority) => TaskUtils.priorityToString(enumPriority) == value,
+      (enumPriority) => TaskUtils.priorityToString(enumPriority) == value,
     );
     _updateTask(_currentTask.copyWith(priority: priority));
+  }
+
+  void _deleteSubTask(SubTask subTask) {
+    BlocProvider.of<TaskBloc>(context).add(RemoveSubTask(subTask));
+    setState(() {
+      _currentTask.subTasks.removeWhere((element) => element.id == subTask.id);
+    });
+  }
+
+  void _deleteTask(Task task) {
+    BlocProvider.of<TaskBloc>(context).add(RemoveTask(_currentTask));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -94,12 +107,13 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Ajouté pour limiter la taille du Column
+            mainAxisSize: MainAxisSize.min,
             children: [
               TaskCheckbox(
                 task: _currentTask,
                 onChanged: (value) =>
                     _updateTask(_currentTask.copyWith(isDone: value!)),
+                deleteTask: _deleteTask,
               ),
               _buildDetailsRow(),
               const Divider(thickness: 2, color: AppColors.line),
@@ -128,7 +142,8 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
         const Icon(Icons.access_time, semanticLabel: "Deadline"),
         TextButton(
           onPressed: _pickDate,
-          child: Text("${_currentTask.deadline?.day}/${_currentTask.deadline?.month}/${_currentTask.deadline?.year}"),
+          child: Text(
+              "${_currentTask.deadline?.day}/${_currentTask.deadline?.month}/${_currentTask.deadline?.year}"),
         ),
       ],
     );
@@ -159,8 +174,9 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
           itemBuilder: (context, index) {
             return SubTaskCheckbox(
               subTask: _currentTask.subTasks[index],
-              onChanged: (value) =>
-                  _updateSubTask(_currentTask.subTasks[index].copyingWith(isDone: value!)),
+              onChanged: (value) => _updateSubTask(
+                  _currentTask.subTasks[index].copyingWith(isDone: value!)),
+              deleteSubTask: _deleteSubTask,
             );
           },
         ),
@@ -168,20 +184,21 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
     }
 
     return Column(
-      children: _currentTask.subTasks.map((subTask) {
-        return SubTaskCheckbox(
-          subTask: subTask,
-          onChanged: (value) =>
-              _updateSubTask(subTask.copyingWith(isDone: value!)),
-        );
-      }).toList(),
+      children: _currentTask.subTasks
+          .map(
+            (subTask) => SubTaskCheckbox(
+              subTask: subTask,
+              onChanged: (value) =>
+                  _updateSubTask(subTask.copyingWith(isDone: value!)),
+              deleteSubTask: _deleteSubTask,
+            ),
+          )
+          .toList(),
     );
   }
 
-
   Widget _buildAddSubTaskField() {
     return Row(
-
       children: [
         const Padding(padding: EdgeInsets.only(left: 10)),
         const Icon(Icons.add),
@@ -204,8 +221,13 @@ class _TaskDetailsWidgetState extends State<TaskDetailsWidget> {
 class TaskCheckbox extends StatelessWidget {
   final Task task;
   final Function(bool?) onChanged;
+  final Function(Task) deleteTask;
 
-  const TaskCheckbox({super.key, required this.task, required this.onChanged});
+  const TaskCheckbox(
+      {super.key,
+      required this.task,
+      required this.onChanged,
+      required this.deleteTask});
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +250,10 @@ class TaskCheckbox extends StatelessWidget {
             ),
           ),
         ),
+        IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () => deleteTask(task),
+        ),
       ],
     );
   }
@@ -236,8 +262,13 @@ class TaskCheckbox extends StatelessWidget {
 class SubTaskCheckbox extends StatelessWidget {
   final Function(bool?) onChanged;
   final SubTask subTask;
+  final Function(SubTask) deleteSubTask;
 
-  const SubTaskCheckbox({super.key, required this.onChanged, required this.subTask});
+  const SubTaskCheckbox(
+      {super.key,
+      required this.onChanged,
+      required this.subTask,
+      required this.deleteSubTask});
 
   @override
   Widget build(BuildContext context) {
@@ -261,6 +292,10 @@ class SubTaskCheckbox extends StatelessWidget {
                   : TextDecoration.none,
             ),
           ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () => deleteSubTask(subTask),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +22,10 @@ import 'package:rewardly/Data/models/user_entity.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  await FirebaseFirestore.instance.clearPersistence();
+  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: false);
+
   runApp(const MyApp());
 }
 

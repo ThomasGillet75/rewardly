@@ -14,7 +14,6 @@ class UserRepository {
     return await _userService.signUpWithEmail(user);
   }
 
-
   Future<List<Users>>getUser(String pseudo) async {
 
     return await _userService.searchUsers(pseudo);

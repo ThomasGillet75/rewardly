@@ -76,8 +76,8 @@ class _TaskWidgetState extends State<TaskCardWidget> {
                   offset: const Offset(10.0, 0.0),
                   child: Transform.scale(
                     scale: 0.8,
-                    child: const Checkbox(
-                      value: false,
+                    child: Checkbox(
+                      value: widget.task.isAllSubTaskDone(),
                       onChanged: null,
                     ),
                   ),
@@ -85,7 +85,7 @@ class _TaskWidgetState extends State<TaskCardWidget> {
                 SizedBox(
                   width: 50, // Adjust the width as needed
                   child: Text(
-                    "${widget.task.calculateLeftTaskToDo()}/${widget.task.calculateTotalTaskToDo()}",
+                    "${widget.task.calculateLeftSubTaskToDo()}/${widget.task.calculateTotalSubTaskToDo()}",
                     style: const TextStyle(
                       color: AppColors.font,
                     ),

@@ -27,7 +27,7 @@ class RewardCardWidget extends StatefulWidget {
 class _RewardCardWidgetState extends State<RewardCardWidget> {
   final int _marginOffset = 96;
 
-  late ConfettiController _confettiController; // Déclaration du contrôleur de confettis
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
@@ -67,10 +67,6 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-
-
-      widget.project.reward = "";
-      BlocProvider.of<ProjectBloc>(context).add(AddReward(widget.project));
       _confettiController.play();
     }
 
@@ -148,12 +144,10 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
               ]
             ],
           ),
-
-          // ConfettiWidget au-dessus de tout
           if (taskTodo == taskDone && taskTodo != 0) ...[
-            Positioned.fill(  // Utilisation de Positioned.fill pour occuper tout l'espace
+            Positioned.fill(
               child: Align(
-                alignment: Alignment.center, // Centre les confettis
+                alignment: Alignment.center,
                 child: ConfettiWidget(
                   confettiController: _confettiController,
                   blastDirectionality: BlastDirectionality.explosive,
@@ -165,7 +159,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                     Colors.orange
                   ],
                   gravity: 0.1,
-                  child: Container(), // Widget vide ici pour lancer les confettis
+                  child: Container(),
                 ),
               ),
             ),

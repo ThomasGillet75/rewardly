@@ -40,5 +40,10 @@ class RemoveTask extends TaskEvent {
   RemoveTask(this.task);
 }
 
+class RemoveSubTask extends TaskEvent {
+  final SubTask task;
+  RemoveSubTask(this.task);
+}
+
 class Clear extends TaskEvent {
 }

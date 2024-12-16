@@ -29,12 +29,16 @@ class Task {
     isDone = !isDone;
   }
 
-  String calculateTotalTaskToDo() {
+  String calculateTotalSubTaskToDo() {
     return subTasks.length.toString();
   }
 
-  String calculateLeftTaskToDo() {
+  String calculateLeftSubTaskToDo() {
     return subTasks.where((element) => element.isDone).length.toString();
+  }
+
+  bool isAllSubTaskDone() {
+    return subTasks.every((element) => element.isDone);
   }
 
   Task copyWith({

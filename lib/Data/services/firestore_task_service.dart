@@ -19,6 +19,11 @@ class FirestoreTaskService extends IDataService<TaskModel> {
   @override
   Future<void> delete(String id) async {
     await _firestore.collection('tasks').doc(id).delete();
+    await _firestore.collection('tasks').where('parent_id', isEqualTo: id).get().then((value) {
+      for (var element in value.docs) {
+        element.reference.delete();
+      }
+    });
   }
 
   @override

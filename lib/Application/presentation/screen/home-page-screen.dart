@@ -8,7 +8,6 @@ import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/main_page/toggle_button_widget.dart';
 import 'package:rewardly/Application/presentation/widget/project_card_widget.dart';
-import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart';
 import 'package:rewardly/Application/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/main.dart';

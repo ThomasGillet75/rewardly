@@ -63,7 +63,14 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       taskRepository.updateSubTask(event.task);
     });
 
+
+    on<RemoveSubTask>((event, emit) {
+      taskRepository.removeSubTask(event.task);
+
+    });
+
     on<RemoveTask>((event, emit) {
+      taskRepository.deleteTask(event.task.id);
       emit(TaskState(state.tasks.where((task) => task != event.task).toList()));
     });
 
