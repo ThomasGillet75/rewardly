@@ -1,11 +1,11 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Data/models/friendly_entity.dart';
-
-import '../../bloc/friends/friends_bloc.dart';
-import '../../bloc/friends/friends_event.dart';
-import '../../bloc/friends/friends_state.dart';
-import 'friend_card_widget.dart';
+import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
+import 'package:rewardly/Application/bloc/friends/friends_event.dart';
+import 'package:rewardly/Application/bloc/friends/friends_state.dart';
+import 'package:rewardly/Application/presentation/widget/friend_card_widget.dart';
 
 class AddFriendButtonWidget extends StatefulWidget {
   @override

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../Data/models/friendly_entity.dart';
 import '../../Data/models/user_entity.dart';
 import '../../Data/services/firestore_friendly_service.dart';

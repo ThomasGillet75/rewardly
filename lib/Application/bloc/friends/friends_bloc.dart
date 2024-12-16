@@ -1,11 +1,11 @@
+
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/friends/friends_event.dart';
+import 'package:rewardly/Application/bloc/friends/friends_state.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 import 'package:rewardly/Domain/repositories/friendly_repository.dart';
 import 'package:rewardly/Domain/repositories/user_repository.dart';
-
-import '../../../Data/models/friendly_entity.dart';
-import '../../../Data/models/user_entity.dart';
-import 'friends_event.dart';
-import 'friends_state.dart';
 
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   final UserRepository _userRepository = UserRepository();
