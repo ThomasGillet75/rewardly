@@ -1,9 +1,7 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
@@ -43,21 +41,17 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
   }
 
   // calculate the percentage for the size of the bar
-  double calculatePercentage(int taskDone, int taskTodo) {
+  double _calculatePercentage(int taskDone, int taskTodo) {
     double completionPercentage = taskTodo > 0 ? taskDone / taskTodo : 0.0;
     double containerWidth = MediaQuery.of(context).size.width - _marginOffset;
     return containerWidth * completionPercentage;
   }
 
-  void _pushing() {
+  void _addNewReward() {
     widget.onRewardSelected(widget.project);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final int taskDone = widget.taskList.where((task) => task.isDone).length;
-    final int taskTodo = widget.taskList.length;
-
+  void _showSuccess(int taskTodo, int taskDone) {
     if (taskTodo == taskDone && taskTodo != 0) {
       Fluttertoast.showToast(
         msg: "Félicitations ! Vous avez terminé toutes les tâches ! 🎉",
@@ -69,6 +63,14 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
       );
       _confettiController.play();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final int taskDone = widget.taskList.where((task) => task.isDone).length;
+    final int taskTodo = widget.taskList.length;
+
+    _showSuccess(taskTodo,taskDone);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -79,7 +81,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
         color: AppColors.secondary,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Stack(  // Utilisation du Stack pour superposer les widgets
+      child: Stack(
         children: [
           Column(
             children: [
@@ -103,7 +105,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                     margin: const EdgeInsets.only(
                         top: 32, left: 32, right: 32, bottom: 10),
                     height: 17,
-                    width: calculatePercentage(taskDone, taskTodo),
+                    width: _calculatePercentage(taskDone, taskTodo),
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(15),
@@ -131,7 +133,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ] else ...[
                 ElevatedButton(
-                  onPressed: _pushing,
+                  onPressed: _addNewReward,
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
