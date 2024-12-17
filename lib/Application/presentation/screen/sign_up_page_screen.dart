@@ -148,7 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               pseudo: pseudoController.text,
                               mail: emailController.text,
                               password: passwordController.text,
-                              id: id.v1(),
+                              id:'',
                             ),
                           ),
                         );

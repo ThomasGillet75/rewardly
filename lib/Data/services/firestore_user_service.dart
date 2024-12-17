@@ -14,6 +14,7 @@ class AuthService {
     }
   }
 
+
   Future<UserCredential> signUpWithEmail(Users user) async {
     try {
       // Check if the pseudo already exists
@@ -22,21 +23,37 @@ class AuthService {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        throw Exception('Pseudo already in use');
+        throw Exception('Pseudo déjà utilisé');
       }
 
-      // Create the user if the pseudo does not exist
-      final credential = await _auth.createUserWithEmailAndPassword(email: user.mail, password: user.password);
-      await credential.user!.updateDisplayName(user.pseudo);
 
-      final userWithHashedPassword = user.copyWith(password: user.hashedPassword);
-      await _firestore.collection('users').doc(credential.user!.uid).set(userWithHashedPassword.toMap());
+      // Create the user if the pseudo does not exist
+      final credential = await _auth.createUserWithEmailAndPassword(
+          email: user.mail, password: user.password);
+
+      // user id is the same as the user id in firebase
+      user.id = _auth.currentUser!.uid;
+
+      // Send email verification
+      await _auth.currentUser!.sendEmailVerification();
+
+      // Store user data in Firestore
+      await _firestore.collection('users').doc(credential.user!.uid).set(user.toMap());
 
       return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw Exception('Le mot de passe est trop faible.');
+      } else if (e.code == 'email-already-in-use') {
+        throw Exception('Cet email est déjà utilisé.');
+      } else {
+        throw Exception('Erreur d\'inscription : ${e.toString()}');
+      }
     } catch (e) {
       throw Exception('Erreur d\'inscription : ${e.toString()}');
     }
   }
+
 
   Future<List<Users>> searchUsers(String pseudo) async {
     final querySnapshot = await _firestore.collection('users').get();

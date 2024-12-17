@@ -15,24 +15,13 @@ class FirestoreFriendlyService {
 
 
   Future<List<Users>> getUser() async {
-    final crrntUser = _firebaseAuth.currentUser!.uid;
-    final QuerySnapshot friendSnapshot = await _firestore
-        .collection('friendly')
-        .where('user_id', isEqualTo: crrntUser)
-        .get();
+    final QuerySnapshot userSnapshot = await _firestore.collection('users').get();
+    final QuerySnapshot friendSnapshot = await _firestore.collection('friendly').where('user_id', isEqualTo: _firebaseAuth.currentUser!.uid).get();
 
-    List<Users> friends = [];
-    for (var doc in friendSnapshot.docs) {
-      final friendData = doc.data() as Map<String, dynamic>;
-      final userId = friendData['friend_id'];
-      final userDoc = await _firestore.collection('users').where('user_id', isEqualTo: userId).get();
-      for (var user in userDoc.docs) {
-        final userData = user.data();
-        final friend = Users.fromMap(userData);
-        friends.add(friend);
-      }
-    }
-    return friends;
+    List<Users> users = userSnapshot.docs.map((doc) => Users.fromMap(doc.data() as Map<String,dynamic>)).toList();
+    List<Friendly> friends = friendSnapshot.docs.map((doc) => Friendly.fromMap(doc.data() as Map<String,dynamic>)).toList();
+
+    return users.where((element) => friends.any((friend) => friend.friend_id == element.id)).toList();
   }
 
   Future<void> removeFriend(Friendly friendly) async {
@@ -41,6 +30,10 @@ class FirestoreFriendlyService {
         .where('user_id', isEqualTo: _firebaseAuth.currentUser!.uid)
         .where('friend_id', isEqualTo: friendly.friend_id)
         .get();
+
+    for (var doc in friendSnapshot.docs) {
+      await _firestore.collection('friendly').doc(doc.id).delete();
+    }
   }
 
   Future<List<Users>> searchInFriend(String pseudo) async {

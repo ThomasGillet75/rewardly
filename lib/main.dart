@@ -22,10 +22,6 @@ import 'package:rewardly/Data/models/user_entity.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  await FirebaseFirestore.instance.clearPersistence();
-  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: false);
-
   runApp(const MyApp());
 }
 

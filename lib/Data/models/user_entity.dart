@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 class Users {
-  final String pseudo;
-  final String id;
-  final String mail;
-  final String password;
+   String pseudo;
+   String id;
+   String mail;
+   String password;
 
   Users({
     required this.pseudo,
@@ -34,7 +34,7 @@ class Users {
       mail: data['mail_address'] ?? '',
       pseudo: data['pseudo'] ?? '',
       id: data['user_id'] ?? '',
-      password: data['password'] ?? '',
+      password: '',
     );
   }
 
@@ -43,7 +43,6 @@ class Users {
       'mail_address': mail,
       'pseudo': pseudo,
       'user_id': id,
-      'password': password,
     };
   }
 
@@ -51,9 +50,4 @@ class Users {
     return Users(pseudo: '', id: '', mail: '', password: '');
   }
 
-  String get hashedPassword {
-    var bytes = utf8.encode(password);
-    var digest = sha256.convert(bytes);
-    return digest.toString();
-  }
 }
