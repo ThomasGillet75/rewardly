@@ -3,9 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 
+import '../../../Core/task_priority_enum.dart';
 import '../../../Data/models/project_entity.dart';
 import '../../../Domain/repositories/project_repository.dart';
 import '../../../Domain/repositories/task_repository.dart';
+import '../priority_select/priority_select_bloc.dart';
 
 part 'add_event.dart';
 part 'add_state.dart';
@@ -30,11 +32,10 @@ class AddBloc extends Bloc<AddEvent, AddState> {
       }
     else if(event.task != null)
       {
-        print("ici3");
         try {
-          print("ici2");
           await _taskRepository.createTask(event.task!);
           emit(AddSuccess());
+          PrioritySelectInitial(TaskPriority.none);
         } catch (e) {
           emit(AddFailure(error: _mapErrorToMessage(e)));
         }

@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:rewardly/core/color.dart';
 
 class DateSelectWidget extends StatefulWidget{
-  const DateSelectWidget ({Key? key, required this.dateController}) : super(key: key);
+  DateSelectWidget ({Key? key, required this.dateController, required this.selectedDate}) : super(key: key);
   final TextEditingController dateController;
+  DateTime selectedDate;
 
   @override
   State<DateSelectWidget> createState() => _DateSelectWidgetState();
 }
 
 class _DateSelectWidgetState extends State<DateSelectWidget>{
-  DateTime? _selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _DateSelectWidgetState extends State<DateSelectWidget>{
           );
           if (pickedDate != null) {
             setState(() {
-              _selectedDate = pickedDate;
+              widget.selectedDate = pickedDate;
               widget.dateController.text =
               "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
             });

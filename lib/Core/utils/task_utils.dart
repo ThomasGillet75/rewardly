@@ -13,9 +13,23 @@ class TaskUtils {
         return "Moyenne";
       case TaskPriority.high:
         return "Haute";
+      default:
+        return "";
     }
   }
 
+  static Future<TaskPriority> stringToPriority(String priority) async {
+    switch (priority) {
+      case "Basse":
+        return TaskPriority.low;
+      case "Moyenne":
+        return TaskPriority.medium;
+      case "Haute":
+        return TaskPriority.high;
+      default:
+        throw Exception("Invalid priority string: $priority");
+    }
+  }
 
   // Filter the task by priority
   // @param label the label of the filter
