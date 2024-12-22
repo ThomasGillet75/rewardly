@@ -64,16 +64,20 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                 children: [
                   BlocBuilder<ProjectBloc, ProjectState>(
                     builder: (context, projectState) {
-                      final updatedProject = projectState.projects.firstWhere(
-                            (proj) => proj.id == widget.project.id,
-                        orElse: () => widget.project,
-                      );
+                      if (projectState is ProjectLoaded) {
+                        final updatedProject = projectState.projects.firstWhere(
+                              (proj) => proj.id == widget.project.id,
+                          orElse: () => widget.project,
+                        );
 
-                      return RewardCardWidget(
-                        project: updatedProject,
-                        taskList: taskState.tasks,
-                        onRewardSelected: _showRewardDetails,
-                      );
+                        return RewardCardWidget(
+                          project: updatedProject,
+                          taskList: taskState.tasks,
+                          onRewardSelected: _showRewardDetails,
+                        );
+                      } else {
+                        return Container(); // Return an empty container if the state is not ProjectLoaded
+                      }
                     },
                   ),
                   ContainerFilteringTaskWidget(

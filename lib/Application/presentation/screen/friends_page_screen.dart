@@ -44,8 +44,6 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
     }
   }
 
-
-
   void _resetSearch(BuildContext context) {
     searchController.clear();
     context.read<FriendsBloc>().add(const ResetSearch());

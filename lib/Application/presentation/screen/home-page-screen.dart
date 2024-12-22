@@ -103,18 +103,27 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
                 );
               } else {
                 return BlocBuilder<ProjectBloc, ProjectState>(
-                    builder: (context, state) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.projects.length,
-                    itemBuilder: (context, index) {
-                      return ProjectCarWidget(
-                        project: state.projects[index],
+                  builder: (context, state) {
+                    if (state is ProjectLoaded) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.projects.length,
+                        itemBuilder: (context, index) {
+                          return ProjectCarWidget(
+                            project: state.projects[index],
+                          );
+                        },
                       );
-                    },
-                  );
-                });
+                    } else if (state is ProjectFailure) {
+                      return Center(
+                        child: Text('Failed to load projects: ${state.error}'),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                );
               }
             },
           ),
