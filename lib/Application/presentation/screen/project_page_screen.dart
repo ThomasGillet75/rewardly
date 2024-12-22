@@ -58,37 +58,43 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         children: [
-          BlocBuilder<TaskBloc, TaskState>(
-            builder: (context, taskState) {
-              return Column(
-                children: [
-                  BlocBuilder<ProjectBloc, ProjectState>(
-                    builder: (context, projectState) {
-                      if (projectState is ProjectLoaded) {
-                        final updatedProject = projectState.projects.firstWhere(
-                              (proj) => proj.id == widget.project.id,
-                          orElse: () => widget.project,
-                        );
+          BlocBuilder<ProjectBloc, ProjectState>(
+            builder: (context, projectState) {
+              if (projectState is ProjectLoaded) {
+                final updatedProject = projectState.projects.firstWhere(
+                  (proj) => proj.id == widget.project.id,
+                  orElse: () => widget.project,
+                );
 
-                        return RewardCardWidget(
-                          project: updatedProject,
-                          taskList: taskState.tasks,
-                          onRewardSelected: _showRewardDetails,
-                        );
-                      } else {
-                        return Container(); // Return an empty container if the state is not ProjectLoaded
-                      }
-                    },
-                  ),
-                  ContainerFilteringTaskWidget(
-                    tasks: taskState.tasks,
-                    onTaskSelected: _showTaskDetails,
-                    selectedFilter: "Tout",
-                  ),
-                ],
-              );
+                return Column(
+                  children: [
+                    RewardCardWidget(
+                      project: updatedProject,
+                      taskList:
+                          (context.read<TaskBloc>().state as TaskLoaded).tasks,
+                      onRewardSelected: _showRewardDetails,
+                    ),
+                    BlocBuilder<TaskBloc, TaskState>(
+                      builder: (context, taskState) {
+                        if (taskState is TaskLoaded) {
+                          return ContainerFilteringTaskWidget(
+                            tasks: taskState.tasks,
+                            onTaskSelected: _showTaskDetails,
+                            selectedFilter: "Tout",
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
             },
-          ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(

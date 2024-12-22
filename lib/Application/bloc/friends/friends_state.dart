@@ -10,7 +10,6 @@ abstract class FriendsState extends Equatable {
 }
 
 class FriendsInitial extends FriendsState {
-
 }
 
 class FriendsLoading extends FriendsState {}

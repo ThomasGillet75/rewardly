@@ -1,6 +1,30 @@
 part of 'task_bloc.dart';
 
-class TaskState {
+abstract class TaskState extends Equatable {
+  const TaskState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class TaskInitial extends TaskState {}
+
+class TaskLoading extends TaskState {}
+
+class TaskLoaded extends TaskState {
   final List<Task> tasks;
-  TaskState(this.tasks);
+
+  const TaskLoaded(this.tasks);
+
+  @override
+  List<Object> get props => [tasks];
+}
+
+class TaskFailure extends TaskState {
+  final String error;
+
+  const TaskFailure(this.error);
+
+  @override
+  List<Object> get props => [error];
 }

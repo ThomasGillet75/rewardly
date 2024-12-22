@@ -95,10 +95,20 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
               if ((state as ToggleInitial).isMesTachesSelected) {
                 return BlocBuilder<TaskBloc, TaskState>(
                   builder: (context, state) {
-                    return ContainerFilteringTaskWidget(
-                      tasks: state.tasks,
-                      onTaskSelected: _showTaskDetails,
-                    );
+                    if (state is TaskFailure) {
+                      return Center(
+                        child: Text('Failed to load tasks: ${state.error}'),
+                      );
+                    } else if (state is TaskLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is TaskLoaded) {
+                      return ContainerFilteringTaskWidget(
+                        tasks: state.tasks,
+                        onTaskSelected: _showTaskDetails,
+                      );
+                    } else {
+                      return const Center(child: Text('No tasks available'));
+                    }
                   },
                 );
               } else {

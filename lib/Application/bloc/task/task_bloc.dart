@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
@@ -10,21 +11,32 @@ part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   TaskRepository taskRepository = TaskRepository();
-  late final StreamSubscription<List<Task>> _tasksSubscription;
 
-  TaskBloc() : super(TaskState([])) {
+  TaskBloc() : super(TaskInitial()) {
+    on<AddTask>(_onAddTask);
+    on<AddTaskToLists>(_onAddTaskTaskToLists);
+    on<AddSubTask>(_onAddSubTask);
+    on<GetTasks>(_onGetTasks);
+    on<GetTasksByProjectId>(_onGetTasksByProjectId);
+    on<UpdateTask>(_onUpdateTask);
+    on<UpdateSubTask>(_onUpdateSubTask);
+    on<RemoveSubTask>(_onRemoveSubTask);
+    on<RemoveTask>(_onRemoveTask);
+    on<Clear>(_onClear);
+  }
 
-    _tasksSubscription = taskRepository.getTasks().listen((tasks) {
-      add(AddTaskToLists(tasks));
-    });
+  void _onAddTask(AddTask event, Emitter<TaskState> emit) {
+    if (state is TaskLoaded) {
+      final currentState = state as TaskLoaded;
+      final updatedTasks = [...currentState.tasks, event.task];
+      emit(TaskLoaded(updatedTasks));
+    }
+  }
 
-    on<AddTask>((event, emit) {
-      emit(TaskState([...state.tasks, event.task]));
-    });
-
-    on<AddTaskToLists>((event, emit) {
-      final updatedTasks = [...state.tasks];
-
+  void _onAddTaskTaskToLists(AddTaskToLists event, Emitter<TaskState> emit) {
+    if (state is TaskLoaded) {
+      final currentState = state as TaskLoaded;
+      final updatedTasks = [...currentState.tasks];
       for (var newTask in event.tasks) {
         final existingIndex = updatedTasks.indexWhere((task) => task.id == newTask.id);
         if (existingIndex != -1) {
@@ -33,49 +45,52 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           updatedTasks.add(newTask);
         }
       }
-      emit(TaskState(updatedTasks));
-    });
+      emit(TaskLoaded(updatedTasks));
+    }
+  }
 
-    on<AddSubTask>((event, emit) {
-      taskRepository.addSubTask(event.task);
-    });
+  void _onAddSubTask(AddSubTask event, Emitter<TaskState> emit) {
+    taskRepository.addSubTask(event.task);
+  }
 
+  Future<void> _onGetTasks(GetTasks event, Emitter<TaskState> emit) async {
+    final tasks = await taskRepository.getTasks().first;
+    emit(TaskLoaded(tasks));
+  }
 
-    on<GetTasks>((event, emit) async {
-      final tasks = await taskRepository.getTasks().first;
-      emit(TaskState(tasks));
-    });
+  Future<void> _onGetTasksByProjectId(GetTasksByProjectId event, Emitter<TaskState> emit) async {
+    final tasks = await taskRepository.getTasksByProjectId(event.projectId).first;
+    emit(TaskLoaded(tasks));
+  }
 
-    on<GetTasksByProjectId>((event,emit) async {
-      final tasks = await taskRepository.getTasksByProjectId(event.projectId).first;
-      emit(TaskState(tasks));
-    });
-
-    on<UpdateTask>((event, emit) {
-      taskRepository.updateTask(event.task);
-      final updatedTasks = state.tasks.map((task) {
+  void _onUpdateTask(UpdateTask event, Emitter<TaskState> emit) {
+    taskRepository.updateTask(event.task);
+    if (state is TaskLoaded) {
+      final currentState = state as TaskLoaded;
+      final updatedTasks = currentState.tasks.map((task) {
         return task.name == event.task.name ? event.task : task;
       }).toList();
-      emit(TaskState(updatedTasks));
-    });
+      emit(TaskLoaded(updatedTasks));
+    }
+  }
 
-    on<UpdateSubTask>((event, emit) {
-      taskRepository.updateSubTask(event.task);
-    });
+  void _onUpdateSubTask(UpdateSubTask event, Emitter<TaskState> emit) {
+    taskRepository.updateSubTask(event.task);
+  }
 
+  void _onRemoveSubTask(RemoveSubTask event, Emitter<TaskState> emit) {
+    taskRepository.removeSubTask(event.task);
+  }
 
-    on<RemoveSubTask>((event, emit) {
-      taskRepository.removeSubTask(event.task);
+  void _onRemoveTask(RemoveTask event, Emitter<TaskState> emit) {
+    taskRepository.deleteTask(event.task.id);
+    if (state is TaskLoaded) {
+      final currentState = state as TaskLoaded;
+      emit(TaskLoaded(currentState.tasks.where((task) => task != event.task).toList()));
+    }
+  }
 
-    });
-
-    on<RemoveTask>((event, emit) {
-      taskRepository.deleteTask(event.task.id);
-      emit(TaskState(state.tasks.where((task) => task != event.task).toList()));
-    });
-
-    on<Clear>((event, emit) {
-      emit(TaskState([]));
-    });
+  void _onClear(Clear event, Emitter<TaskState> emit) {
+    emit(TaskLoaded([]));
   }
 }
