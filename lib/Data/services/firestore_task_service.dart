@@ -8,16 +8,9 @@ class FirestoreTaskService extends IDataService<TaskModel> {
   final Uuid _uuid = const Uuid();
 
   @override
-  Future<void> addInDb(TaskModel item) async {
-    _firestore.collection('tasks').doc(_uuid.v4()).set(item.toMap());
-  }
-
-  @override
   Future<void> add(TaskModel item) async {
     String taskId = _uuid.v4();
-    await _firestore.collection('tasks').doc(taskId).set({
-      ...item.toMap(),
-      'task_id': taskId,
+    await _firestore.collection('tasks').doc(taskId).set({...item.toMap(), 'task_id': taskId,
     });
   }
 

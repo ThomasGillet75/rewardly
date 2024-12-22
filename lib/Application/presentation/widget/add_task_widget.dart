@@ -1,23 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application/presentation/widget/date_select_widget.dart';
-import 'package:rewardly/Application/presentation/widget/description_input_widget.dart';
-import 'package:rewardly/Application/presentation/widget/name_input_widget.dart';
-import 'package:rewardly/Application/presentation/widget/priority_select_widget.dart';
-import 'package:rewardly/Application/presentation/widget/project_select_widget.dart';
-import 'package:rewardly/core/color.dart';
+import 'package:rewardly/Application/bloc/add/add_bloc.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Core/color.dart';
+import 'package:rewardly/Core/task_priority_enum.dart';
+import 'package:rewardly/Core/utils/task_utils.dart';
+import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../Core/task_priority_enum.dart';
-import '../../../Core/utils/task_utils.dart';
-import '../../../Data/models/task_entity.dart';
-import '../../bloc/add/add_bloc.dart';
-import '../../bloc/project/project_bloc.dart';
-import 'add_button_widget.dart';
-
 class AddTaskWidget extends StatefulWidget {
-  const AddTaskWidget({Key? key}) : super(key: key);
+  const AddTaskWidget({super.key});
 
   @override
   State<AddTaskWidget> createState() => _AddTaskWidgetState();
@@ -132,49 +124,47 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      child: GestureDetector(
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-                          if (pickedDate != null) {
-                            setState(() {
-                              _selectedDate = pickedDate;
-                              dateController.text =
-                              "${pickedDate.day}/${pickedDate
-                                  .month}/${pickedDate
-                                  .year}";
-                            });
-                          }
-                        },
-                        child: Container(
-                          height: 48, // Assure une hauteur cohérente
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundTextInput,
-                            border: Border.all(
-                              color: AppColors.borderTextInput,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+                        if (pickedDate != null) {
+                          setState(() {
+                            _selectedDate = pickedDate;
+                            dateController.text =
+                            "${pickedDate.day}/${pickedDate
+                                .month}/${pickedDate
+                                .year}";
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 48, // Assure une hauteur cohérente
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundTextInput,
+                          border: Border.all(
+                            color: AppColors.borderTextInput,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0), // Alignement
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              // Alignement à gauche
-                              child: Text(
-                                dateController.text.isNotEmpty
-                                    ? dateController.text
-                                    : "Date",
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.font,
-                                ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0), // Alignement
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            // Alignement à gauche
+                            child: Text(
+                              dateController.text.isNotEmpty
+                                  ? dateController.text
+                                  : "Date",
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.font,
                               ),
                             ),
                           ),
@@ -283,7 +273,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     BlocConsumer<AddBloc, AddState>(
                       listener: (context, state) {
                         if (state is AddSuccess) {
-                          print("Succès");
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -293,7 +282,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                             ),
                           );
                         } else if (state is AddFailure) {
-                          print("Erreur");
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(state.error),

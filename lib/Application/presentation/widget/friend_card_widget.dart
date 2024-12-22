@@ -7,7 +7,7 @@ import 'package:rewardly/Data/models/friendly_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
 
 class FriendCard extends StatefulWidget {
-  const FriendCard({Key? key, required this.user}) : super(key: key);
+  const FriendCard({super.key, required this.user});
   final Users user;
 
   @override
@@ -61,8 +61,8 @@ class _FriendCardState extends State<FriendCard> {
               });
               if (_isAdded) {
                 final friend = Friendly(
-                  user_id: '', // This will be set in the service
-                  friend_id: widget.user.id,
+                  userId: '', // This will be set in the service
+                  friendId: widget.user.id,
                 );
                 _addFriend(context, friend);
               }

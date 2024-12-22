@@ -47,10 +47,5 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       final projects = await _projectRepository.getProjects().first;
       emit(ProjectState(projects));
     });
-
-    @override close() {
-      _projectsSubscription.cancel();
-      super.close();
-    }
   }
 }

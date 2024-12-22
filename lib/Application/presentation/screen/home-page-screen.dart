@@ -12,7 +12,7 @@ import 'package:rewardly/Application/presentation/widget/task_details_widget.dar
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/main.dart';
 
-import '../widget/Icon_friends_button_widget.dart';
+import '../widget/icon_friends_button_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});

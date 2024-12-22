@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../Data/models/friendly_entity.dart';
+import 'package:rewardly/Application/bloc/friends/friends_event.dart';
+import 'package:rewardly/Data/models/friendly_entity.dart';
 import '../../../Data/models/user_entity.dart';
 import '../../../core/color.dart';
 import '../../bloc/friends/friends_bloc.dart';
-import '../../bloc/friends/friends_event.dart';
 
 class FriendlyCardWidgetCard extends StatefulWidget {
-  const FriendlyCardWidgetCard({Key? key, required this.friend}) : super(key: key);
+  const FriendlyCardWidgetCard({super.key, required this.friend});
   final Users friend;
 
   @override
@@ -61,8 +61,8 @@ class _FriendCardState extends State<FriendlyCardWidgetCard> {
               });
               if (!_isAdded) {
                 final friend = Friendly(
-                  user_id: '', // This will be set in the service
-                  friend_id: widget.friend.id,
+                  userId: '', // This will be set in the service
+                  friendId: widget.friend.id,
                 );
                 _deleteFriend(context, friend);
               }

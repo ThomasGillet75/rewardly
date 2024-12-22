@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rewardly/Core/task_priority_enum.dart';
 import 'package:rewardly/Core/utils/task_utils.dart';
@@ -9,7 +8,7 @@ import '../../../core/color.dart';
   Widget to select the priority of a task
 */
 class PrioritySelectWidget extends StatefulWidget{
-  PrioritySelectWidget ({Key? key, required this.priorityController}) : super(key: key);
+  PrioritySelectWidget ({super.key, required this.priorityController});
   String priorityController;
 
   @override

@@ -13,7 +13,7 @@ class TaskRepository {
   }
 
   Future<void> createTask(Task task) async {
-    await _taskService.addInDb(taskToTaskModel(task));
+    await _taskService.add(taskToTaskModel(task));
   }
 
   Future<Task> getTask(String taskId) async {

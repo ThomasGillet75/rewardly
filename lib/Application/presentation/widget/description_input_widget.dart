@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/color.dart';
 
 class DescriptionInputWidget extends StatefulWidget {
-  const DescriptionInputWidget({Key? key, required this.descriptionController}) : super(key: key);
+  const DescriptionInputWidget({super.key, required this.descriptionController});
   final TextEditingController descriptionController;
   @override
   State<DescriptionInputWidget> createState() => _DescriptionInputWidgetState();

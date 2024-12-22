@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color primary = Color(0xFFA8D2A8);
   static const Color secondary = Color(0xFFFFFFFF);
-  static const Color reward_lowPriority = Color(0xFF4caf50);
+  static const Color rewardLowPriority = Color(0xFF4caf50);
   static const Color mediumPriority = Color(0xFFffc107);
   static const Color highPriority = Color(0xFFF44336);
   static const Color backgroundTextInput = Color(0xFFEEEEEE);

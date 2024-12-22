@@ -1,5 +1,4 @@
 import 'package:confetti/confetti.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rewardly/Core/color.dart';
@@ -139,7 +138,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
                     children: [
                       Icon(Icons.add),
                       SizedBox(width: 8),
-                      Text("Add Reward"),
+                      Text("Ajouter une récompense"),
                     ],
                   ),
                 ),

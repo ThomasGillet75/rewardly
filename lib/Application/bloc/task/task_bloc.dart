@@ -77,12 +77,5 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<Clear>((event, emit) {
       emit(TaskState([]));
     });
-
-    @override
-    Future<void> close() {
-      _tasksSubscription.cancel();
-      return super.close();
-    }
-
   }
 }

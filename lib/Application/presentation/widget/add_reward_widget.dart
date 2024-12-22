@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/project/project_bloc.dart';
-import 'package:rewardly/Application/bloc/task/task_bloc.dart';
-import 'package:rewardly/Application/presentation/widget/filtering_widget.dart';
-import 'package:rewardly/Core/task_priority_enum.dart';
-import 'package:rewardly/Core/utils/date_utils.dart';
-import 'package:rewardly/Core/utils/task_utils.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
-import 'package:rewardly/Data/models/sub_task_entity.dart';
-import 'package:rewardly/Data/models/task_entity.dart';
 
 import '../../../Core/color.dart';
 
@@ -27,7 +20,6 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
     widget.project.reward = name;
     try {
       BlocProvider.of<ProjectBloc>(context).add(AddReward( widget.project));
-      print('Reward added successfully');
     } catch (e) {
       print('Failed to add reward: $e');
     }

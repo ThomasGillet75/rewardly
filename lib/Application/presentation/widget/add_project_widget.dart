@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application/presentation/widget/add_button_widget.dart';
 import 'package:rewardly/Application/presentation/widget/name_input_widget.dart';
+import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/core/color.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../Data/models/project_entity.dart';
 import '../../bloc/add/add_bloc.dart';
 
 class AddProjectWidget extends StatefulWidget {

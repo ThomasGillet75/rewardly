@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/color.dart';
@@ -7,7 +6,7 @@ import '../../../core/color.dart';
   Widget to select the project of a task
 */
 class ProjectSelectWidget extends StatefulWidget {
-  ProjectSelectWidget({Key? key, this.projectController}) : super(key: key);
+  ProjectSelectWidget({super.key, this.projectController});
   String? projectController;
 
   @override

@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/color.dart';
 
 class NameInputWidget extends StatefulWidget {
-  const NameInputWidget({Key? key, required this.placeholder, required this.controller})
-      : super(key: key);
+  const NameInputWidget({super.key, required this.placeholder, required this.controller});
   final String placeholder;
   final TextEditingController controller;
 

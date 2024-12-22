@@ -6,6 +6,8 @@ import 'package:rewardly/Application/bloc/signin/sign_in_state.dart';
 
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
   _SignInPageState createState() => _SignInPageState();
 }

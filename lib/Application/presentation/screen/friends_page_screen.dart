@@ -8,6 +8,8 @@ import 'package:rewardly/Application/presentation/widget/friendly_card_widget.da
 
 
 class FriendsPageScreen extends StatefulWidget {
+  const FriendsPageScreen({super.key});
+
   @override
   _FriendsPageScreenState createState() => _FriendsPageScreenState();
 }

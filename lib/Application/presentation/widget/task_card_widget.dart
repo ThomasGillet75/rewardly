@@ -18,7 +18,7 @@ class TaskCardWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskCardWidget> {
   // set the color of the border task card based on the priority
   final Map<TaskPriority, Color> _priorityColors = {
-    TaskPriority.low: AppColors.reward_lowPriority,
+    TaskPriority.low: AppColors.rewardLowPriority,
     TaskPriority.medium: AppColors.mediumPriority,
     TaskPriority.high: AppColors.highPriority,
   };

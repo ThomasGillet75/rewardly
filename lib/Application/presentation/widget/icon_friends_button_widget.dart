@@ -3,7 +3,7 @@ import 'package:rewardly/core/color.dart';
 
 
 class IconFriendButtonWidget extends StatefulWidget {
-  const IconFriendButtonWidget({Key? key}) : super(key: key);
+  const IconFriendButtonWidget({super.key});
 
   @override
   State<IconFriendButtonWidget> createState() => _AddButtonWidgetState();
