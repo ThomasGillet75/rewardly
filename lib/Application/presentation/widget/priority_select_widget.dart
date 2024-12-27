@@ -13,7 +13,7 @@ import '../../../core/color.dart';
 */
 class PrioritySelectWidget extends StatefulWidget{
   PrioritySelectWidget ({Key? key, required this.priorityController}) : super(key: key);
-  String? priorityController;
+  TaskPriority? priorityController;
 
   @override
   State<PrioritySelectWidget> createState() => _PrioritySelectWidgetState();

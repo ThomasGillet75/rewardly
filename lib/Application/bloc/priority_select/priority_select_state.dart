@@ -8,7 +8,7 @@ abstract class PrioritySelectState extends Equatable {
 }
 
 class PrioritySelectInitial extends PrioritySelectState {
-  final TaskPriority selectedPriority;
+  TaskPriority selectedPriority;
 
   PrioritySelectInitial(this.selectedPriority);
 

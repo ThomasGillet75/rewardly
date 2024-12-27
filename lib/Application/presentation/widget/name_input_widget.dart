@@ -14,7 +14,6 @@ class NameInputWidget extends StatefulWidget {
 }
 
 class _NameInputWidgetState extends State<NameInputWidget> {
-  final TextEditingController _taskController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class _NameInputWidgetState extends State<NameInputWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: TextField(
             controller: widget.controller,
-            autofocus: true, // Ouvre automatiquement le clavier
+            autofocus: true,
             decoration: InputDecoration(
               hintText: widget.placeholder,
               border: InputBorder.none,

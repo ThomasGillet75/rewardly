@@ -14,6 +14,13 @@ class AddProjects extends ProjectEvent {
   AddProjects(this.projects);
 }
 
+class AddProjectToDB extends ProjectEvent {
+  final Project project;
+
+  AddProjectToDB(this.project);
+}
+
+
 class AddReward extends ProjectEvent {
   final Project project;
 

@@ -8,7 +8,7 @@ part 'priority_select_event.dart';
 part 'priority_select_state.dart';
 
 class PrioritySelectBloc extends Bloc<PrioritySelectEvent, PrioritySelectState> {
-  PrioritySelectBloc() : super(PrioritySelectInitial(TaskPriority.none)) { // Initialisation avec null
+  PrioritySelectBloc() : super(PrioritySelectInitial(TaskPriority.none)) {
     on<PrioritySelectSwitch>((event, emit) {
       emit(PrioritySelectInitial(event.value));
     });

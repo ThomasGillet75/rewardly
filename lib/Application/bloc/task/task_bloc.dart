@@ -22,6 +22,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(TaskState([...state.tasks, event.task]));
     });
 
+    on<AddTaskToDB>((event, emit) {
+      taskRepository.createTask(event.task);
+    });
+
     on<AddTaskToLists>((event, emit) {
       final updatedTasks = [...state.tasks];
 

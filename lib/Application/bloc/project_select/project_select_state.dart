@@ -8,9 +8,9 @@ abstract class ProjectSelectState extends Equatable {
 }
 
 class ProjectSelectInitial extends ProjectSelectState {
-  final String? selectedProject;
+  String selectedProject;
 
-  const ProjectSelectInitial(this.selectedProject);
+  ProjectSelectInitial(this.selectedProject);
 
   @override
   List<Object?> get props => [selectedProject];

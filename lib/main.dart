@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
+import 'package:rewardly/Application/bloc/input_add/date_select_bloc.dart';
 import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application/bloc/signin/sign_in_bloc.dart';
 import 'package:rewardly/Application/bloc/signup/sign_up_bloc.dart';
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SignInBloc()),
         BlocProvider(create: (context) => FriendsBloc()),
         BlocProvider(create: (context) => PrioritySelectBloc()),
+        BlocProvider(create: (context) => DateSelectBloc()),
+        BlocProvider(create: (context) => ProjectSelectBloc()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],

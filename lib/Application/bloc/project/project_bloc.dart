@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Core/utils/interface.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Domain/repositories/project_repository.dart';
 
@@ -33,6 +34,10 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         }
       }
       emit(ProjectState(updatedProjects));
+    });
+
+    on<AddProjectToDB>((event, emit) {
+      _projectRepository.createProject(event.project);
     });
 
     on<AddReward>((event, emit) {

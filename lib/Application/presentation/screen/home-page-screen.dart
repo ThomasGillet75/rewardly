@@ -132,7 +132,12 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
               return BlocBuilder<ToggleBloc, ToggleState>(
                 builder: (context, state) {
                   if (state is ToggleInitial && state.isMesTachesSelected) {
-                    return const AddTaskWidget();
+                    return FocusScope(
+                      onFocusChange: (hasFocus) {
+                        if (!hasFocus) FocusScope.of(context).unfocus();
+                      },
+                      child: const AddTaskWidget(),
+                    );
                   } else {
                     return const AddProjectWidget();
                   }
