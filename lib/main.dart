@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
+import 'package:rewardly/Application/bloc/input_add/date_select_bloc.dart';
 import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application/bloc/signin/sign_in_bloc.dart';
 import 'package:rewardly/Application/bloc/signup/sign_up_bloc.dart';
@@ -17,6 +19,9 @@ import 'package:rewardly/Application/presentation/screen/sign_up_page_screen.dar
 import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
+
+import 'Application/bloc/priority_select/priority_select_bloc.dart';
+import 'Application/bloc/project_select/project_select_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +44,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SignUpBloc()),
         BlocProvider(create: (context) => SignInBloc()),
         BlocProvider(create: (context) => FriendsBloc()),
+        BlocProvider(create: (context) => PrioritySelectBloc()),
+        BlocProvider(create: (context) => DateSelectBloc()),
+        BlocProvider(create: (context) => ProjectSelectBloc()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],

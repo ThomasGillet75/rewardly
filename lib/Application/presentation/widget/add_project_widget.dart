@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rewardly/Application/bloc/input_add/date_select_bloc.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Application/presentation/widget/add_button_widget.dart';
 import 'package:rewardly/Application/presentation/widget/name_input_widget.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/core/color.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../bloc/add/add_bloc.dart';
+import '../../../Data/models/project_entity.dart';
 
 class AddProjectWidget extends StatefulWidget {
   const AddProjectWidget({super.key});
@@ -15,15 +18,12 @@ class AddProjectWidget extends StatefulWidget {
 }
 
 class _AddProjectWidgetState extends State<AddProjectWidget> {
-  final Uuid id = const Uuid();
-
   @override
   Widget build(BuildContext context) {
-    final TextEditingController projectController = TextEditingController();
+    final controller = TextEditingController();
+    final Uuid id = const Uuid();
 
-    return BlocProvider(
-      create: (context) => AddBloc(),
-      child: Material(
+    return  Material(
         color: Colors.transparent,
         child: IntrinsicHeight(
           child: Container(
@@ -43,55 +43,12 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                 children: [
                   Row(
                     children: [
-                      NameInputWidget(placeholder: "Nom du projet", controller: projectController),
+                      NameInputWidget(
+                          placeholder: "Nom du projet", controller: controller),
                       const SizedBox(width: 10),
-                      BlocConsumer<AddBloc, AddState>(
-                        listener: (context, state) {
-                          if (state is AddSuccess) {
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Le projet ${projectController.text} a été ajouté avec succès!'),
-                              ),
-                            );
-                          } else if (state is AddFailure) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(state.error),
-                              ),
-                            );
-                          }
-                        },
-                        builder: (context, state) => ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            if (projectController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Le nom du projet ne peut pas être vide."),
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom, left: 20, right: 20), // Ajustez "bottom" selon vos besoins
-                                ),
-                              );
-                            } else {
-                              context.read<AddBloc>().add(
-                                AddRequested.forProject(
-                                  project: Project(
-                                    name: projectController.text,
-                                    id: id.v1(),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Icon(Icons.send, color: Colors.black),
-                        ),
-                      ),
+                      AddButtonWidget(
+                        onPressed: () => AddProject(controller, id, context),
+                      )
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -100,7 +57,32 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
             ),
           ),
         ),
-      ),
-    );
+      );
+  }
+
+  void AddProject(TextEditingController controller, Uuid id, BuildContext context) {
+    final inputText = controller.text;
+    if (inputText.isNotEmpty) {
+      Project project = Project(id: id.v4(), name: inputText);
+      context.read<ProjectBloc>().add(AddProjectToDB(project));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Projet ${inputText} ajouté avec succès'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      controller.clear();
+      Navigator.pop(context);
+    } else {
+      Fluttertoast.showToast(
+        msg: "Veuillez donner un nom à votre projet",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
   }
 }

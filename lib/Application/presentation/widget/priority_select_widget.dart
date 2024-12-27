@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/priority_select/priority_select_bloc.dart';
+import 'package:rewardly/Application/bloc/project_select/project_select_bloc.dart';
 import 'package:rewardly/Core/task_priority_enum.dart';
 import 'package:rewardly/Core/utils/task_utils.dart';
 
@@ -8,8 +11,8 @@ import '../../../core/color.dart';
   Widget to select the priority of a task
 */
 class PrioritySelectWidget extends StatefulWidget{
-  PrioritySelectWidget ({super.key, required this.priorityController});
-  String priorityController;
+  PrioritySelectWidget ({Key? key, required this.priorityController}) : super(key: key);
+  TaskPriority? priorityController;
 
   @override
   State<PrioritySelectWidget> createState() => _PrioritySelectWidgetState();
@@ -18,9 +21,12 @@ class PrioritySelectWidget extends StatefulWidget{
 /*
   State of the PrioritySelectWidget
 */
-class _PrioritySelectWidgetState extends State<PrioritySelectWidget>{
+class _PrioritySelectWidgetState extends State<PrioritySelectWidget> {
   // List of priorities
-  final List<String> _priorities = [TaskUtils.priorityToString(TaskPriority.low), TaskUtils.priorityToString(TaskPriority.medium), TaskUtils.priorityToString(TaskPriority.high)];
+  final List<String> _priorities = [
+    TaskUtils.priorityToString(TaskPriority.low),
+    TaskUtils.priorityToString(TaskPriority.medium),
+    TaskUtils.priorityToString(TaskPriority.high)];
 
   @override
   Widget build(BuildContext context) {
@@ -34,33 +40,47 @@ class _PrioritySelectWidgetState extends State<PrioritySelectWidget>{
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: widget.priorityController,
-          hint: const Text(
-            "Priorité",
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.font),
-          ),
-          isExpanded: true,
-          icon: const Icon(Icons.arrow_drop_down, size: 16),
-          items: _priorities.map((priority) {
-            return DropdownMenuItem(
-              value: priority.toString(),
-              child: Text(
-                priority.toString().split('.').last,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+      child: BlocBuilder<PrioritySelectBloc, PrioritySelectState>(
+        builder: (context, state) {
+          // Récupération de la priorité sélectionnée
+          String? selectedPriority =
+              TaskUtils.priorityToString((state as PrioritySelectInitial).selectedPriority);
+
+          return DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: _priorities.contains(selectedPriority)
+                  ? selectedPriority
+                  : null,
+              // Définit la valeur sélectionnée ou null si invalide
+              hint: const Text(
+                "Priorité",
+                style: TextStyle(
                   fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.font,
                 ),
               ),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              widget.priorityController = value!;
-            });
-          },
-        ),
+              isExpanded: true,
+              icon: const Icon(Icons.arrow_drop_down, size: 16),
+              items: _priorities.map((priority) {
+                return DropdownMenuItem(
+                  value: priority,
+                  child: Text(
+                    priority.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) async {
+                TaskPriority taskPriority = await TaskUtils.stringToPriority(value!);
+                context.read<PrioritySelectBloc>().add(
+                  PrioritySelectSwitch(value: taskPriority),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }

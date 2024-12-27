@@ -28,3 +28,4 @@ class ProjectFailure extends ProjectState {
   @override
   List<Object> get props => [error];
 }
+

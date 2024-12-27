@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Core/utils/interface.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Domain/repositories/project_repository.dart';
 
@@ -61,7 +62,6 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       emit(ProjectFailure('Cannot add projects in the current state.'));
     }
   }
-
 
   Future<void> _onAddReward(AddReward event, Emitter<ProjectState> emit) async {
     if (state is ProjectLoaded) {

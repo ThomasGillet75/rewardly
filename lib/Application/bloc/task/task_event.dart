@@ -7,6 +7,11 @@ class AddTask extends TaskEvent {
   AddTask(this.task);
 }
 
+class AddTaskToDB extends TaskEvent {
+  final Task task;
+  AddTaskToDB(this.task);
+}
+
 class AddTaskToLists extends TaskEvent{
   final List<Task> tasks;
   AddTaskToLists(this.tasks);
