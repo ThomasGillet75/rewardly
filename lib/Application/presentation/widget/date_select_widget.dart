@@ -17,59 +17,50 @@ class _DateSelectWidgetState extends State<DateSelectWidget>{
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DateSelectBloc, DateSelectState>(
-      builder: (context, state) => Container(
-          child: GestureDetector(
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: null,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-              );
-              if (pickedDate != null) {
-                setState(() {
-                  context.read<DateSelectBloc>().add(DateSelectSwitch(value: pickedDate));
-                  print("-----------------");
-                  print("-----------------");
-                  print("-----------------");
-                  print("Date : $pickedDate");
-                  print("-----------------");
-                  print("-----------------");
-                  print("-----------------");
-                  widget.dateController.text =
-                  "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                });
-              }
-            },
-            child: Container(
-              height: 48, // Assure une hauteur cohérente
-              decoration: BoxDecoration(
-                color: AppColors.backgroundTextInput,
-                border: Border.all(
-                  color: AppColors.borderTextInput,
-                ),
-                borderRadius: BorderRadius.circular(20),
+      builder: (context, state) {
+        final selectedDate = state is DateSelectInitial ? state.selectedDate : null;
+
+        return GestureDetector(
+          onTap: () async {
+            // Ouvre le sélecteur de date
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: selectedDate ?? DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+            );
+            if (pickedDate != null) {
+              context.read<DateSelectBloc>().add(DateSelectSwitch(value: pickedDate));
+            }
+          },
+          child: Container(
+            height: 48, // Hauteur cohérente
+            decoration: BoxDecoration(
+              color: AppColors.backgroundTextInput,
+              border: Border.all(
+                color: AppColors.borderTextInput,
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0), // Alignement
-                child: Align(
-                  alignment: Alignment.centerLeft, // Alignement à gauche
-                  child: Text(
-                    widget.dateController.text.isNotEmpty
-                        ? widget.dateController.text
-                        : "Date",
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.font,
-                    ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  selectedDate != null
+                      ? "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"
+                      : "Date",
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.font,
                   ),
                 ),
               ),
             ),
           ),
-        )
+        );
+      },
     );
   }
 }
