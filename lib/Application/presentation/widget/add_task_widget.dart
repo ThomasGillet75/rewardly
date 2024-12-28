@@ -14,7 +14,6 @@ import 'package:uuid/uuid.dart';
 import '../../../Core/task_priority_enum.dart';
 import '../../../Data/models/task_entity.dart';
 import '../../bloc/priority_select/priority_select_bloc.dart';
-import '../../bloc/project/project_bloc.dart';
 import 'add_button_widget.dart';
 
 class AddTaskWidget extends StatefulWidget {
@@ -27,10 +26,6 @@ class AddTaskWidget extends StatefulWidget {
 class _AddTaskWidgetState extends State<AddTaskWidget> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
-  TaskPriority? priorityController;
-  String? projectController;
-  DateTime? _selectedDate = DateTime.now();
   final Uuid id = const Uuid();
 
   @override
@@ -53,31 +48,25 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               Row(
                 children: [
-                  NameInputWidget(
-                      placeholder: "Nom de la tâche",
-                      controller: nameController),
+                  NameInputWidget(placeholder: "Nom de la tâche", controller: nameController),
                 ],
               ),
               const SizedBox(height: 16),
               Row(
                 children: [
-                  DescriptionInputWidget(
-                      descriptionController: descriptionController),
+                  DescriptionInputWidget(descriptionController: descriptionController),
                 ],
               ),
               const SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  DateSelectWidget(
-                      dateController: dateController,
-                      selectedDate: _selectedDate!),
+                  DateSelectWidget(),
                   const SizedBox(width: 10),
                   Expanded(
-                      child: PrioritySelectWidget(
-                          priorityController: priorityController)),
+                      child: PrioritySelectWidget()),
                   const SizedBox(width: 10),
-                  ProjectSelectWidget(projectController: projectController),
+                  ProjectSelectWidget(),
                   const SizedBox(width: 10),
                   MultiBlocListener(
                     listeners: [
@@ -87,27 +76,20 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                       BlocListener<PrioritySelectBloc, PrioritySelectState>(
                         listener: (context, priorityState) {},
                       ),
-                      BlocListener<ProjectBloc, ProjectState>(
-                        listener: (context, projectState) {
-                          projectController = projectState.projects[0].id;
-                        },
+                      BlocListener<ProjectSelectBloc, ProjectSelectState>(
+                        listener: (context, projectState) {},
                       ),
                     ],
                     child: AddButtonWidget(
                       onPressed: () {
-                        final rootContext = Navigator.of(context).context;
                         final dateState = context.read<DateSelectBloc>().state;
                         final priorityState = context.read<PrioritySelectBloc>().state;
                         final projectState = context.read<ProjectSelectBloc>().state;
-                        if (checkIsNotEmpty(dateState, priorityState, projectState)) {
+                        if (checkIsNotEmpty(dateState as DateSelectInitial, priorityState, projectState)) {
                           AddTask(context, nameController, descriptionController, (dateState as DateSelectInitial).selectedDate, (priorityState as PrioritySelectInitial).selectedPriority, (projectState as ProjectSelectInitial).selectedProject);
-                          (dateState as DateSelectInitial).selectedDate = null;
-                          (priorityState as PrioritySelectInitial).selectedPriority = TaskPriority.none;
-                          (projectState as ProjectSelectInitial).selectedProject = "";
+                          resetValue(dateState, priorityState, projectState);
                         } else {
-                          (dateState as DateSelectInitial).selectedDate = null;
-                          (priorityState as PrioritySelectInitial).selectedPriority = TaskPriority.none;
-                          (projectState as ProjectSelectInitial).selectedProject = "";
+                          resetValue(dateState, priorityState, projectState);
                           Fluttertoast.showToast(
                             msg: "Veuillez remplir tous les champs",
                             toastLength: Toast.LENGTH_SHORT,
@@ -130,16 +112,17 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
     );
   }
 
+  void resetValue(DateSelectInitial dateState, PrioritySelectState priorityState, ProjectSelectState projectState) {
+    (dateState as DateSelectInitial).selectedDate = null;
+    (priorityState as PrioritySelectInitial).selectedPriority = TaskPriority.none;
+    (projectState as ProjectSelectInitial).selectedProject = "";
+    nameController.clear();
+    descriptionController.clear();
+  }
+
   bool checkIsNotEmpty(DateSelectState dateState, PrioritySelectState priorityState, ProjectSelectState projectState) => nameController.text.isNotEmpty &&  descriptionController.text.isNotEmpty && (dateState as DateSelectInitial).selectedDate != null && (priorityState as PrioritySelectInitial).selectedPriority != TaskPriority.none && (projectState as ProjectSelectInitial).selectedProject != "";
 
-  Future<void> AddTask(
-    BuildContext context,
-    TextEditingController nameController,
-    TextEditingController descriptionController,
-    DateTime? dateController,
-    TaskPriority? priorityController,
-    String projectController,
-  ) async {
+  Future<void> AddTask(BuildContext context, TextEditingController nameController, TextEditingController descriptionController, DateTime? dateController, TaskPriority? priorityController, String projectController,) async {
     final inputName = nameController.text;
     final inputDescription = descriptionController.text;
     final inputDate = dateController;
@@ -163,15 +146,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
           behavior: SnackBarBehavior.floating,
         ),
       );
-
-      // Réinitialisez les champs après l'ajout
-      nameController.clear();
-      descriptionController.clear();
-      dateController = null;
-
-      context.read<PrioritySelectBloc>().add(
-            PrioritySelectSwitch(value: TaskPriority.none),
-          );
       Navigator.pop(context);
     }
   }

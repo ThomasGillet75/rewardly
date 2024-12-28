@@ -4,9 +4,9 @@ import 'package:rewardly/Application/bloc/input_add/date_select_bloc.dart';
 import 'package:rewardly/core/color.dart';
 
 class DateSelectWidget extends StatefulWidget{
-  DateSelectWidget ({Key? key, required this.dateController, required this.selectedDate}) : super(key: key);
-  final TextEditingController dateController;
-  DateTime selectedDate;
+  DateSelectWidget ({Key? key}) : super(key: key);
+  final TextEditingController dateController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
 
   @override
   State<DateSelectWidget> createState() => _DateSelectWidgetState();
@@ -28,8 +28,14 @@ class _DateSelectWidgetState extends State<DateSelectWidget>{
               );
               if (pickedDate != null) {
                 setState(() {
-                  print("Date: " + (widget.selectedDate).toString());
                   context.read<DateSelectBloc>().add(DateSelectSwitch(value: pickedDate));
+                  print("-----------------");
+                  print("-----------------");
+                  print("-----------------");
+                  print("Date : $pickedDate");
+                  print("-----------------");
+                  print("-----------------");
+                  print("-----------------");
                   widget.dateController.text =
                   "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
                 });

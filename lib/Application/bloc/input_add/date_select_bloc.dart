@@ -10,6 +10,14 @@ part 'date_select_state.dart';
 
 class DateSelectBloc extends Bloc<DateSelectEvent, DateSelectState> {
   DateSelectBloc() : super(DateSelectInitial(null)) {
-    on<DateSelectSwitch>((event, emit) {emit(DateSelectInitial(event.value));});
+    on<DateSelectSwitch>((event, emit) {
+      print("********************************");
+      print("********************************");
+      print("********************************");
+      print(event.value);
+      print("********************************");
+      print("********************************");
+      print("********************************");
+      emit(DateSelectInitial(event.value));});
   }
 }

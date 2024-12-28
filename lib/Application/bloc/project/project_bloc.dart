@@ -13,11 +13,14 @@ part 'project_state.dart';
 class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   final ProjectRepository _projectRepository = ProjectRepository();
 
+
+
   ProjectBloc() : super(ProjectInitial()) {
     on<GetProjects>(_onGetProjects);
     on<AddProject>(_onAddProject);
     on<AddProjects>(_onAddProjects);
     on<AddReward>(_onAddReward);
+    on<AddProjectToDB>(_onAddProjectToDB);
   }
 
   Future<void> _onGetProjects(GetProjects event,
@@ -77,6 +80,21 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       }
     } else {
       emit(ProjectFailure('Cannot add reward in the current state.'));
+    }
+  }
+
+  Future<void> _onAddProjectToDB(AddProjectToDB event, Emitter<ProjectState> emit) async {
+    if (state is ProjectLoaded) {
+      final currentState = state as ProjectLoaded;
+      try {
+        await _projectRepository.createProject(event.project);
+        final updatedProjects = [...currentState.projects, event.project];
+        emit(ProjectLoaded(updatedProjects));
+      } catch (e) {
+        emit(ProjectFailure('Failed to add project: $e'));
+      }
+    } else {
+      emit(ProjectFailure('Cannot add project in the current state.'));
     }
   }
 }

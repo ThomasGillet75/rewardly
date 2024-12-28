@@ -11,7 +11,7 @@ import '../../../core/color.dart';
   Widget to select the priority of a task
 */
 class PrioritySelectWidget extends StatefulWidget{
-  PrioritySelectWidget ({Key? key, required this.priorityController}) : super(key: key);
+  PrioritySelectWidget ({Key? key}) : super(key: key);
   TaskPriority? priorityController;
 
   @override

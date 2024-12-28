@@ -23,6 +23,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<RemoveSubTask>(_onRemoveSubTask);
     on<RemoveTask>(_onRemoveTask);
     on<Clear>(_onClear);
+    on<AddTaskToDB>(_onAddTaskToDB);
   }
 
   void _onAddTask(AddTask event, Emitter<TaskState> emit) {
@@ -92,5 +93,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   void _onClear(Clear event, Emitter<TaskState> emit) {
     emit(TaskLoaded([]));
+  }
+
+  void _onAddTaskToDB(AddTaskToDB event, Emitter<TaskState> emit) {
+    print("vas-y ajoute");
+    taskRepository.createTask(event.task);
   }
 }

@@ -8,7 +8,7 @@ part 'project_select_state.dart';
 class ProjectSelectBloc extends Bloc<ProjectSelectEvent, ProjectSelectState> {
   ProjectSelectBloc() : super(ProjectSelectInitial("")) {
     on<ProjectSelectSwitch>((event, emit) {
-      print("test:" + event.value);
+      print("Event déclenché");
       emit(ProjectSelectInitial(event.value));
     });
   }

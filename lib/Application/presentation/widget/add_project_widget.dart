@@ -18,10 +18,11 @@ class AddProjectWidget extends StatefulWidget {
 }
 
 class _AddProjectWidgetState extends State<AddProjectWidget> {
+  final controller = TextEditingController();
+  final Uuid id = const Uuid();
+
   @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
-    final Uuid id = const Uuid();
 
     return  Material(
         color: Colors.transparent,
