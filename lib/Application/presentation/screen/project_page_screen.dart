@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/add_reward_widget.dart';
 import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
@@ -58,43 +57,35 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         children: [
-          BlocBuilder<ProjectBloc, ProjectState>(
-            builder: (context, projectState) {
-              if (projectState is ProjectLoaded) {
-                final updatedProject = projectState.projects.firstWhere(
-                  (proj) => proj.id == widget.project.id,
-                  orElse: () => widget.project,
-                );
-
+          BlocBuilder<TaskBloc, TaskState>(
+            builder: (context, taskState) {
+              if (taskState is TaskLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (taskState is TaskLoaded &&
+                  taskState.isProjectContext &&
+                  taskState.projectId == widget.project.id) {
                 return Column(
                   children: [
                     RewardCardWidget(
-                      project: updatedProject,
-                      taskList:
-                          (context.read<TaskBloc>().state as TaskLoaded).tasks,
+                      project: widget.project,
+                      taskList: taskState.tasks,
                       onRewardSelected: _showRewardDetails,
                     ),
-                    BlocBuilder<TaskBloc, TaskState>(
-                      builder: (context, taskState) {
-                        if (taskState is TaskLoaded) {
-                          return ContainerFilteringTaskWidget(
-                            tasks: taskState.tasks,
-                            onTaskSelected: _showTaskDetails,
-                            selectedFilter: "Tout",
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      },
+                    ContainerFilteringTaskWidget(
+                      tasks: taskState.tasks,
+                      onTaskSelected: _showTaskDetails,
+                      selectedFilter: "Tout",
                     ),
                   ],
                 );
+              } else if (taskState is TaskFailure) {
+                return Center(
+                    child: Text('Failed to load tasks: ${taskState.error}'));
               } else {
                 return const Center(child: CircularProgressIndicator());
               }
             },
-          )
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -105,7 +96,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
             ),
-            builder: (context) => const AddTaskWidget(),
+            builder: (context) => AddTaskWidget(),
           );
         },
         child: const Icon(Icons.add),

@@ -36,8 +36,6 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
     );
   }
 
-
-
   @override
   void initState() {
     super.initState();
@@ -66,7 +64,6 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
       routeObserver.subscribe(this, modalRoute);
     }
   }
-
 
   @override
   void dispose() {
