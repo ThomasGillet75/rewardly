@@ -25,15 +25,11 @@ class FirestoreFriendlyService {
   }
 
   Future<void> removeFriend(Friendly friendly) async {
-    final QuerySnapshot friendSnapshot = await _firestore
-        .collection('friendly')
-        .where('user_id', isEqualTo: _firebaseAuth.currentUser!.uid)
-        .where('friend_id', isEqualTo: friendly.friendId)
-        .get();
-
-    for (var doc in friendSnapshot.docs) {
-      await _firestore.collection('friendly').doc(doc.id).delete();
-    }
+    await _firestore.collection('friendly').where('user_id', isEqualTo: _firebaseAuth.currentUser!.uid).where('friend_id', isEqualTo: friendly.friendId).get().then((value) {
+      value.docs.forEach((element) {
+        _firestore.collection('friendly').doc(element.id).delete();
+      });
+    });
   }
 
   Future<List<Users>> searchInFriend(String pseudo) async {
