@@ -11,6 +11,8 @@ class FirestoreFriendlyService {
   Future<void> addFriend(Friendly friend) async {
     friend.userId = _firebaseAuth.currentUser!.uid;
     await _firestore.collection('friendly').add(friend.toMap());
+    final Friendly friend2 = Friendly(friendId: friend.userId, userId: friend.friendId);
+    await _firestore.collection('friendly').add(friend2.toMap());
   }
 
 
@@ -26,6 +28,11 @@ class FirestoreFriendlyService {
 
   Future<void> removeFriend(Friendly friendly) async {
     await _firestore.collection('friendly').where('user_id', isEqualTo: _firebaseAuth.currentUser!.uid).where('friend_id', isEqualTo: friendly.friendId).get().then((value) {
+      value.docs.forEach((element) {
+        _firestore.collection('friendly').doc(element.id).delete();
+      });
+    });
+    await _firestore.collection('friendly').where('user_id', isEqualTo: friendly.friendId).where('friend_id', isEqualTo: _firebaseAuth.currentUser!.uid).get().then((value) {
       value.docs.forEach((element) {
         _firestore.collection('friendly').doc(element.id).delete();
       });

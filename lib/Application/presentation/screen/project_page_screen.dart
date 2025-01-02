@@ -8,11 +8,15 @@ import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart
 import 'package:rewardly/Application/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
+import 'package:rewardly/Application/presentation/widget/friend_widget/icon_add_friend_to_project_widget.dart';
+
+import '../../../Data/models/user_entity.dart';
 
 class ProjectPageScreen extends StatefulWidget {
-  const ProjectPageScreen({super.key, required this.project});
+  const ProjectPageScreen({super.key, required this.project, required this.user});
 
   final Project project;
+  final Map<String, List<Users>> user;
 
   @override
   State<ProjectPageScreen> createState() => _ProjectPageScreenState();
@@ -53,6 +57,10 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.project.name),
+        actions: [
+
+          IconAddFriendButtonWidget(users: widget.user,project: widget.project),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

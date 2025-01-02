@@ -12,7 +12,7 @@ import 'package:rewardly/Application/presentation/widget/task_details_widget.dar
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/main.dart';
 
-import '../widget/icon_friends_button_widget.dart';
+import '../widget/friend_widget/icon_friends_button_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
@@ -116,9 +116,13 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.projects.length,
+
                         itemBuilder: (context, index) {
+                          final project = state.projects[index];
+                          final users = state.users;
                           return ProjectCarWidget(
-                            project: state.projects[index],
+                            project: project,
+                            users: users,
                           );
                         },
                       );

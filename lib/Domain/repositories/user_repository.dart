@@ -19,5 +19,22 @@ class UserRepository {
     return await _userService.searchUsers(pseudo);
   }
 
+  Future<Map<String, List<Users>>>getUsers() async  {
+
+    return await  _userService.getUsersByProject();
+  }
+
+
+  Future<List<Users>>getUsersNotInProject(String projectId) async  {
+
+    return await  _userService.getUsersNotInProject(projectId);
+  }
+
+  Future<List<Users>>searchUsersNotInProject(String pseudo) {
+    return _userService.searchUsersNotInProject(pseudo);
+  }
+
+
+
 }
 

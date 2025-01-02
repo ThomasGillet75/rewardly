@@ -2,14 +2,15 @@ import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/project_model.dart';
 import 'package:rewardly/Data/services/firestore_project_service.dart';
 
+import '../../Data/services/firestore_project_members_service.dart';
+
 class ProjectRepository {
   final FirestoreProjectService _projectService = FirestoreProjectService();
+  final ProjectMembersService _projectMembersService = ProjectMembersService();
 
-  Stream<List<Project>> getProjects() {
+  Future<Stream<List<Project>>> getProjects() async {
     return _projectService.getAll().map((projectModels) {
-      return projectModels
-          .map((projectModel) => projectModelToProject(projectModel))
-          .toList();
+      return projectModels.map((projectModel) => projectModelToProject(projectModel)).toList();
     });
   }
 
@@ -18,8 +19,15 @@ class ProjectRepository {
     return projectModelToProject(projectModel);
   }
 
+  Future<List<Project>> getProjectsByUserId(String userId) async {
+    final projectModels = await _projectService.getProjectsByUserId(userId);
+    return projectModels.map((projectModel) => projectModelListToProject(projectModel)).toList();
+  }
+
   Future<void> createProject(Project project) async {
     await _projectService.add(projectToProjectModel(project));
+    await _projectMembersService.addOwner(project.id);
+
   }
 
   Future<void> updateProject(Project project) async {
@@ -34,6 +42,14 @@ class ProjectRepository {
     );
   }
 
+  Project projectModelListToProject(List<ProjectModel> projectModel) {
+    return Project(
+      name: projectModel[0].name,
+      id: projectModel[0].id,
+      reward: projectModel[0].reward,
+    );
+  }
+
   ProjectModel projectToProjectModel(Project project) {
     return ProjectModel(
       name: project.name,
@@ -43,3 +59,4 @@ class ProjectRepository {
   }
 
 }
+

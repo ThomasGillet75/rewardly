@@ -13,8 +13,9 @@ class ProjectLoading extends ProjectState {}
 
 class ProjectLoaded extends ProjectState {
   final List<Project> projects;
+  final Map<String, List<Users>> users;
 
-  const ProjectLoaded(this.projects);
+  const ProjectLoaded(this.projects, this.users);
 
   @override
   List<Object> get props => [projects];
@@ -27,4 +28,6 @@ class ProjectFailure extends ProjectState {
 
   @override
   List<Object> get props => [error];
+
+
 }

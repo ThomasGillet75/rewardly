@@ -4,10 +4,13 @@ import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/core/color.dart';
 
+import '../../../Data/models/user_entity.dart';
+
 class ProjectCarWidget extends StatefulWidget {
-  const ProjectCarWidget({super.key, required this.project});
+  const ProjectCarWidget({super.key, required this.project, required this.users});
 
   final Project project;
+  final Map<String, List<Users>> users;
 
   @override
   State<ProjectCarWidget> createState() => _ProjectCardWidgetState();
@@ -22,7 +25,10 @@ class _ProjectCardWidgetState extends State<ProjectCarWidget> {
         Navigator.pushNamed(
           context,
           '/projectPage',
-          arguments: widget.project,
+          arguments: {
+            'project': widget.project,
+            'users': widget.users,
+          },
         );
       },
       child: Container(

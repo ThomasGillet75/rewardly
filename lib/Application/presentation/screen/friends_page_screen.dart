@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_event.dart';
 import 'package:rewardly/Application/bloc/friends/friends_state.dart';
-import 'package:rewardly/Application/presentation/widget/add_friend_button_widget.dart';
-import 'package:rewardly/Application/presentation/widget/friendly_card_widget.dart';
+import 'package:rewardly/Application/presentation/widget/friend_widget/add_friend_button_widget.dart';
+import 'package:rewardly/Application/presentation/widget/friend_widget/friendly_card_widget.dart';
 
 
 class FriendsPageScreen extends StatefulWidget {

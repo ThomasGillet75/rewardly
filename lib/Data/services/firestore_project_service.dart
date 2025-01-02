@@ -1,10 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rewardly/Data/models/project_members_entity.dart';
 import 'package:rewardly/Data/models/project_model.dart';
 import 'package:rewardly/Data/services/firestore_data_service.dart';
+import 'package:rewardly/Data/services/firestore_project_members_service.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../Domain/repositories/project_members_repository.dart';
 
 class FirestoreProjectService extends IDataService<ProjectModel> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ProjectMembersService _projectMembersService = ProjectMembersService();
+
   final Uuid _uuid = const Uuid();
 
   @override
@@ -23,11 +31,12 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
       return ProjectModel.fromMap(doc.data()!);
     });
   }
-
-  @override
-  Stream<List<ProjectModel>> getAll() {
-    return _firestore.collection('projects').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => ProjectModel.fromMap(doc.data()))
+  Future<Stream<List<ProjectModel>>> getProjectsByUserId(String userId) async {
+    final QuerySnapshot projectSnapshot = await _firestore.collection('project_members').where('user_id', isEqualTo: userId).get();
+    final List<String> projectIds = projectSnapshot.docs.map((doc) => doc['project_id'] as String).toList();
+    return _firestore.collection('projects').where('id', whereIn: projectIds).snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((doc) => ProjectModel.fromMap(doc.data()))
           .toList();
     });
   }
@@ -44,4 +53,24 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
       throw Exception('Document not found');
     }
   }
+
+  @override
+
+  Stream<List<ProjectModel>> getAll() {
+
+    final projectMembersStream = _projectMembersService.getProjectMembersByUserId(_auth.currentUser!.uid);
+    return projectMembersStream.asyncExpand((projectMembers) {
+      final projectIds = projectMembers.map((member) => member.projectId).toList();
+      return _firestore
+          .collection('projects')
+          .where('project_id', whereIn: projectIds)
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs.map((doc) => ProjectModel.fromMap(doc.data())).toList();
+      });
+    });
+  }
+
 }
+
+

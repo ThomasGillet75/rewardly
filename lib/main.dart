@@ -20,6 +20,7 @@ import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
 
 import 'Application/bloc/priority_select/priority_select_bloc.dart';
+import 'Application/bloc/project_members/project_member_bloc.dart';
 import 'Application/bloc/project_select/project_select_bloc.dart';
 
 Future<void> main() async {
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => PrioritySelectBloc()),
         BlocProvider(create: (context) => DateSelectBloc()),
         BlocProvider(create: (context) => ProjectSelectBloc()),
+        BlocProvider(create: (context) => ProjectMemberBloc()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],
@@ -60,9 +62,11 @@ class MyApp extends StatelessWidget {
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/projectPage') {
-            final project = settings.arguments as Project;
+            final args = settings.arguments as Map<String, dynamic>;
+            final project = args['project'] as Project;
+            final user = args['users'] as  Map<String, List<Users>> ;
             return MaterialPageRoute(
-              builder: (context) => ProjectPageScreen(project: project),
+              builder: (context) => ProjectPageScreen(project: project, user: user),
             );
           }
           return null;
