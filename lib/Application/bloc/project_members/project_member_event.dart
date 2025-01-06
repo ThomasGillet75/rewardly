@@ -18,8 +18,9 @@ class ProjectMemberLoad extends ProjectMembersEvent {
 
 class ProjectMembersCreate extends ProjectMembersEvent {
   final ProjectMembersEntity projectMembers;
+  final String projectId;
 
-  const ProjectMembersCreate(this.projectMembers);
+  const ProjectMembersCreate(this.projectMembers, this.projectId);
 
   @override
   List<Object> get props => [projectMembers];

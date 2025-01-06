@@ -37,7 +37,8 @@ class ProjectMemberBloc extends Bloc<ProjectMembersEvent, ProjectMembersState> {
     try {
       emit(ProjectMembersLoading());
       await projectMembersRepository.addMembers(event.projectMembers);
-      final users = userRepository.getUsers();
+      final users = await userRepository.getUsersNotInProject(event.projectId);
+      emit(ProjectMembersLoaded(users));
     } catch (e) {
       emit(ProjectMembersFailure(
           'Error adding project members: ${e.toString()}'));

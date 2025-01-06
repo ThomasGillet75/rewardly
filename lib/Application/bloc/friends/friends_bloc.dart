@@ -29,12 +29,13 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     }
   }
 
+
+
   Future<void> _onSearchInFriends(
       SearchInFriends event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
     try {
-      final List<Users> friends =
-          await _friendlyRepository.searchInFriend(event.pseudo);
+      final List<Users> friends = await _friendlyRepository.searchInFriend(event.pseudo);
       emit(FriendsSuccessAdd(friends));
     } catch (e) {
       emit(FriendsFailure(error: _mapErrorToMessage(e)));
@@ -50,7 +51,9 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     emit(FriendsLoading());
     try {
       await _friendlyRepository.addFriend(event.friend);
-      emit(FriendsAdded());
+      final List<Users> friends = await _friendlyRepository.getUser();
+
+      emit(FriendsSuccessAdd(friends));
     } catch (e) {
       emit(FriendsFailure(error: _mapErrorToMessage(e)));
     }
@@ -71,7 +74,8 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     emit(FriendsLoading());
     try {
       await _friendlyRepository.removeFriend(event.friend);
-      emit(const FriendsRemoved([]));
+      List<Users> friends = await _friendlyRepository.getUser();
+      emit( FriendsRemoved( friendly: const [], friends: friends));
     } catch (e) {
       emit(FriendsFailure(error: _mapErrorToMessage(e)));
     }

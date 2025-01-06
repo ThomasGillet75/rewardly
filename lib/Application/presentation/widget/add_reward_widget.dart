@@ -19,6 +19,7 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
     widget.project.reward = name;
     try {
       BlocProvider.of<ProjectBloc>(context).add(AddReward(widget.project));
+
     } catch (e) {
       print(e);
     }

@@ -17,17 +17,25 @@ class _AddFriendButtonWidgetState extends State<AddFriendButtonWidget> {
 
   void _searchFriends(BuildContext context) {
     if (searchController.text.isEmpty) {
-      _resetSearch(context);
+      _getFriends(context);
     } else {
-      context
-          .read<FriendsBloc>()
+      context.read<FriendsBloc>()
           .add(SearchFriends(pseudo: searchController.text));
     }
+
   }
 
   void _resetSearch(BuildContext context) {
     searchController.clear();
+    if(searchController.text.isEmpty){
+      _getFriends(context);
+    }
+
     context.read<FriendsBloc>().add(const ResetSearch());
+  }
+
+  void _getFriends(BuildContext context) {
+    context.read<FriendsBloc>().add(const GetFriends());
   }
 
   @override
@@ -64,9 +72,7 @@ class _AddFriendButtonWidgetState extends State<AddFriendButtonWidget> {
                   const SizedBox(height: 16),
                   BlocBuilder<FriendsBloc, FriendsState>(
                     builder: (context, state) {
-                      if (state is FriendsLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state is FriendsSuccess) {
+                      if (state is FriendsSuccess) {
                         return Card(
                           child: ListView.builder(
                             shrinkWrap: true,

@@ -69,9 +69,7 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
                       onChanged: (value) => _searchInFriends(context),
                     ),
                     const SizedBox(height: 16),
-                    if (state is FriendsLoading)
-                      const Center(child: CircularProgressIndicator())
-                    else if (state is FriendsSuccessAdd)
+                    if (state is FriendsSuccessAdd)
                       Card(
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -83,6 +81,19 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
                           },
                         ),
                       )
+                      else if(state is FriendsRemoved)
+                        Card(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.friends.length,
+                            itemBuilder: (context, index) {
+                              final friend = state.friends[index];
+                              return FriendlyCardWidgetCard(friend: friend); // Ensure friend.user is a Users object
+                            },
+                          ),
+                        )
+
                     else if (state is FriendsFailure)
                         Center(child: Text('Erreur: ${state.error}')),
                     const SizedBox(height: 16),

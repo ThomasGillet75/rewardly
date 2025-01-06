@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:rewardly/Data/models/friendly_entity.dart';
 
+import '../../../Data/models/user_entity.dart';
+
 abstract class FriendsEvent extends Equatable {
   const FriendsEvent();
 
@@ -44,6 +46,8 @@ class GetFriends extends FriendsEvent {
 
 class RemoveFriend extends FriendsEvent {
   final Friendly friend;
+
+
 
   const RemoveFriend({required this.friend});
 

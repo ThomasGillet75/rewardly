@@ -18,8 +18,8 @@ class FriendsMembersWidget extends StatefulWidget {
 class _FriendsMembersWidgetState extends State<FriendsMembersWidget> {
   final Map<String, bool> _addedStatus = {}; // Tracks each user's added status.
 
-  void _addProjectMembers(BuildContext context, ProjectMembersEntity user) {
-    context.read<ProjectMemberBloc>().add(ProjectMembersCreate(user));
+  void _addProjectMembers(BuildContext context, ProjectMembersEntity user, String projectId) {
+    context.read<ProjectMemberBloc>().add(ProjectMembersCreate(user, projectId));
   }
 
   @override
@@ -92,7 +92,7 @@ class _FriendsMembersWidgetState extends State<FriendsMembersWidget> {
                       projectId: widget.project.id,
                       userId: user.id,
                     );
-                    _addProjectMembers(context, projectMember);
+                    _addProjectMembers(context, projectMember, widget.project.id);
                   }
                 },
               ),

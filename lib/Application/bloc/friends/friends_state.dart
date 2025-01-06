@@ -25,9 +25,11 @@ class FriendsSuccess extends FriendsState {
 class FriendsAdded extends FriendsState {}
 
 class FriendsRemoved extends FriendsState {
-  final List<Friendly> friendly;
 
-  const FriendsRemoved(this.friendly);
+  final List<Friendly> friendly;
+ final List <Users> friends;
+
+   const FriendsRemoved({required this.friendly, required this.friends});
 
   @override
   List<Object> get props => [friendly];
