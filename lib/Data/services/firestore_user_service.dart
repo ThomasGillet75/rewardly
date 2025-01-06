@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
-import 'package:rewardly/Data/services/firestore_project_service.dart';
 
 import '../models/project_members_entity.dart';
 import 'firestore_project_members_service.dart';
@@ -40,9 +38,6 @@ class AuthService {
       // user id is the same as the user id in firebase
       user.id = _auth.currentUser!.uid;
 
-      // Send email verification
-      await _auth.currentUser!.sendEmailVerification();
-
       // Store user data in Firestore
       await _firestore.collection('users').doc(credential.user!.uid).set(user.toMap());
 
@@ -63,11 +58,18 @@ class AuthService {
 
   Future<List<Users>> searchUsers(String pseudo) async {
     final querySnapshot = await _firestore.collection('users').get();
-    final friendlyQuerySnapshot = await _firestore.collection('friendly').get();
-    // Filter results manually to find substrings
+    final friendlyQuerySnapshot = await _firestore.collection('friendly')
+        .where('user_id', isEqualTo: _auth.currentUser!.uid)
+        .get();
+
+    final friendIds = friendlyQuerySnapshot.docs
+        .map((doc) => doc['friend_id'] as String)
+        .toSet();
+
+    // Filter results manually to find substrings and exclude friends
     return querySnapshot.docs
         .map((doc) => Users.fromMap(doc.data()))
-        .where((user) => user.pseudo.contains(pseudo) && user.id != _auth.currentUser!.uid && friendlyQuerySnapshot.docs.every((doc) => doc['friend_id'] != user.id))
+        .where((user) => user.pseudo.contains(pseudo) && user.id != _auth.currentUser!.uid && !friendIds.contains(user.id))
         .toList();
   }
 
