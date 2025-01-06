@@ -55,17 +55,17 @@ class TaskRepository {
     });
   }
 
-Future<void> addSubTask(SubTask task) async {
-  TaskModel taskModel = taskToTaskModel(task);
-  await _taskService.add(taskModel);
-  return;
-}
+  Future<void> addSubTask(SubTask task) async {
+    TaskModel taskModel = taskToTaskModel(task);
+    await _taskService.add(taskModel);
+    return;
+  }
 
-Future<void> updateSubTask(SubTask task) async {
-  TaskModel taskModel = taskToTaskModel(task);
-  await _taskService.update(taskModel);
-  return;
-}
+  Future<void> updateSubTask(SubTask task) async {
+    TaskModel taskModel = taskToTaskModel(task);
+    await _taskService.update(taskModel);
+    return;
+  }
 
   Future<void> updateTask(Task task) async {
     await _taskService.update(taskToTaskModel(task));

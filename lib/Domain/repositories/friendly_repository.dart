@@ -1,12 +1,9 @@
-
-
-
 import 'package:rewardly/Data/models/friendly_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
 import 'package:rewardly/Data/services/firestore_friendly_service.dart';
 
 class FriendlyRepository {
-final fireStoreFriendlyService = FirestoreFriendlyService();
+  final fireStoreFriendlyService = FirestoreFriendlyService();
 
   Future<void> addFriend(Friendly friend) async {
     await fireStoreFriendlyService.addFriend(friend);
@@ -20,8 +17,7 @@ final fireStoreFriendlyService = FirestoreFriendlyService();
     await fireStoreFriendlyService.removeFriend(friend);
   }
 
-Future<List<Users>> searchInFriend(String pseudo) async {
-   return await fireStoreFriendlyService.searchInFriend(pseudo);
+  Future<List<Users>> searchInFriend(String pseudo) async {
+    return await fireStoreFriendlyService.searchInFriend(pseudo);
   }
-
 }

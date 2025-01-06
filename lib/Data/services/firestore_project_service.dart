@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rewardly/Data/models/project_members_entity.dart';
 import 'package:rewardly/Data/models/project_model.dart';
 import 'package:rewardly/Data/services/firestore_data_service.dart';
 import 'package:rewardly/Data/services/firestore_project_members_service.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../Domain/repositories/project_members_repository.dart';
 
 class FirestoreProjectService extends IDataService<ProjectModel> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -31,15 +28,24 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
       return ProjectModel.fromMap(doc.data()!);
     });
   }
+
   Future<Stream<List<ProjectModel>>> getProjectsByUserId(String userId) async {
-    final QuerySnapshot projectSnapshot = await _firestore.collection('project_members').where('user_id', isEqualTo: userId).get();
-    final List<String> projectIds = projectSnapshot.docs.map((doc) => doc['project_id'] as String).toList();
+    final QuerySnapshot projectSnapshot = await _firestore
+        .collection('project_members')
+        .where('user_id', isEqualTo: userId)
+        .get();
+    final List<String> projectIds =
+        projectSnapshot.docs.map((doc) => doc['project_id'] as String).toList();
 
     if (projectIds.isEmpty) {
       return Stream.value([]);
     }
 
-    return _firestore.collection('projects').where('id', whereIn: projectIds).snapshots().map((snapshot) {
+    return _firestore
+        .collection('projects')
+        .where('id', whereIn: projectIds)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs
           .map((doc) => ProjectModel.fromMap(doc.data()))
           .toList();
@@ -61,9 +67,11 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
 
   @override
   Stream<List<ProjectModel>> getAll() {
-    final projectMembersStream = _projectMembersService.getProjectMembersByUserId(_auth.currentUser!.uid);
+    final projectMembersStream = _projectMembersService
+        .getProjectMembersByUserId(_auth.currentUser!.uid);
     return projectMembersStream.asyncExpand((projectMembers) {
-      final projectIds = projectMembers.map((member) => member.projectId).toList();
+      final projectIds =
+          projectMembers.map((member) => member.projectId).toList();
 
       if (projectIds.isEmpty) {
         return Stream.value([]);
@@ -74,11 +82,10 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
           .where('id', whereIn: projectIds)
           .snapshots()
           .map((snapshot) {
-        return snapshot.docs.map((doc) => ProjectModel.fromMap(doc.data())).toList();
+        return snapshot.docs
+            .map((doc) => ProjectModel.fromMap(doc.data()))
+            .toList();
       });
     });
   }
-
 }
-
-

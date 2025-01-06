@@ -9,31 +9,23 @@ class UserRepository {
     return await _userService.signInWithEmail(email, password);
   }
 
-  Future<UserCredential> signUpWithEmail(Users user ) async {
+  Future<UserCredential> signUpWithEmail(Users user) async {
     return await _userService.signUpWithEmail(user);
   }
 
-  Future<List<Users>>getUser(String pseudo) async {
-
+  Future<List<Users>> getUser(String pseudo) async {
     return await _userService.searchUsers(pseudo);
   }
 
-  Future<Map<String, List<Users>>>getUsers() async  {
-
-    return await  _userService.getUsersByProject();
+  Future<Map<String, List<Users>>> getUsers() async {
+    return await _userService.getUsersByProject();
   }
 
-
-  Future<List<Users>>getUsersNotInProject(String projectId) async  {
-
-    return await  _userService.getUsersNotInProject(projectId);
+  Future<List<Users>> getUsersNotInProject(String projectId) async {
+    return await _userService.getUsersNotInProject(projectId);
   }
 
-  Future<List<Users>>searchUsersNotInProject(String pseudo) {
+  Future<List<Users>> searchUsersNotInProject(String pseudo) {
     return _userService.searchUsersNotInProject(pseudo);
   }
-
-
-
 }
-

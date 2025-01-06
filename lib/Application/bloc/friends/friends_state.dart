@@ -9,8 +9,7 @@ abstract class FriendsState extends Equatable {
   List<Object> get props => [];
 }
 
-class FriendsInitial extends FriendsState {
-}
+class FriendsInitial extends FriendsState {}
 
 class FriendsLoading extends FriendsState {}
 
@@ -23,11 +22,10 @@ class FriendsSuccess extends FriendsState {
   List<Object> get props => [friends];
 }
 
-class FriendsAdded extends FriendsState {
-}
+class FriendsAdded extends FriendsState {}
 
 class FriendsRemoved extends FriendsState {
-  final List <Friendly> friendly;
+  final List<Friendly> friendly;
 
   const FriendsRemoved(this.friendly);
 
@@ -43,7 +41,6 @@ class FriendsSuccessAdd extends FriendsState {
   @override
   List<Object> get props => [friends];
 }
-
 
 class FriendsFailure extends FriendsState {
   final String error;

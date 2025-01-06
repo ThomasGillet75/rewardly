@@ -1,15 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:rewardly/Data/models/friendly_entity.dart';
 
-
-
 abstract class FriendsEvent extends Equatable {
   const FriendsEvent();
 
   @override
   List<Object> get props => [];
 }
-
 
 class SearchInFriends extends FriendsEvent {
   final String pseudo;
@@ -19,7 +16,6 @@ class SearchInFriends extends FriendsEvent {
   @override
   List<Object> get props => [pseudo];
 }
-
 
 class SearchFriends extends FriendsEvent {
   final String pseudo;
