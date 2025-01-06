@@ -34,7 +34,14 @@ class AddSubTask extends TaskEvent {
   List<Object?> get props => [task];
 }
 
-class GetTasks extends TaskEvent {}
+class GetTasks extends TaskEvent {
+  final String userId;
+
+  const GetTasks(this.userId);
+
+  @override
+  List<Object?> get props => [userId];
+}
 
 class GetTasksByProjectId extends TaskEvent {
   final String projectId;

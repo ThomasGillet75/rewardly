@@ -6,7 +6,6 @@ import 'package:rewardly/Application/bloc/priority_select/priority_select_bloc.d
 import 'package:rewardly/Application/bloc/project_select/project_select_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/date_select_widget.dart';
-import 'package:rewardly/Application/presentation/widget/description_input_widget.dart';
 import 'package:rewardly/Application/presentation/widget/name_input_widget.dart';
 import 'package:rewardly/Application/presentation/widget/priority_select_widget.dart';
 import 'package:rewardly/Application/presentation/widget/project_select_widget.dart';
@@ -25,7 +24,6 @@ class AddTaskWidget extends StatefulWidget {
 
 class _AddTaskWidgetState extends State<AddTaskWidget> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
   final Uuid id = const Uuid();
 
   @override
@@ -49,12 +47,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               Row(
                 children: [
                   NameInputWidget(placeholder: "Nom de la tâche", controller: nameController),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  DescriptionInputWidget(descriptionController: descriptionController),
                 ],
               ),
               const SizedBox(height: 16),
@@ -86,7 +78,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         final priorityState = context.read<PrioritySelectBloc>().state;
                         final projectState = context.read<ProjectSelectBloc>().state;
                         if (checkIsNotEmpty(dateState as DateSelectInitial, priorityState, projectState)) {
-                          addTask(context, nameController, descriptionController, (dateState).selectedDate, (priorityState as PrioritySelectInitial).selectedPriority, (projectState as ProjectSelectInitial).selectedProject);
+                          addTask(context, nameController, (dateState).selectedDate, (priorityState as PrioritySelectInitial).selectedPriority, (projectState as ProjectSelectInitial).selectedProject);
                           resetValue(dateState, priorityState, projectState);
                         } else {
                           resetValue(dateState, priorityState, projectState);
@@ -117,21 +109,19 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
     (priorityState as PrioritySelectInitial).selectedPriority = TaskPriority.none;
     (projectState as ProjectSelectInitial).selectedProject = "";
     nameController.clear();
-    descriptionController.clear();
   }
 
-  bool checkIsNotEmpty(DateSelectState dateState, PrioritySelectState priorityState, ProjectSelectState projectState) => nameController.text.isNotEmpty &&  descriptionController.text.isNotEmpty && (dateState as DateSelectInitial).selectedDate != null && (priorityState as PrioritySelectInitial).selectedPriority != TaskPriority.none && (projectState as ProjectSelectInitial).selectedProject != "";
+  bool checkIsNotEmpty(DateSelectState dateState, PrioritySelectState priorityState, ProjectSelectState projectState) => nameController.text.isNotEmpty && (dateState as DateSelectInitial).selectedDate != null && (priorityState as PrioritySelectInitial).selectedPriority != TaskPriority.none && (projectState as ProjectSelectInitial).selectedProject != "";
 
-  Future<void> addTask(BuildContext context, TextEditingController nameController, TextEditingController descriptionController, DateTime? dateController, TaskPriority? priorityController, String projectController,) async {
+  Future<void> addTask(BuildContext context, TextEditingController nameController, DateTime? dateController, TaskPriority? priorityController, String projectController,) async {
     final inputName = nameController.text;
-    final inputDescription = descriptionController.text;
     final inputDate = dateController;
     final inputProject = projectController;
 
       Task task = Task(
         id: id.v4(),
         name: inputName,
-        description: inputDescription,
+        description: "",
         deadline: inputDate,
         priority: priorityController!,
         projectId: inputProject,

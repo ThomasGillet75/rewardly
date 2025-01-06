@@ -55,6 +55,12 @@ class TaskRepository {
     });
   }
 
+  Stream<List<Task>> getTasksByUserProjects(String userId) {
+    return _taskService
+        .getTasksByUserProjects(userId)
+        .asyncMap((taskModels) => _sortingTasksSubTask(taskModels));
+  }
+
   Future<void> addSubTask(SubTask task) async {
     TaskModel taskModel = taskToTaskModel(task);
     await _taskService.add(taskModel);

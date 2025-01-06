@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Data/models/sub_task_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
@@ -78,7 +79,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Future<void> _onGetTasks(GetTasks event, Emitter<TaskState> emit) async {
     emit(TaskLoading());
     try {
-      final tasks = await taskRepository.getTasks().first;
+      final tasks = await taskRepository.getTasksByUserProjects(event.userId).first;
       emit(TaskLoaded(
         tasks: tasks,
         isProjectContext: false,
@@ -183,7 +184,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
             projectId: currentState.projectId,
           ));
         } else {
-          final tasks = await taskRepository.getTasks().first;
+          final FirebaseAuth _auth = FirebaseAuth.instance;
+          final tasks = await taskRepository.getTasksByUserProjects(_auth.currentUser!.uid).first;
           emit(TaskLoaded(
             tasks: tasks,
             isProjectContext: false,

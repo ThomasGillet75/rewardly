@@ -78,4 +78,53 @@ class FirestoreTaskService extends IDataService<TaskModel> {
       return snapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
     });
   }
+
+  Future<List<String>> _getUserProjectIds(String userId) async {
+    print('\x1B[32mUser ID: $userId\x1B[0m'); // Green
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('project_members')
+        .where('user_id', isEqualTo: userId)
+        .get();
+
+    final projectIds =
+    snapshot.docs.map((doc) => doc.data()['project_id'] as String).toList();
+
+    for (var projectId in projectIds) {
+      print('\x1B[34mProject ID: $projectId\x1B[0m'); // Blue
+    }
+
+    return projectIds;
+  }
+
+  Stream<List<TaskModel>> getTasksByUserProjects(String userId) async* {
+    final projectIds = await _getUserProjectIds(userId);
+
+    if (projectIds.isEmpty) {
+      print('\x1B[31mNo projects found for user ID: $userId\x1B[0m'); // Red
+      yield [];
+    } else {
+      final trimmedProjectIds = projectIds.map((id) => id.trim()).toList();
+      yield* FirebaseFirestore.instance
+          .collection('tasks')
+          .where('project_id', whereIn: trimmedProjectIds)
+          .snapshots()
+          .map((snapshot) {
+        final tasks = snapshot.docs.map((doc) {
+          return TaskModel.fromMap(doc.data());
+        }).toList();
+
+        if (tasks.isEmpty) {
+          print('\x1B[31mNo tasks found for user ID: $userId\x1B[0m'); // Red
+        } else {
+          for (var task in tasks) {
+            print('\x1B[34mTask ID: ${task.id}\x1B[0m'); // Blue
+            print('\x1B[32mTask Name: ${task.name}\x1B[0m'); // Green
+          }
+        }
+
+        return tasks;
+      });
+    }
+  }
 }
