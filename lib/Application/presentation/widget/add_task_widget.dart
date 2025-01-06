@@ -13,6 +13,7 @@ import 'package:rewardly/Core/task_priority_enum.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/core/color.dart';
 import 'package:uuid/uuid.dart';
+
 import 'add_button_widget.dart';
 
 class AddTaskWidget extends StatefulWidget {
@@ -46,7 +47,9 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               Row(
                 children: [
-                  NameInputWidget(placeholder: "Nom de la tâche", controller: nameController),
+                  NameInputWidget(
+                      placeholder: "Nom de la tâche",
+                      controller: nameController),
                 ],
               ),
               const SizedBox(height: 16),
@@ -55,8 +58,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 children: [
                   DateSelectWidget(),
                   const SizedBox(width: 10),
-                  Expanded(
-                      child: PrioritySelectWidget()),
+                  Expanded(child: PrioritySelectWidget()),
                   const SizedBox(width: 10),
                   ProjectSelectWidget(),
                   const SizedBox(width: 10),
@@ -75,10 +77,20 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     child: AddButtonWidget(
                       onPressed: () {
                         final dateState = context.read<DateSelectBloc>().state;
-                        final priorityState = context.read<PrioritySelectBloc>().state;
-                        final projectState = context.read<ProjectSelectBloc>().state;
-                        if (checkIsNotEmpty(dateState as DateSelectInitial, priorityState, projectState)) {
-                          addTask(context, nameController, (dateState).selectedDate, (priorityState as PrioritySelectInitial).selectedPriority, (projectState as ProjectSelectInitial).selectedProject);
+                        final priorityState =
+                            context.read<PrioritySelectBloc>().state;
+                        final projectState =
+                            context.read<ProjectSelectBloc>().state;
+                        if (checkIsNotEmpty(dateState as DateSelectInitial,
+                            priorityState, projectState)) {
+                          addTask(
+                              context,
+                              nameController,
+                              (dateState).selectedDate,
+                              (priorityState as PrioritySelectInitial)
+                                  .selectedPriority,
+                              (projectState as ProjectSelectInitial)
+                                  .selectedProject);
                           resetValue(dateState, priorityState, projectState);
                         } else {
                           resetValue(dateState, priorityState, projectState);
@@ -104,38 +116,52 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
     );
   }
 
-  void resetValue(DateSelectInitial dateState, PrioritySelectState priorityState, ProjectSelectState projectState) {
+  void resetValue(DateSelectInitial dateState,
+      PrioritySelectState priorityState, ProjectSelectState projectState) {
     (dateState).selectedDate = null;
-    (priorityState as PrioritySelectInitial).selectedPriority = TaskPriority.none;
+    (priorityState as PrioritySelectInitial).selectedPriority =
+        TaskPriority.none;
     (projectState as ProjectSelectInitial).selectedProject = "";
     nameController.clear();
   }
 
-  bool checkIsNotEmpty(DateSelectState dateState, PrioritySelectState priorityState, ProjectSelectState projectState) => nameController.text.isNotEmpty && (dateState as DateSelectInitial).selectedDate != null && (priorityState as PrioritySelectInitial).selectedPriority != TaskPriority.none && (projectState as ProjectSelectInitial).selectedProject != "";
+  bool checkIsNotEmpty(DateSelectState dateState,
+          PrioritySelectState priorityState, ProjectSelectState projectState) =>
+      nameController.text.isNotEmpty &&
+      (dateState as DateSelectInitial).selectedDate != null &&
+      (priorityState as PrioritySelectInitial).selectedPriority !=
+          TaskPriority.none &&
+      (projectState as ProjectSelectInitial).selectedProject != "";
 
-  Future<void> addTask(BuildContext context, TextEditingController nameController, DateTime? dateController, TaskPriority? priorityController, String projectController,) async {
+  Future<void> addTask(
+    BuildContext context,
+    TextEditingController nameController,
+    DateTime? dateController,
+    TaskPriority? priorityController,
+    String projectController,
+  ) async {
     final inputName = nameController.text;
     final inputDate = dateController;
     final inputProject = projectController;
 
-      Task task = Task(
-        id: id.v4(),
-        name: inputName,
-        description: "",
-        deadline: inputDate,
-        priority: priorityController!,
-        projectId: inputProject,
-        isDone: false,
-        subTasks: [],
-      );
+    Task task = Task(
+      id: id.v4(),
+      name: inputName,
+      description: "",
+      deadline: inputDate,
+      priority: priorityController!,
+      projectId: inputProject,
+      isDone: false,
+      subTasks: [],
+    );
 
-      context.read<TaskBloc>().add(AddTaskToDB(task));
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Tâche $inputName ajoutée avec succès'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.pop(context);
-    }
+    context.read<TaskBloc>().add(AddTaskToDB(task));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Tâche $inputName ajoutée avec succès'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+    Navigator.pop(context);
   }
+}
