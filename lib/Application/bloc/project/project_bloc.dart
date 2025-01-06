@@ -7,13 +7,12 @@ import 'package:rewardly/Domain/repositories/project_repository.dart';
 import 'package:rewardly/Domain/repositories/user_repository.dart';
 
 part 'project_event.dart';
+
 part 'project_state.dart';
 
 class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   final ProjectRepository _projectRepository = ProjectRepository();
   final UserRepository _userRepository = UserRepository();
-
-
 
   ProjectBloc() : super(ProjectInitial()) {
     on<GetProjects>(_onGetProjects);
@@ -22,7 +21,9 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<AddReward>(_onAddReward);
     on<AddProjectToDB>(_onAddProjectToDB);
   }
-  Future<void> _onGetProjects(GetProjects event, Emitter<ProjectState> emit) async {
+
+  Future<void> _onGetProjects(
+      GetProjects event, Emitter<ProjectState> emit) async {
     emit(ProjectLoading());
     try {
       final users = await _userRepository.getUsers();
@@ -55,7 +56,8 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       final currentState = state as ProjectLoaded;
       final updatedProjects = [...currentState.projects];
       for (var newProject in event.projects) {
-        final existingIndex = updatedProjects.indexWhere((project) => project.id == newProject.id);
+        final existingIndex = updatedProjects
+            .indexWhere((project) => project.id == newProject.id);
         if (existingIndex != -1) {
           updatedProjects[existingIndex] = newProject;
         } else {
@@ -87,7 +89,8 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     }
   }
 
-  Future<void> _onAddProjectToDB(AddProjectToDB event, Emitter<ProjectState> emit) async {
+  Future<void> _onAddProjectToDB(
+      AddProjectToDB event, Emitter<ProjectState> emit) async {
     if (state is ProjectLoaded) {
       final currentState = state as ProjectLoaded;
       try {

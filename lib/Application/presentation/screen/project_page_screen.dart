@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/add_reward_widget.dart';
 import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
@@ -55,7 +56,10 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
         title: Text(widget.project.name),
         actions: [
           IconAddFriendButtonWidget(
@@ -72,25 +76,42 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
               } else if (taskState is TaskLoaded &&
                   taskState.isProjectContext &&
                   taskState.projectId == widget.project.id) {
-                return Column(
-                  children: [
-                    RewardCardWidget(
-                      project: widget.project,
-                      taskList: taskState.tasks,
-                      onRewardSelected: _showRewardDetails,
-                    ),
-                    ContainerFilteringTaskWidget(
-                      tasks: taskState.tasks,
-                      onTaskSelected: _showTaskDetails,
-                      selectedFilter: "Tout",
-                    ),
-                  ],
+                return BlocBuilder<ProjectBloc, ProjectState>(
+                  builder: (context, projectState) {
+                    if (projectState is ProjectLoaded) {
+                      final updatedProject = projectState.projects.firstWhere(
+                            (p) => p.id == widget.project.id,
+                        orElse: () => widget.project,
+                      );
+                      return Column(
+                        children: [
+                          RewardCardWidget(
+                            project: updatedProject,
+                            taskList: taskState.tasks,
+                            onRewardSelected: _showRewardDetails,
+                          ),
+                          ContainerFilteringTaskWidget(
+                            tasks: taskState.tasks,
+                            onTaskSelected: _showTaskDetails,
+                            selectedFilter: "Tout",
+                          ),
+                        ],
+                      );
+                    } else if (projectState is ProjectFailure) {
+                      return Center(
+                        child: Text('Failed to load projects: ${projectState
+                            .error}'),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
                 );
               } else if (taskState is TaskFailure) {
-                return Center(
-                    child: Text('Failed to load tasks: ${taskState.error}'));
+              return Center(
+              child: Text('Failed to load tasks: ${taskState.error}'));
               } else {
-                return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
               }
             },
           ),

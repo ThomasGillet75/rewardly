@@ -15,7 +15,7 @@ class AddRewardWidget extends StatefulWidget {
 class _AddRewardWidgetState extends State<AddRewardWidget> {
   final TextEditingController _textController = TextEditingController();
 
-  void _addSubTask(String name) async {
+  void _addReward(String name) async {
     widget.project.reward = name;
     try {
       BlocProvider.of<ProjectBloc>(context).add(AddReward(widget.project));
@@ -60,7 +60,7 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
               hintText: name,
               border: InputBorder.none,
             ),
-            onSubmitted: (value) => _addSubTask(value),
+            onSubmitted: (value) => _addReward(value),
           ),
         ),
       ],
