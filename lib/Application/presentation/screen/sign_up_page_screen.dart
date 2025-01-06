@@ -11,6 +11,7 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key, required this.users});
 
   final Users users;
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -21,8 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController pseudoController = TextEditingController();
 
-
-   final Uuid id = const Uuid();
+  final Uuid id = const Uuid();
 
   @override
   void dispose() {
@@ -42,13 +42,13 @@ class _SignUpPageState extends State<SignUpPage> {
     return emailRegex.hasMatch(email);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Créer un compte'),
       ),
+      resizeToAvoidBottomInset: true, // Permet d'ajuster le contenu
       body: BlocConsumer<SignUpBloc, SignUpState>(
         listener: (context, state) {
           if (state is SignUpSuccess) {
@@ -67,11 +67,13 @@ class _SignUpPageState extends State<SignUpPage> {
           }
         },
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
+          return GestureDetector(
+            onTap: _dismissKeyboard, // Pour fermer le clavier lorsqu'on touche ailleurs
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 24.0), // Espace pour éviter le débordement initial
                   TextField(
                     controller: pseudoController,
                     keyboardType: TextInputType.name,
@@ -144,11 +146,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         context.read<SignUpBloc>().add(
                           SignUpRequested(
-                            users : Users(
+                            users: Users(
                               pseudo: pseudoController.text,
                               mail: emailController.text,
                               password: passwordController.text,
-                              id:'',
+                              id: '',
                             ),
                           ),
                         );
@@ -157,6 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                 ],
               ),
+            ),
           );
         },
       ),
