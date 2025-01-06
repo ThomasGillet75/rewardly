@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/add_reward_widget.dart';
-import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/add_task_and_project_widget/add_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/friend_widget/icon_add_friend_to_project_widget.dart';
 import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart';
