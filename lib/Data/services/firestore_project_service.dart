@@ -61,17 +61,13 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
 
   @override
   Stream<List<ProjectModel>> getAll() {
+
     final projectMembersStream = _projectMembersService.getProjectMembersByUserId(_auth.currentUser!.uid);
     return projectMembersStream.asyncExpand((projectMembers) {
       final projectIds = projectMembers.map((member) => member.projectId).toList();
-
-      if (projectIds.isEmpty) {
-        return Stream.value([]);
-      }
-
       return _firestore
           .collection('projects')
-          .where('id', whereIn: projectIds)
+          .where('project_id', whereIn: projectIds)
           .snapshots()
           .map((snapshot) {
         return snapshot.docs.map((doc) => ProjectModel.fromMap(doc.data())).toList();
