@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/priority_select/priority_select_bloc.dart';
-import 'package:rewardly/Application/bloc/project_select/project_select_bloc.dart';
+import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Core/task_priority_enum.dart';
 import 'package:rewardly/Core/utils/task_utils.dart';
-
-import '../../../core/color.dart';
 
 /*
   Widget to select the priority of a task
 */
-class PrioritySelectWidget extends StatefulWidget{
-  PrioritySelectWidget ({Key? key}) : super(key: key);
+class PrioritySelectWidget extends StatefulWidget {
+  PrioritySelectWidget({super.key});
+
   TaskPriority? priorityController;
 
   @override
@@ -26,7 +25,8 @@ class _PrioritySelectWidgetState extends State<PrioritySelectWidget> {
   final List<String> _priorities = [
     TaskUtils.priorityToString(TaskPriority.low),
     TaskUtils.priorityToString(TaskPriority.medium),
-    TaskUtils.priorityToString(TaskPriority.high)];
+    TaskUtils.priorityToString(TaskPriority.high)
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +43,8 @@ class _PrioritySelectWidgetState extends State<PrioritySelectWidget> {
       child: BlocBuilder<PrioritySelectBloc, PrioritySelectState>(
         builder: (context, state) {
           // Récupération de la priorité sélectionnée
-          String? selectedPriority =
-              TaskUtils.priorityToString((state as PrioritySelectInitial).selectedPriority);
+          String? selectedPriority = TaskUtils.priorityToString(
+              (state as PrioritySelectInitial).selectedPriority);
 
           return DropdownButtonHideUnderline(
             child: DropdownButton<String>(
@@ -73,10 +73,11 @@ class _PrioritySelectWidgetState extends State<PrioritySelectWidget> {
                 );
               }).toList(),
               onChanged: (value) async {
-                TaskPriority taskPriority = await TaskUtils.stringToPriority(value!);
+                TaskPriority taskPriority =
+                    await TaskUtils.stringToPriority(value!);
                 context.read<PrioritySelectBloc>().add(
-                  PrioritySelectSwitch(value: taskPriority),
-                );
+                      PrioritySelectSwitch(value: taskPriority),
+                    );
               },
             ),
           );

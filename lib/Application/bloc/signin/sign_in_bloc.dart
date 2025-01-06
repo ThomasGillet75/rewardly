@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application/bloc/signin/sign_in_event.dart';
-import 'package:rewardly/Application/bloc/signin/sign_in_state.dart';
 import 'package:rewardly/Domain/repositories/user_repository.dart';
+
+part 'sign_in_event.dart';
+part 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final UserRepository _authService = UserRepository();

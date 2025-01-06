@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rewardly/core/color.dart';
 
-
 class IconFriendButtonWidget extends StatefulWidget {
   const IconFriendButtonWidget({super.key});
 
@@ -23,7 +22,7 @@ class _AddButtonWidgetState extends State<IconFriendButtonWidget> {
       onPressed: () {
         Navigator.pushNamed(context, '/friends');
       },
-      child: const Icon(Icons.person_search  , color: Colors.black),
+      child: const Icon(Icons.person_search, color: Colors.black),
     );
   }
 }

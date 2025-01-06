@@ -10,7 +10,7 @@ abstract class DateSelectEvent extends Equatable {
 class DateSelectSwitch extends DateSelectEvent {
   final DateTime value;
 
-  DateSelectSwitch({required this.value});
+  const DateSelectSwitch({required this.value});
 
   @override
   List<Object> get props => [value];

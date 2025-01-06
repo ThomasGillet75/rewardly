@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:rewardly/Application/bloc/project/project_bloc.dart';
-import 'package:rewardly/Application/presentation/widget/friend_widget/friend_card_widget.dart';
-import 'package:rewardly/core/color.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../Data/models/project_entity.dart';
-import '../../../../Data/models/user_entity.dart';
-import '../../../bloc/friends/friends_bloc.dart';
-import '../../../bloc/friends/friends_event.dart';
-import '../../../bloc/project_members/project_member_bloc.dart';
-import '../../../bloc/project_members/project_memebers_event.dart';
+import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
+import 'package:rewardly/Application/bloc/friends/friends_event.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Application/bloc/project_members/project_member_bloc.dart';
+import 'package:rewardly/Data/models/project_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
+import 'package:rewardly/core/color.dart';
+
 import 'friends_members_widget.dart';
 
 class IconAddFriendButtonWidget extends StatefulWidget {
@@ -26,8 +25,7 @@ class IconAddFriendButtonWidget extends StatefulWidget {
 }
 
 class _AddButtonWidgetState extends State<IconAddFriendButtonWidget> {
-  final  searchController = TextEditingController();
-
+  final searchController = TextEditingController();
 
   void _getProjectMembers(BuildContext context) {
     context.read<ProjectMemberBloc>().add(ProjectMemberLoad(widget.project.id));
@@ -37,7 +35,9 @@ class _AddButtonWidgetState extends State<IconAddFriendButtonWidget> {
     if (searchController.text.isEmpty) {
       _getProjectMembers(context);
     } else {
-      context.read<ProjectMemberBloc>().add(ProjectMembersSearch(searchController.text));
+      context
+          .read<ProjectMemberBloc>()
+          .add(ProjectMembersSearch(searchController.text));
     }
   }
 
@@ -48,7 +48,6 @@ class _AddButtonWidgetState extends State<IconAddFriendButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
@@ -88,36 +87,37 @@ class _AddButtonWidgetState extends State<IconAddFriendButtonWidget> {
             top: 16.0,
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-    child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BlocBuilder<ProjectBloc, ProjectState>(
-                builder: (context, state) {
-                  if (state is ProjectLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is ProjectLoaded) {
-                    final projectUsers = state.users[widget.project.id] ?? [];
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (projectUsers.isEmpty)
-                          const Center(child: Text("No users found.")),
-                        if (projectUsers.isNotEmpty) _buildUserList(projectUsers),
-                        const SizedBox(height: 16.0),
-                        _buildAddUserButton(),
-                      ],
-                    );
-                  } else {
-                    return const Center(
-                      child: Text("Failed to load users."),
-                    );
-                  }
-                },
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BlocBuilder<ProjectBloc, ProjectState>(
+                  builder: (context, state) {
+                    if (state is ProjectLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is ProjectLoaded) {
+                      final projectUsers = state.users[widget.project.id] ?? [];
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (projectUsers.isEmpty)
+                            const Center(child: Text("No users found.")),
+                          if (projectUsers.isNotEmpty)
+                            _buildUserList(projectUsers),
+                          const SizedBox(height: 16.0),
+                          _buildAddUserButton(),
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("Failed to load users."),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
-    ),
         ),
       ),
     );
@@ -141,7 +141,6 @@ class _AddButtonWidgetState extends State<IconAddFriendButtonWidget> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
           ),
           builder: (context) => Column(
-
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(

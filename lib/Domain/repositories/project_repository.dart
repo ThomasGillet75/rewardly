@@ -1,8 +1,7 @@
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/project_model.dart';
+import 'package:rewardly/Data/services/firestore_project_members_service.dart';
 import 'package:rewardly/Data/services/firestore_project_service.dart';
-
-import '../../Data/services/firestore_project_members_service.dart';
 
 class ProjectRepository {
   final FirestoreProjectService _projectService = FirestoreProjectService();
@@ -10,7 +9,9 @@ class ProjectRepository {
 
   Future<Stream<List<Project>>> getProjects() async {
     return _projectService.getAll().map((projectModels) {
-      return projectModels.map((projectModel) => projectModelToProject(projectModel)).toList();
+      return projectModels
+          .map((projectModel) => projectModelToProject(projectModel))
+          .toList();
     });
   }
 
@@ -21,13 +22,15 @@ class ProjectRepository {
 
   Future<List<Project>> getProjectsByUserId(String userId) async {
     final projectModels = await _projectService.getProjectsByUserId(userId);
-    return projectModels.map((projectModel) => projectModelListToProject(projectModel)).toList();
+
+    return projectModels
+        .map((projectModel) => projectModelListToProject(projectModel))
+        .toList();
   }
 
   Future<void> createProject(Project project) async {
     await _projectService.add(projectToProjectModel(project));
     await _projectMembersService.addOwner(project.id);
-
   }
 
   Future<void> updateProject(Project project) async {
@@ -57,6 +60,4 @@ class ProjectRepository {
       reward: project.reward,
     );
   }
-
 }
-

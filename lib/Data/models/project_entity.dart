@@ -1,17 +1,13 @@
-
-
 class Project {
   String id;
   String name;
   String reward;
 
-  Project(
-    {
-      required this.name,
-      required this.id,
-      this.reward ="",
-    });
-
+  Project({
+    required this.name,
+    required this.id,
+    this.reward = "",
+  });
 
   Project copyWith({
     String? name,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/project_members/project_member_bloc.dart';
-import 'package:rewardly/Application/bloc/project_members/project_members_state.dart';
-import '../../../../Core/color.dart';
-import '../../../../Data/models/project_entity.dart';
-import '../../../../Data/models/project_members_entity.dart';
-import '../../../../Data/models/user_entity.dart';
-import '../../../bloc/project_members/project_memebers_event.dart';
+import 'package:rewardly/Core/color.dart';
+import 'package:rewardly/Data/models/project_entity.dart';
+import 'package:rewardly/Data/models/project_members_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 class FriendsMembersWidget extends StatefulWidget {
   const FriendsMembersWidget({super.key, required this.project});
@@ -43,9 +41,6 @@ class _FriendsMembersWidgetState extends State<FriendsMembersWidget> {
       },
     );
   }
-
-
-
 
   Widget _buildUserList(List<Users> users) {
     return ListView.builder(

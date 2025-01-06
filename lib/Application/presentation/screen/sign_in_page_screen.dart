@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/signin/sign_in_bloc.dart';
-import 'package:rewardly/Application/bloc/signin/sign_in_event.dart';
-import 'package:rewardly/Application/bloc/signin/sign_in_state.dart';
-
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -28,7 +25,8 @@ class _SignInPageState extends State<SignInPage> {
             Navigator.pushNamed(context, '/home');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Connexion réussie, bienvenue ${emailController.text} !'),
+                content: Text(
+                    'Connexion réussie, bienvenue ${emailController.text} !'),
               ),
             );
           } else if (state is SignInFailure) {
@@ -68,11 +66,12 @@ class _SignInPageState extends State<SignInPage> {
                 else
                   ElevatedButton(
                     onPressed: () {
-                      context.read<SignInBloc>().add(SignInRequested(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        ),
-                      );
+                      context.read<SignInBloc>().add(
+                            SignInRequested(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          );
                     },
                     child: Text('Se connecter'),
                   ),

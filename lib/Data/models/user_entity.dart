@@ -1,8 +1,8 @@
 class Users {
-   String pseudo;
-   String id;
-   String mail;
-   String password;
+  String pseudo;
+  String id;
+  String mail;
+  String password;
 
   Users({
     required this.pseudo,
@@ -45,5 +45,4 @@ class Users {
   static empty() {
     return Users(pseudo: '', id: '', mail: '', password: '');
   }
-
 }

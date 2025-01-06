@@ -1,3 +1,3 @@
 abstract class AddManager{
-  Add();
+  add();
 }

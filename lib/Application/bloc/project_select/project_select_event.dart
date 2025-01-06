@@ -10,7 +10,7 @@ abstract class ProjectSelectEvent extends Equatable {
 class ProjectSelectSwitch extends ProjectSelectEvent {
   final String value;
 
-  ProjectSelectSwitch({required this.value});
+  const ProjectSelectSwitch({required this.value});
 
   @override
   List<Object> get props => [value];

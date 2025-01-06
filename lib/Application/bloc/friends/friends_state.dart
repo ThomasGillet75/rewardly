@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:rewardly/Data/models/friendly_entity.dart';
-import '../../../Data/models/user_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 abstract class FriendsState extends Equatable {
   const FriendsState();

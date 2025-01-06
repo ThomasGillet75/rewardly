@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/input_add/date_select_bloc.dart';
 import 'package:rewardly/core/color.dart';
 
-class DateSelectWidget extends StatefulWidget{
-  DateSelectWidget ({Key? key}) : super(key: key);
+class DateSelectWidget extends StatefulWidget {
+  DateSelectWidget({super.key});
+
   final TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
@@ -12,13 +13,13 @@ class DateSelectWidget extends StatefulWidget{
   State<DateSelectWidget> createState() => _DateSelectWidgetState();
 }
 
-class _DateSelectWidgetState extends State<DateSelectWidget>{
-
+class _DateSelectWidgetState extends State<DateSelectWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DateSelectBloc, DateSelectState>(
       builder: (context, state) {
-        final selectedDate = state is DateSelectInitial ? state.selectedDate : null;
+        final selectedDate =
+            state is DateSelectInitial ? state.selectedDate : null;
 
         return GestureDetector(
           onTap: () async {
@@ -30,7 +31,9 @@ class _DateSelectWidgetState extends State<DateSelectWidget>{
               lastDate: DateTime(2100),
             );
             if (pickedDate != null) {
-              context.read<DateSelectBloc>().add(DateSelectSwitch(value: pickedDate));
+              context
+                  .read<DateSelectBloc>()
+                  .add(DateSelectSwitch(value: pickedDate));
             }
           },
           child: Container(

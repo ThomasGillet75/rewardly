@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_event.dart';
+import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/friendly_entity.dart';
-import '../../../../Data/models/user_entity.dart';
-import '../../../../core/color.dart';
-import '../../../bloc/friends/friends_bloc.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 class FriendlyCardWidgetCard extends StatefulWidget {
   const FriendlyCardWidgetCard({super.key, required this.friend});
+
   final Users friend;
 
   @override

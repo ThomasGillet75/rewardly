@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-
-import '../../../core/color.dart';
-
+import 'package:rewardly/Core/color.dart';
 class DescriptionInputWidget extends StatefulWidget {
-  const DescriptionInputWidget({super.key, required this.descriptionController});
+  const DescriptionInputWidget(
+      {super.key, required this.descriptionController});
+
   final TextEditingController descriptionController;
+
   @override
   State<DescriptionInputWidget> createState() => _DescriptionInputWidgetState();
 }
 
 class _DescriptionInputWidgetState extends State<DescriptionInputWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Expanded(

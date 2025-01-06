@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 import 'package:rewardly/core/color.dart';
-
-import '../../../Data/models/user_entity.dart';
 
 class ProjectCarWidget extends StatefulWidget {
   const ProjectCarWidget({super.key, required this.project, required this.users});

@@ -6,13 +6,12 @@ import 'package:rewardly/Application/bloc/toggle/toggle_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/add_project_widget.dart';
 import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/friend_widget/icon_friends_button_widget.dart';
 import 'package:rewardly/Application/presentation/widget/main_page/toggle_button_widget.dart';
 import 'package:rewardly/Application/presentation/widget/project_card_widget.dart';
 import 'package:rewardly/Application/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
 import 'package:rewardly/main.dart';
-
-import '../widget/friend_widget/icon_friends_button_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key, required this.title});
@@ -23,8 +22,7 @@ class HomePageScreen extends StatefulWidget {
   State<HomePageScreen> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePageScreen> with RouteAware  {
-
+class _HomePageState extends State<HomePageScreen> with RouteAware {
   void _showTaskDetails(Task task) {
     showModalBottomSheet(
       context: context,
@@ -42,7 +40,6 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
     _fetchData();
   }
 
-
   void _fetchData() {
     context.read<TaskBloc>().add(GetTasks());
     context.read<ProjectBloc>().add(GetProjects());
@@ -51,10 +48,8 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
   @override
   void didPopNext() {
     super.didPopNext();
-    print('didPopNext déclenché : Rechargement des données.');
     _fetchData();
   }
-
 
   @override
   void didChangeDependencies() {
@@ -79,7 +74,6 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
         title: Text(widget.title),
         //add icon
         actions: const [
-
           IconFriendButtonWidget(),
         ],
       ),
@@ -116,7 +110,6 @@ class _HomePageState extends State<HomePageScreen> with RouteAware  {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.projects.length,
-
                         itemBuilder: (context, index) {
                           final project = state.projects[index];
                           final users = state.users;

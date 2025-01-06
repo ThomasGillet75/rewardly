@@ -10,14 +10,20 @@ class FirestoreTaskService extends IDataService<TaskModel> {
   @override
   Future<void> add(TaskModel item) async {
     String taskId = _uuid.v4();
-    await _firestore.collection('tasks').doc(taskId).set({...item.toMap(), 'task_id': taskId,
+    await _firestore.collection('tasks').doc(taskId).set({
+      ...item.toMap(),
+      'task_id': taskId,
     });
   }
 
   @override
   Future<void> delete(String id) async {
     await _firestore.collection('tasks').doc(id).delete();
-    await _firestore.collection('tasks').where('parent_id', isEqualTo: id).get().then((value) {
+    await _firestore
+        .collection('tasks')
+        .where('parent_id', isEqualTo: id)
+        .get()
+        .then((value) {
       for (var element in value.docs) {
         element.reference.delete();
       }
@@ -44,7 +50,7 @@ class FirestoreTaskService extends IDataService<TaskModel> {
   }
 
   Stream<List<TaskModel>> getTasksByProjectId(String projectRef) {
-    final querySnapshot =  _firestore
+    final querySnapshot = _firestore
         .collection('tasks')
         .where('project_id', isEqualTo: projectRef)
         .snapshots();
@@ -58,7 +64,9 @@ class FirestoreTaskService extends IDataService<TaskModel> {
         .collection('tasks')
         .where('user_id', isEqualTo: userRef)
         .get();
-    return querySnapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
+    return querySnapshot.docs
+        .map((doc) => TaskModel.fromMap(doc.data()))
+        .toList();
   }
 
   Stream<List<TaskModel>> getTasksByParentId(String id) {

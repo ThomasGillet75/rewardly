@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
+import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Core/task_priority_enum.dart';
 import 'package:rewardly/Core/utils/date_utils.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
-
-import '../../../core/color.dart';
 
 class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget({super.key, required this.task});

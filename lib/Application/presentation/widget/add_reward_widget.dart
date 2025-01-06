@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
-
-import '../../../Core/color.dart';
-
 class AddRewardWidget extends StatefulWidget {
   const AddRewardWidget({super.key, required this.project});
+
   final Project project;
 
   @override
@@ -19,9 +18,9 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
   void _addSubTask(String name) async {
     widget.project.reward = name;
     try {
-      BlocProvider.of<ProjectBloc>(context).add(AddReward( widget.project));
+      BlocProvider.of<ProjectBloc>(context).add(AddReward(widget.project));
     } catch (e) {
-      print('Failed to add reward: $e');
+      print(e);
     }
     _textController.clear();
   }
@@ -50,7 +49,6 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
 
   Widget _buildAddTaskField(String name) {
     return Row(
-
       children: [
         const Padding(padding: EdgeInsets.only(left: 10)),
         const Icon(Icons.add),
@@ -58,7 +56,7 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
         Expanded(
           child: TextField(
             controller: _textController,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
               hintText: name,
               border: InputBorder.none,
             ),
@@ -69,4 +67,3 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
     );
   }
 }
-

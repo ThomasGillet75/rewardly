@@ -7,6 +7,7 @@ class FilteringWidget extends StatefulWidget {
     this.initialValue,
     required this.items,
   });
+
   final ValueChanged<String?> onValueChanged;
   final String? initialValue;
   final List<String> items;

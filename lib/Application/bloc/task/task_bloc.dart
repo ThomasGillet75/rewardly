@@ -68,7 +68,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Future<void> _onAddSubTask(AddSubTask event, Emitter<TaskState> emit) async {
     try {
       taskRepository.addSubTask(event.task);
-      add(GetTasksByProjectId(event.task.projectId)); // Optionally refresh tasks
+      add(GetTasksByProjectId(event.task.projectId));
     } catch (e) {
       emit(TaskFailure('Failed to add subtask: $e'));
     }
@@ -173,16 +173,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     try {
       if (state is TaskLoaded) {
         final currentState = state as TaskLoaded;
-
-        // Emit loading to reflect the current state
         emit(TaskLoading());
-
-        // Add the task to the database
         await taskRepository.createTask(event.task);
-
-        // Reload tasks depending on the current context
         if (currentState.isProjectContext && currentState.projectId != null) {
-          // Reload tasks for the current project
           final tasks = await taskRepository.getTasksByProjectId(currentState.projectId!).first;
           emit(TaskLoaded(
             tasks: tasks,
@@ -190,7 +183,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
             projectId: currentState.projectId,
           ));
         } else {
-          // Reload all tasks in a global context
           final tasks = await taskRepository.getTasks().first;
           emit(TaskLoaded(
             tasks: tasks,
@@ -205,9 +197,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(TaskFailure('Failed to add task: $e'));
     }
   }
-
-
-
   @override
   Future<void> close() {
     _taskSubscription?.cancel();

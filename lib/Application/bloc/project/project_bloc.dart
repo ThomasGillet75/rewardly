@@ -1,17 +1,12 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Core/utils/interface.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 import 'package:rewardly/Domain/repositories/project_repository.dart';
 import 'package:rewardly/Domain/repositories/user_repository.dart';
 
-import '../../../Data/models/user_entity.dart';
-
 part 'project_event.dart';
-
 part 'project_state.dart';
 
 class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {

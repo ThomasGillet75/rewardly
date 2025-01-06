@@ -28,10 +28,6 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
     super.dispose();
   }
 
-  void _dismissKeyboard() {
-    FocusScope.of(context).unfocus();
-  }
-
   void _getFriends(BuildContext context) {
     context.read<FriendsBloc>().add(const GetFriends());
   }
@@ -42,11 +38,6 @@ class _FriendsPageScreenState extends State<FriendsPageScreen> {
     } else {
       context.read<FriendsBloc>().add(SearchInFriends(pseudo: searchController.text));
     }
-  }
-
-  void _resetSearch(BuildContext context) {
-    searchController.clear();
-    context.read<FriendsBloc>().add(const ResetSearch());
   }
 
   @override

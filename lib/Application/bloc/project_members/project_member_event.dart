@@ -1,8 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-import '../../../Data/models/project_entity.dart';
-import '../../../Data/models/project_members_entity.dart';
-
+part of 'project_member_bloc.dart';
 
 abstract class ProjectMembersEvent extends Equatable {
   const ProjectMembersEvent();
@@ -38,7 +34,6 @@ class ProjectMembersUpdate extends ProjectMembersEvent {
   List<Object> get props => [projectMembers];
 }
 
-
 class ProjectMembersDelete extends ProjectMembersEvent {
   final ProjectMembersEntity projectMembers;
 
@@ -47,7 +42,6 @@ class ProjectMembersDelete extends ProjectMembersEvent {
   @override
   List<Object> get props => [projectMembers];
 }
-
 
 class ProjectMembersSearch extends ProjectMembersEvent {
   final String pseudo;
@@ -59,5 +53,3 @@ class ProjectMembersSearch extends ProjectMembersEvent {
 }
 
 class ProjectMembersSearchReset extends ProjectMembersEvent {}
-
-

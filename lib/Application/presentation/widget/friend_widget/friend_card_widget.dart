@@ -8,6 +8,7 @@ import 'package:rewardly/Data/models/user_entity.dart';
 
 class FriendCard extends StatefulWidget {
   const FriendCard({super.key, required this.user});
+
   final Users user;
 
   @override

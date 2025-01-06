@@ -10,7 +10,7 @@ abstract class PrioritySelectEvent extends Equatable {
 class PrioritySelectSwitch extends PrioritySelectEvent {
   final TaskPriority value;
 
-  PrioritySelectSwitch({required this.value});
+  const PrioritySelectSwitch({required this.value});
 
   @override
   List<Object> get props => [value];

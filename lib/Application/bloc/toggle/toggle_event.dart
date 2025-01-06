@@ -10,7 +10,7 @@ abstract class ToggleEvent extends Equatable {
 class ToggleSwitch extends ToggleEvent {
   final bool value;
 
-  ToggleSwitch({required this.value});
+  const ToggleSwitch({required this.value});
 
   @override
   List<Object> get props => [value];

@@ -4,16 +4,16 @@ import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/add_reward_widget.dart';
 import 'package:rewardly/Application/presentation/widget/add_task_widget.dart';
 import 'package:rewardly/Application/presentation/widget/container_filtering_task_widget.dart';
+import 'package:rewardly/Application/presentation/widget/friend_widget/icon_add_friend_to_project_widget.dart';
 import 'package:rewardly/Application/presentation/widget/reward_card_widget.dart';
 import 'package:rewardly/Application/presentation/widget/task_details_widget.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/task_entity.dart';
-import 'package:rewardly/Application/presentation/widget/friend_widget/icon_add_friend_to_project_widget.dart';
-
-import '../../../Data/models/user_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 
 class ProjectPageScreen extends StatefulWidget {
-  const ProjectPageScreen({super.key, required this.project, required this.user});
+  const ProjectPageScreen(
+      {super.key, required this.project, required this.user});
 
   final Project project;
   final Map<String, List<Users>> user;
@@ -58,8 +58,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.project.name),
         actions: [
-
-          IconAddFriendButtonWidget(users: widget.user,project: widget.project),
+          IconAddFriendButtonWidget(
+              users: widget.user, project: widget.project),
         ],
       ),
       body: ListView(

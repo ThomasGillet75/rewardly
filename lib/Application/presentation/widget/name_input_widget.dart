@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../../core/color.dart';
+import 'package:rewardly/Core/color.dart';
 
 class NameInputWidget extends StatefulWidget {
-  const NameInputWidget({super.key, required this.placeholder, required this.controller});
+  const NameInputWidget(
+      {super.key, required this.placeholder, required this.controller});
+
   final String placeholder;
   final TextEditingController controller;
 
@@ -12,7 +13,6 @@ class NameInputWidget extends StatefulWidget {
 }
 
 class _NameInputWidgetState extends State<NameInputWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Expanded(

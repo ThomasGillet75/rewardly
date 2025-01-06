@@ -1,7 +1,9 @@
-import '../../Data/models/friendly_entity.dart';
-import '../../Data/models/user_entity.dart';
-import '../../Data/services/firestore_friendly_service.dart';
 
+
+
+import 'package:rewardly/Data/models/friendly_entity.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
+import 'package:rewardly/Data/services/firestore_friendly_service.dart';
 
 class FriendlyRepository {
 final fireStoreFriendlyService = FirestoreFriendlyService();

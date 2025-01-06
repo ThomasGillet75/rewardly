@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../core/color.dart';
-import '../../bloc/project/project_bloc.dart';
-import '../../bloc/project_select/project_select_bloc.dart';
+import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Application/bloc/project_select/project_select_bloc.dart';
+import 'package:rewardly/Core/color.dart';
 
 /*
   Widget to select the project of a task
@@ -33,16 +32,19 @@ class _ProjectSelectWidgetState extends State<ProjectSelectWidget> {
 
           return BlocBuilder<ProjectSelectBloc, ProjectSelectState>(
             builder: (context, projectSelectState) {
-              String? selectedProjectId = projectSelectState is ProjectSelectInitial
-                  ? projectSelectState.selectedProject
-                  : null;
+              String? selectedProjectId =
+                  projectSelectState is ProjectSelectInitial
+                      ? projectSelectState.selectedProject
+                      : null;
 
-              // Vérifier si le projet sélectionné existe dans la liste
-              String? selectedProjectName = (selectedProjectId != null && projects.containsValue(selectedProjectId))
-                  ? projects.entries.firstWhere(
-                    (entry) => entry.value == selectedProjectId,
-                orElse: () => MapEntry("", ""),
-              ).key
+              String? selectedProjectName = (selectedProjectId != null &&
+                      projects.containsValue(selectedProjectId))
+                  ? projects.entries
+                      .firstWhere(
+                        (entry) => entry.value == selectedProjectId,
+                        orElse: () => MapEntry("", ""),
+                      )
+                      .key
                   : null;
 
               return Expanded(
@@ -58,7 +60,9 @@ class _ProjectSelectWidgetState extends State<ProjectSelectWidget> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      value: (selectedProjectName ?? '').isEmpty ? null : selectedProjectName, // Ajout pour éviter l'erreur
+                      value: (selectedProjectName ?? '').isEmpty
+                          ? null
+                          : selectedProjectName,
                       hint: const Text(
                         "Projet",
                         style: TextStyle(
@@ -84,9 +88,8 @@ class _ProjectSelectWidgetState extends State<ProjectSelectWidget> {
                       onChanged: (value) {
                         if (value != null) {
                           String? selectedProjectId = projects[value];
-                          context
-                              .read<ProjectSelectBloc>()
-                              .add(ProjectSelectSwitch(value: selectedProjectId!));
+                          context.read<ProjectSelectBloc>().add(
+                              ProjectSelectSwitch(value: selectedProjectId!));
                         }
                       },
                     ),

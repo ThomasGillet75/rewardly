@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/friends/friends_bloc.dart';
@@ -20,7 +19,9 @@ class _AddFriendButtonWidgetState extends State<AddFriendButtonWidget> {
     if (searchController.text.isEmpty) {
       _resetSearch(context);
     } else {
-      context.read<FriendsBloc>().add(SearchFriends(pseudo: searchController.text));
+      context
+          .read<FriendsBloc>()
+          .add(SearchFriends(pseudo: searchController.text));
     }
   }
 
@@ -28,8 +29,6 @@ class _AddFriendButtonWidgetState extends State<AddFriendButtonWidget> {
     searchController.clear();
     context.read<FriendsBloc>().add(const ResetSearch());
   }
-
-
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'project_select_event.dart';
 part 'project_select_state.dart';
@@ -8,7 +7,6 @@ part 'project_select_state.dart';
 class ProjectSelectBloc extends Bloc<ProjectSelectEvent, ProjectSelectState> {
   ProjectSelectBloc() : super(ProjectSelectInitial("")) {
     on<ProjectSelectSwitch>((event, emit) {
-      print("Event déclenché");
       emit(ProjectSelectInitial(event.value));
     });
   }

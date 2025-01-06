@@ -69,7 +69,7 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
     final int taskDone = widget.taskList.where((task) => task.isDone).length;
     final int taskTodo = widget.taskList.length;
 
-    _showSuccess(taskTodo,taskDone);
+    _showSuccess(taskTodo, taskDone);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -128,8 +128,8 @@ class _RewardCardWidgetState extends State<RewardCardWidget> {
               ),
               if (widget.project.reward != "") ...[
                 Text(widget.project.reward,
-                    style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
               ] else ...[
                 ElevatedButton(
                   onPressed: _addNewReward,

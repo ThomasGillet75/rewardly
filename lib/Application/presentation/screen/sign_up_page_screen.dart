@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewardly/Application/bloc/signup/sign_up_bloc.dart';
-import 'package:rewardly/Application/bloc/signup/sign_up_event.dart';
-import 'package:rewardly/Application/bloc/signup/sign_up_state.dart';
+import 'package:rewardly/Data/models/user_entity.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../Data/models/user_entity.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key, required this.users});
@@ -19,7 +16,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController pseudoController = TextEditingController();
 
   final Uuid id = const Uuid();
@@ -48,14 +46,15 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         title: Text('Créer un compte'),
       ),
-      resizeToAvoidBottomInset: true, // Permet d'ajuster le contenu
+      resizeToAvoidBottomInset: true,
       body: BlocConsumer<SignUpBloc, SignUpState>(
         listener: (context, state) {
           if (state is SignUpSuccess) {
             Navigator.pushNamed(context, '/home');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Connexion réussie, bienvenue ${pseudoController.text} !'),
+                content: Text(
+                    'Connexion réussie, bienvenue ${pseudoController.text} !'),
               ),
             );
           } else if (state is SignUpFailure) {
@@ -68,12 +67,12 @@ class _SignUpPageState extends State<SignUpPage> {
         },
         builder: (context, state) {
           return GestureDetector(
-            onTap: _dismissKeyboard, // Pour fermer le clavier lorsqu'on touche ailleurs
+            onTap: _dismissKeyboard,
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  SizedBox(height: 24.0), // Espace pour éviter le débordement initial
+                  SizedBox(height: 24.0),
                   TextField(
                     controller: pseudoController,
                     keyboardType: TextInputType.name,
@@ -125,35 +124,41 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         if (pseudoController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Veuillez entrer un pseudo.")),
+                            SnackBar(
+                                content: Text("Veuillez entrer un pseudo.")),
                           );
                           return;
                         }
 
                         if (!_isValidEmail(emailController.text)) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Veuillez entrer une adresse e-mail valide.")),
+                            SnackBar(
+                                content: Text(
+                                    "Veuillez entrer une adresse e-mail valide.")),
                           );
                           return;
                         }
 
-                        if (passwordController.text != confirmPasswordController.text) {
+                        if (passwordController.text !=
+                            confirmPasswordController.text) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Les mots de passe ne correspondent pas.")),
+                            SnackBar(
+                                content: Text(
+                                    "Les mots de passe ne correspondent pas.")),
                           );
                           return;
                         }
 
                         context.read<SignUpBloc>().add(
-                          SignUpRequested(
-                            users: Users(
-                              pseudo: pseudoController.text,
-                              mail: emailController.text,
-                              password: passwordController.text,
-                              id: '',
-                            ),
-                          ),
-                        );
+                              SignUpRequested(
+                                users: Users(
+                                  pseudo: pseudoController.text,
+                                  mail: emailController.text,
+                                  password: passwordController.text,
+                                  id: '',
+                                ),
+                              ),
+                            );
                       },
                       child: Text('Créer un compte'),
                     ),

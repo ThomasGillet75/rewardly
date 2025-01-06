@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
-
-import '../../Data/services/firestore_user_service.dart';
+import 'package:rewardly/Data/services/firestore_user_service.dart';
 
 class UserRepository {
   final AuthService _userService = AuthService();
