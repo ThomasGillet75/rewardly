@@ -36,3 +36,6 @@ Lancez l'application sur un simulateur ou un appareil réel avec flutter run.  �
   
 Une fois les informations remplies, appuyez sur le bouton Créer un compte pour finaliser l'inscription.
 Revenez à la page de connexion, entrez vos identifiants et appuyez sur Se connecter pour accéder à l'application.
+
+## Video
+https://youtu.be/uTGjarkLtqA?si=iRiIxBpc8XnsKDyy
