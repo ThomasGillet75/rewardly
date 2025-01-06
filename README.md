@@ -5,7 +5,7 @@
 Clonez le repository sur votre machine locale :
 
 ```sh
-git clone https://github.com/votre-utilisateur/rewardly.git
+git clone https://github.com/ThomasGillet75/rewardly.git
 ```
 
 Accédez au dossier du projet :
