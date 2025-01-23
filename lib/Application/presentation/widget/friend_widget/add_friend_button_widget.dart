@@ -19,15 +19,15 @@ class _AddFriendButtonWidgetState extends State<AddFriendButtonWidget> {
     if (searchController.text.isEmpty) {
       _getFriends(context);
     } else {
-      context.read<FriendsBloc>()
+      context
+          .read<FriendsBloc>()
           .add(SearchFriends(pseudo: searchController.text));
     }
-
   }
 
   void _resetSearch(BuildContext context) {
     searchController.clear();
-    if(searchController.text.isEmpty){
+    if (searchController.text.isEmpty) {
       _getFriends(context);
     }
 

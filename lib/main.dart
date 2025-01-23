@@ -19,6 +19,7 @@ import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
 import 'package:rewardly/Data/models/user_entity.dart';
 
+import 'Application/bloc/Actual_Project/actual_project_bloc.dart';
 import 'Application/bloc/priority_select/priority_select_bloc.dart';
 import 'Application/bloc/project_members/project_member_bloc.dart';
 import 'Application/bloc/project_select/project_select_bloc.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => DateSelectBloc()),
         BlocProvider(create: (context) => ProjectSelectBloc()),
         BlocProvider(create: (context) => ProjectMemberBloc()),
+        BlocProvider(create: (context) => ActualProjectBloc()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],

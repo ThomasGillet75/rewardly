@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewardly/Application/bloc/project/project_bloc.dart';
+import 'package:rewardly/Application/bloc/Actual_Project/actual_project_bloc.dart';
 import 'package:rewardly/Application/bloc/task/task_bloc.dart';
 import 'package:rewardly/Application/presentation/widget/add_reward_widget.dart';
 import 'package:rewardly/Application/presentation/widget/add_task_and_project_widget/add_task_widget.dart';
@@ -28,6 +28,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
   void initState() {
     super.initState();
     context.read<TaskBloc>().add(GetTasksByProjectId(widget.project.id));
+    context.read<ActualProjectBloc>().add(ProjectSelected(widget.project));
   }
 
   void _showTaskDetails(Task task) {
@@ -56,10 +57,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.project.name),
         actions: [
           IconAddFriendButtonWidget(
@@ -76,17 +74,15 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
               } else if (taskState is TaskLoaded &&
                   taskState.isProjectContext &&
                   taskState.projectId == widget.project.id) {
-                return BlocBuilder<ProjectBloc, ProjectState>(
+                return BlocBuilder<ActualProjectBloc, ActualProjectState>(
                   builder: (context, projectState) {
-                    if (projectState is ProjectLoaded) {
-                      final updatedProject = projectState.projects.firstWhere(
-                            (p) => p.id == widget.project.id,
-                        orElse: () => widget.project,
-                      );
+                    if (projectState is ProjectSelectionSuccess) {
+                      // On récupère le projet
+                      final project = projectState.project;
                       return Column(
                         children: [
                           RewardCardWidget(
-                            project: updatedProject,
+                            project: project,
                             taskList: taskState.tasks,
                             onRewardSelected: _showRewardDetails,
                           ),
@@ -97,10 +93,21 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                           ),
                         ],
                       );
-                    } else if (projectState is ProjectFailure) {
-                      return Center(
-                        child: Text('Failed to load projects: ${projectState
-                            .error}'),
+                    } else if (projectState is ActualProjectUpdated) {
+                      final project = projectState.project;
+                      return Column(
+                        children: [
+                          RewardCardWidget(
+                            project: project,
+                            taskList: taskState.tasks,
+                            onRewardSelected: _showRewardDetails,
+                          ),
+                          ContainerFilteringTaskWidget(
+                            tasks: taskState.tasks,
+                            onTaskSelected: _showTaskDetails,
+                            selectedFilter: "Tout",
+                          ),
+                        ],
                       );
                     } else {
                       return const Center(child: CircularProgressIndicator());
@@ -108,10 +115,10 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                   },
                 );
               } else if (taskState is TaskFailure) {
-              return Center(
-              child: Text('Failed to load tasks: ${taskState.error}'));
+                return Center(
+                    child: Text('Failed to load tasks: ${taskState.error}'));
               } else {
-              return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
             },
           ),

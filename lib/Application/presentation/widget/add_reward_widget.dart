@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewardly/Application/bloc/Actual_Project/actual_project_bloc.dart';
 import 'package:rewardly/Application/bloc/project/project_bloc.dart';
 import 'package:rewardly/Core/color.dart';
 import 'package:rewardly/Data/models/project_entity.dart';
+
+import '../../bloc/Actual_Project/actual_project_bloc.dart';
 class AddRewardWidget extends StatefulWidget {
   const AddRewardWidget({super.key, required this.project});
 
@@ -18,7 +21,7 @@ class _AddRewardWidgetState extends State<AddRewardWidget> {
   void _addReward(String name) async {
     widget.project.reward = name;
     try {
-      BlocProvider.of<ProjectBloc>(context).add(AddReward(widget.project));
+      BlocProvider.of<ActualProjectBloc>(context).add(UpdateActualProject(widget.project));
 
     } catch (e) {
       print(e);

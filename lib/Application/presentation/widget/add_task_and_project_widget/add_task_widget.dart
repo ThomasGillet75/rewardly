@@ -118,7 +118,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
 
   void resetValue(DateSelectInitial dateState,
       PrioritySelectState priorityState, ProjectSelectState projectState) {
-    (dateState).selectedDate = null;
+    dateState.selectedDate = null;
     (priorityState as PrioritySelectInitial).selectedPriority =
         TaskPriority.none;
     (projectState as ProjectSelectInitial).selectedProject = "";

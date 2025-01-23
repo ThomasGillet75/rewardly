@@ -49,7 +49,6 @@ class FirestoreProjectService extends IDataService<ProjectModel> {
   }
 
   @override
-  @override
   Future<void> update(ProjectModel item) async {
     print('\x1B[31m${item.id}\x1B[0m'); // Red
     final querySnapshot = await _firestore
